@@ -1,14 +1,16 @@
 class Libmaxminddb < Formula
   desc "C library for the MaxMind DB file format"
   homepage "https://github.com/maxmind/libmaxminddb"
-  url "https://github.com/maxmind/libmaxminddb/releases/download/1.4.2/libmaxminddb-1.4.2.tar.gz"
-  sha256 "dd582aa971be23dee960ec33c67fb5fd38affba508e6f00ea75959dbd5aad156"
+  url "https://github.com/maxmind/libmaxminddb/releases/download/1.5.0/libmaxminddb-1.5.0.tar.gz"
+  sha256 "7c56e791ff2a655215e7ed3864b1ffdd7d34a38835779efed56a42f056bd58aa"
+  license "Apache-2.0"
 
   bottle do
     cellar :any
-    sha256 "737fa40053d963f1c658c1de368d467309eb716869350192fc844aff3a078c23" => :catalina
-    sha256 "bf9f7295d6295f51d94e88562dca6b5d979bd0d141cd74c0cfa78941d4b74d7a" => :mojave
-    sha256 "960dd0e63819fc6fb50c83085f013df073308e35df378e2ab5916f96da71389e" => :high_sierra
+    sha256 "25c8c66165ee92126e2eec12376ddffba7d2a8eaa36e4aba840e7977c41285ff" => :big_sur
+    sha256 "1d9424cee10fcb1c266a934676245365323ae2d4f0216b2ebd083e2e83c2315a" => :arm64_big_sur
+    sha256 "e075cb109dc0a9d03f4e3e15d2d979f739fe3696bb62052e738ecb193086d923" => :catalina
+    sha256 "36ada94fa2c1300d49d89452c59bc75909d4da63f8bc4232179e071d443d7a75" => :mojave
   end
 
   head do

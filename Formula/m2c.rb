@@ -3,6 +3,7 @@ class M2c < Formula
   homepage "https://savannah.nongnu.org/projects/m2c/"
   url "https://download.savannah.gnu.org/releases/m2c/0.7/m2c-0.7.tar.gz"
   sha256 "b725ed617f376e1a321e059bf1985098e950965d5edab161c6b24526f10a59bc"
+  license "GPL-2.0"
   head "https://git.savannah.nongnu.org/git/m2c.git"
 
   bottle do
@@ -14,6 +15,8 @@ class M2c < Formula
     sha256 "67659bd6a5fe922c1b34d5068a5cecbfee1f804e5ff432e32c8682a04029ccac" => :yosemite
     sha256 "7bf62153eeb0976851785db04e1319f745709294aa9d0bc99e47ffee3eba1315" => :mavericks
   end
+
+  disable! date: "2020-12-08", because: :unmaintained
 
   # Hacks purely for this 0.7 release. Git head already fixes installation glitches.
   # Will remove hacks on release of next version.

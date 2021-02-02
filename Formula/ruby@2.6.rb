@@ -3,11 +3,15 @@ class RubyAT26 < Formula
   homepage "https://www.ruby-lang.org/"
   url "https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.6.tar.xz"
   sha256 "5db187882b7ac34016cd48d7032e197f07e4968f406b0690e20193b9b424841f"
+  license "Ruby"
+  revision 1
 
   bottle do
-    sha256 "469dd5dc27e9fab71d9feb49d2ba24d9c60e3db3b842d489afc4eb3904bc2bc8" => :catalina
-    sha256 "1ad5b2401ab8976c430bc61c482e8a92caaa20526f255c86fc5efc6289880f55" => :mojave
-    sha256 "2988f1185754d635c35dad72b6466f18471c02516c0a9ace326e300b866d25e9" => :high_sierra
+    rebuild 1
+    sha256 "90a02e7c3985c005348fb1b750c22dce1ebbbd1a8854f3250da9956308c0c65f" => :big_sur
+    sha256 "a96708875a8876b485f3363013325280b7bc430b2476f1a96eec868a576c3767" => :arm64_big_sur
+    sha256 "9a4c70bb351c889e3b529be56eeb5699331f6de5bd0564e1baf14c94af37f523" => :catalina
+    sha256 "30328442ad700d940208b1423bab0a0cdc84aaa02501de820ca6d7903fee09a3" => :mojave
   end
 
   keg_only :versioned_formula
@@ -41,7 +45,12 @@ class RubyAT26 < Formula
       --with-opt-dir=#{paths.join(":")}
       --without-gmp
     ]
-    args << "--disable-dtrace" unless MacOS::CLT.installed?
+    on_macos do
+      args << "--disable-dtrace" unless MacOS::CLT.installed?
+    end
+
+    # Correct MJIT_CC to not use superenv shim
+    args << "MJIT_CC=/usr/bin/#{DevelopmentTools.default_compiler}"
 
     system "./configure", *args
 

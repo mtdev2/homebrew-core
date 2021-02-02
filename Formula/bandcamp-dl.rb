@@ -3,20 +3,38 @@ class BandcampDl < Formula
 
   desc "Simple python script to download Bandcamp albums"
   homepage "https://github.com/iheanyi/bandcamp-dl"
-  url "https://github.com/iheanyi/bandcamp-dl/archive/v0.0.8-12.tar.gz"
-  version "0.0.8-12"
-  sha256 "3252f52780f280ba18818d40cda1c89bdb99ee33d7911320ec2ce4c374df2d6b"
-  revision 3
+  license "Unlicense"
+  revision 6
   head "https://github.com/iheanyi/bandcamp-dl.git"
+
+  stable do
+    url "https://github.com/iheanyi/bandcamp-dl/archive/v0.0.8-12.tar.gz"
+    sha256 "3252f52780f280ba18818d40cda1c89bdb99ee33d7911320ec2ce4c374df2d6b"
+    version "0.0.8-12"
+    # upstream hotfix, https://github.com/iheanyi/bandcamp-dl/pull/167
+    # remove this in next release
+    patch do
+      url "https://github.com/iheanyi/bandcamp-dl/commit/3d3a524af27bac761bd2f8766c6f4951776c6c60.patch?full_index=1"
+      sha256 "f776b23beb1149d2449c2187bbdc3843933d063a79254a354bfc69ce4d644091"
+    end
+
+    # fix script matching https://github.com/iheanyi/bandcamp-dl/pull/171
+    patch do
+      url "https://github.com/iheanyi/bandcamp-dl/commit/08c450385efe847e4f8ece1dc95034e69aaeaed0.patch?full_index=1"
+      sha256 "64808a6334994d847d0c5bdcfd49cfd6dbb4376c8c8d3fd4304b85f892d3915f"
+    end
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7906dfa2016495c4e0aeca69d9aa2b7e9bcc2ac4742ba2900f3e4b6a942a3053" => :catalina
-    sha256 "5bce4baa9ae47a78a43206aad853a0a202395dc335d41756050af358967f035f" => :mojave
-    sha256 "9c8c311b18dad230648661c3b981583ece5e647285239c6024efa2f2598f439e" => :high_sierra
+    sha256 "d0e19f971b88b0ff7e673f453e0d88913f82e4f8d1c4accda8321092fceb68bc" => :big_sur
+    sha256 "add76c38806f7f310dd34946916d70cb4db029c4ef3694cc64592deb9921dc2b" => :arm64_big_sur
+    sha256 "ee51b1cdb255665578251bd7081ae2a01abcca24d48d72eed076b9a8794af58c" => :catalina
+    sha256 "d416f44eae62f3a83be9ea4312cb244581772df264c9c8156165dde038144f56" => :mojave
+    sha256 "f1d7e4a182af86854f3218cf6812fa7975d922a0ee3e8c3b5c9ee16741b0eb1c" => :high_sierra
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "Unidecode" do
     url "https://files.pythonhosted.org/packages/9d/36/49d0ee152b6a1631f03a541532c6201942430060aa97fe011cf01a2cce64/Unidecode-1.0.22.tar.gz"

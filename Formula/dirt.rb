@@ -3,11 +3,13 @@ class Dirt < Formula
   homepage "https://github.com/tidalcycles/Dirt"
   url "https://github.com/tidalcycles/Dirt/archive/1.1.tar.gz"
   sha256 "bb1ae52311813d0ea3089bf3837592b885562518b4b44967ce88a24bc10802b6"
+  license "GPL-3.0"
   revision 1
   head "https://github.com/tidalcycles/Dirt.git"
 
   bottle do
     cellar :any
+    sha256 "ac69059e87e5682411a7442619985d95d79ee67af88366bcea28cc89e35ef46a" => :big_sur
     sha256 "2e9cf5a28852453f9ec5394bb2218fe3366e2cc6ef133e2dda847fbfa71ee968" => :catalina
     sha256 "f90972cf61d77071fec9ab429f8a88a03738699b7e223b30c8655d5c64fede74" => :mojave
     sha256 "b889891f8186b244161241e9c81d20afad20c31bd592fbf6860658334f314d39" => :high_sierra

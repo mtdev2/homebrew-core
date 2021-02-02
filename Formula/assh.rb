@@ -1,22 +1,22 @@
 class Assh < Formula
   desc "Advanced SSH config - Regex, aliases, gateways, includes and dynamic hosts"
   homepage "https://manfred.life/assh"
-  url "https://github.com/moul/assh/archive/v2.9.1.tar.gz"
-  sha256 "fed8876c574061c239a1d159d9c7197e8bda94f6610f6e29e682d8b6dde60852"
+  url "https://github.com/moul/assh/archive/v2.11.0.tar.gz"
+  sha256 "8819b847cabddbd1a36893dfeadbbf60346bed14d38e36726248817ff101489c"
+  license "MIT"
   head "https://github.com/moul/assh.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "210b380b1af14b7f4ea11f3c0f9546d7def3694f2adc5fcdaee31ab13112a5e8" => :catalina
-    sha256 "cfa4b2e02ad1806a693f8a2474db2d0ea14c9613f86d961f9c7de3574547af2a" => :mojave
-    sha256 "2564d6cb2cc3d52adc1db3ea4f74c1c73bded0cecfdd1079ac0dd6b88ddbe1c1" => :high_sierra
+    sha256 "663557ce571688779f330df54ad9ed4acf4c2fd7d1435654b47a1050148d1872" => :big_sur
+    sha256 "6fab930fc47ffc55f95cf2647eb49f215c7c1e2b3e813f6db716f4eb4d00734c" => :catalina
+    sha256 "4e3bec33736c4da424e6567088858f604f5274b90b0d8a5d075655e7028283cf" => :mojave
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-ldflags", "-s -w", "-trimpath", "-o", bin/"assh"
-    prefix.install_metafiles
+    system "go", "build", *std_go_args, "-ldflags", "-s -w"
   end
 
   test do

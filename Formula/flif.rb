@@ -4,10 +4,13 @@ class Flif < Formula
   # When updating, please check if FLIF switched to CMake yet
   url "https://github.com/FLIF-hub/FLIF/archive/v0.3.tar.gz"
   sha256 "aa02a62974d78f8109cff21ecb6d805f1d23b05b2db7189cfdf1f0d97ff89498"
+  license "LGPL-3.0"
   head "https://github.com/FLIF-hub/FLIF.git"
 
   bottle do
     cellar :any
+    sha256 "7c50517e175d15ba665f2ea5a138a762c017270c38636e55cf1ef1fb6c2d83d2" => :big_sur
+    sha256 "3562aa4e5c79586e5edd3908ae34bf87cd75d1d9ba35fe270166a0604c3dc6e8" => :arm64_big_sur
     sha256 "0c21811ef5a29e427952afbc57fb657ece17c91fc84e69eba7ab9f97fb439303" => :catalina
     sha256 "41d1a634a2442550395bd454b84606570cc9f670fa2df158d39fddb70de39367" => :mojave
     sha256 "40b85a93738e195a6eec2b3bf9bfe7b2831f74d464e1e5145681f9ec2c3cfe68" => :high_sierra

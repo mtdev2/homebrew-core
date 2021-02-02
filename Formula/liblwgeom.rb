@@ -1,19 +1,24 @@
 class Liblwgeom < Formula
   desc "Allows SpatiaLite to support ST_MakeValid() like PostGIS"
   homepage "https://postgis.net/"
-  url "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz"
-  sha256 "b6cb286c5016029d984f8c440947bf9178da72e1f6f840ed639270e1c451db5e"
-  revision 2
-  head "https://git.osgeo.org/gitea/postgis/postgis"
+  url "https://download.osgeo.org/postgis/source/postgis-2.5.4.tar.gz"
+  sha256 "146d59351cf830e2a2a72fa14e700cd5eab6c18ad3e7c644f57c4cee7ed98bbe"
+  revision 1
+  head "https://git.osgeo.org/gitea/postgis/postgis.git"
 
   bottle do
     cellar :any
-    sha256 "2fa994168e7e6080ad8dfa236379ba87a3e5dcebd9f3870224220277d50a90c3" => :catalina
-    sha256 "2566c5dffdb062c5c44142b1ec0a6e7b076789fde0a8435b059ed7403a6c0c4d" => :mojave
-    sha256 "a09336c7545767fa94e6733acfe07b4473915d5603d4e6a629bb79f6345489a6" => :high_sierra
+    rebuild 1
+    sha256 "e28a391dfb1ccf34656e8169d5eda63bb96c7693508429f7c22b47add8a8bd47" => :big_sur
+    sha256 "4f8f0403e973d5e2eafb1b3d49deae54a3cb95a80dc42c50f1f28edcc73da0d8" => :arm64_big_sur
+    sha256 "cd5a31ea1b30721f36fcd64285b3150667c4cf30a148ffafa88d4e5c81456f45" => :catalina
+    sha256 "79247efadb38c42e631ceeb750a8379fd68a2a5c720ec265f8f11502764be46b" => :mojave
   end
 
   keg_only "conflicts with PostGIS, which also installs liblwgeom.dylib"
+
+  # See details in https://github.com/postgis/postgis/pull/348
+  deprecate! date: "2020-11-23", because: "liblwgeom headers are not installed anymore, use librttopo instead"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -30,8 +35,6 @@ class Liblwgeom < Formula
   def install
     # See postgis.rb for comments about these settings
     ENV.deparallelize
-
-    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :sierra
 
     args = [
       "--disable-dependency-tracking",

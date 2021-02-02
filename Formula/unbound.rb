@@ -1,17 +1,28 @@
 class Unbound < Formula
   desc "Validating, recursive, caching DNS resolver"
   homepage "https://www.unbound.net"
-  url "https://nlnetlabs.nl/downloads/unbound/unbound-1.10.0.tar.gz"
-  sha256 "152f486578242fe5c36e89995d0440b78d64c05123990aae16246b7f776ce955"
+  url "https://nlnetlabs.nl/downloads/unbound/unbound-1.13.0.tar.gz"
+  sha256 "a954043a95b0326ca4037e50dace1f3a207a0a19e9a4a22f4c6718fc623db2a1"
+  license "BSD-3-Clause"
   head "https://github.com/NLnetLabs/unbound.git"
 
+  # We check the GitHub repo tags instead of
+  # https://nlnetlabs.nl/downloads/unbound/ since the first-party site has a
+  # tendency to lead to an `execution expired` error.
+  livecheck do
+    url :head
+    regex(/^(?:release-)?v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 "d2d4d6d362feaafc5d10ea48abff32048527fd1c0fad152311354d58842cda5e" => :catalina
-    sha256 "f7373d641329d32e1a7cb94193691d9077e1932a73621f4b0f049e77cef670d2" => :mojave
-    sha256 "5bda37df0865426a3d254d2dcc27576bd009feddbb6609eba0e98c8dfbd480fb" => :high_sierra
+    sha256 "cef5d9843ecaabaa0a4cb9b89e04bc3d370ce143e4ff2e0f6711aa6572b1ad3a" => :big_sur
+    sha256 "2db4e311e44be817d3639b59ef14abdf53aa990bff95f2c6f445c47b704370de" => :arm64_big_sur
+    sha256 "132e7387adde0939a0f50d125ef5b6bdfa0186bae6dd9628668e9813813f4a9a" => :catalina
+    sha256 "a1941e3c48de236e9310547620b1fdf71ec5c07ff8cb6dadc9e9433d02dfa1a7" => :mojave
   end
 
   depends_on "libevent"
+  depends_on "nghttp2"
   depends_on "openssl@1.1"
 
   uses_from_macos "expat"
@@ -24,6 +35,7 @@ class Unbound < Formula
       --enable-tfo-client
       --enable-tfo-server
       --with-libevent=#{Formula["libevent"].opt_prefix}
+      --with-libnghttp2=#{Formula["nghttp2"].opt_prefix}
       --with-ssl=#{Formula["openssl@1.1"].opt_prefix}
     ]
 
@@ -44,7 +56,7 @@ class Unbound < Formula
                     "username: \"#{ENV["USER"]}\""
   end
 
-  plist_options :startup => true
+  plist_options startup: true
 
   def plist
     <<~EOS

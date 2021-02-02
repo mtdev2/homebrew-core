@@ -3,9 +3,12 @@ class H2o < Formula
   homepage "https://github.com/h2o/h2o/"
   url "https://github.com/h2o/h2o/archive/v2.2.6.tar.gz"
   sha256 "f8cbc1b530d85ff098f6efc2c3fdbc5e29baffb30614caac59d5c710f7bda201"
+  license "MIT"
   revision 1
 
   bottle do
+    sha256 "00497d41695d9abaec982136824eb52b31aafc0727005f172ccf7510c41f0e65" => :big_sur
+    sha256 "68375aeb216194e9731a44b1d794279e98c29f6280d4595e3ed0e5f2f40bdad0" => :arm64_big_sur
     sha256 "2a76dbab7292c0244c32e6a350f0c39dfb4d9b066de8510f2d8f3a9905c05f54" => :catalina
     sha256 "4f8f5c326d24dcfc95faf48849ae89721f1e19a407968cfa67efbc99dba33f76" => :mojave
     sha256 "80eac6a05ba27ce57142ad1a9211495fa3b044433623438b6319109e2852eb55" => :high_sierra
@@ -37,11 +40,11 @@ class H2o < Formula
   end
 
   # This is simplified from examples/h2o/h2o.conf upstream.
-  def conf_example
+  def conf_example(port = 8080)
     <<~EOS
-      listen: 8080
+      listen: #{port}
       hosts:
-        "127.0.0.1.xip.io:8080":
+        "127.0.0.1.xip.io:#{port}":
           paths:
             /:
               file.dir: #{var}/h2o/
@@ -56,7 +59,7 @@ class H2o < Formula
     EOS
   end
 
-  plist_options :manual => "h2o"
+  plist_options manual: "h2o"
 
   def plist
     <<~EOS
@@ -82,16 +85,13 @@ class H2o < Formula
   end
 
   test do
-    pid = fork do
-      exec "#{bin}/h2o -c #{etc}/h2o/h2o.conf"
+    port = free_port
+    (testpath/"h2o.conf").write conf_example(port)
+    fork do
+      exec "#{bin}/h2o -c #{testpath}/h2o.conf"
     end
     sleep 2
 
-    begin
-      assert_match "Welcome to H2O", shell_output("curl localhost:8080")
-    ensure
-      Process.kill("SIGINT", pid)
-      Process.wait(pid)
-    end
+    assert_match "Welcome to H2O", shell_output("curl localhost:#{port}")
   end
 end

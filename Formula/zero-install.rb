@@ -1,16 +1,23 @@
 class ZeroInstall < Formula
-  desc "Zero Install is a decentralised software installation system"
+  desc "Decentralised cross-platform software installation system"
   homepage "https://0install.net/"
   url "https://github.com/0install/0install.git",
-      :tag      => "v2.15.2",
-      :revision => "643ec4be53566d09d4bebd19339beebcc3ff8acc"
+      tag:      "v2.17",
+      revision: "4a837bd638d93905b96d073c28c644894f8d4a0b"
+  license "LGPL-2.1-or-later"
   head "https://github.com/0install/0install.git"
+
+  livecheck do
+    url :head
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "dfc7b1b0cdc9bb46faacb076ff3623d54ad32ed1b43d1e979d836f501c535c44" => :catalina
-    sha256 "8fe6638d2b1a47bd2ef6beaf7b9de8b2389addfe939c452302534062ad42a816" => :mojave
-    sha256 "446e9e57e493eaf67818e3ebc776bdc653187e89048cf76454531cf84b81b6e7" => :high_sierra
+    sha256 "77fe4b65401743e8cd82de23568ad9e630e50467018faba2b7167231fe14f48a" => :big_sur
+    sha256 "4306ae5d0ca339a7f5ecd9c7ba6a3a192a1d176883d49dda9d31aad78bc390fd" => :catalina
+    sha256 "73b04cd9560f78c799599fc4f9fba0de2b072c56e2195ef0522bb23e6eeb376b" => :mojave
+    sha256 "4fb5867d432bd3e22525b95682521a12a3279dd4fb7f8b0df3cb6664a6959835" => :high_sierra
   end
 
   depends_on "ocaml" => :build

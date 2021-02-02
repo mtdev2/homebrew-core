@@ -3,9 +3,16 @@ class Systemc < Formula
   homepage "https://accellera.org/"
   url "https://www.accellera.org/images/downloads/standards/systemc/systemc-2.3.2.tar.gz"
   sha256 "a28eeee00189f0e39f51461dcd7dbed7fb38e4e07dbd9e723473000ce6ef73c5"
+  license "Apache-2.0"
+
+  livecheck do
+    url "https://www.accellera.org/downloads/standards/systemc"
+    regex(/href=.*?systemc[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
     cellar :any
+    sha256 "9deac1357ecb0652caa491858a81658cc0ff86317d50d4d511aced6dc62373b0" => :big_sur
     sha256 "514a49408461d311e27def414b559298e514df9be6461408e691aa2ba44ff0d5" => :catalina
     sha256 "ed266b79f596258da162637530a1830516ceee6fb4874add5eaa9a84b175cda4" => :mojave
     sha256 "7d189564e4277390f8fa0c2e067f17dc31148e33af65c0998b6242405f761a18" => :high_sierra

@@ -5,11 +5,16 @@ class Libgtop < Formula
   sha256 "78f3274c0c79c434c03655c1b35edf7b95ec0421430897fb1345a98a265ed2d4"
   revision 1
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
-    sha256 "e0391a7a27f7a7f27806294b73a49eb23b60bba785bb4d147f39f6cc3bf2cf4c" => :catalina
-    sha256 "207550dec06c9af31f523534a6ca65906b7e4c69ad6ec670969f98e00dcc8c2b" => :mojave
-    sha256 "981a91a3221651bf94e922f8e29cd8be08527453a833ab8f69cb7dbf7d39ed0d" => :high_sierra
-    sha256 "77db9c002217605f8bad346413fc8cc038109ddd65ba7e62e09d25d341e1023f" => :sierra
+    rebuild 2
+    sha256 "e749a43ebcc150fba221570873bb6df8765eedd1719ad7080dbbb84b809b477d" => :big_sur
+    sha256 "1b03ee2aee7281a673eff7004f5141e4077e0dfbd2e1ce31a9590fb1f3fc221c" => :arm64_big_sur
+    sha256 "9946efd963f1911a13a57d684d9b441ce804777711cfb88fc48fdcf55e6ba620" => :catalina
+    sha256 "9a219f60e6ad45d0c4c01e3477789ea27a54595fdc16751f3b964d4cfb56fc3a" => :mojave
   end
 
   depends_on "gobject-introspection" => :build
@@ -17,6 +22,10 @@ class Libgtop < Formula
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "glib"
+
+  on_linux do
+    depends_on "libxau"
+  end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -46,8 +55,10 @@ class Libgtop < Formula
       -L#{lib}
       -lglib-2.0
       -lgtop-2.0
-      -lintl
     ]
+    on_macos do
+      flags << "-lintl"
+    end
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

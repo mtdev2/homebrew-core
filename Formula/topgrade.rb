@@ -1,25 +1,27 @@
 class Topgrade < Formula
   desc "Upgrade all the things"
   homepage "https://github.com/r-darwish/topgrade"
-  url "https://github.com/r-darwish/topgrade/archive/v4.3.0.tar.gz"
-  sha256 "93bdd01a8572ec09fa73f9fea5db7d0a1df99cfa661e049ee618a0d95c01abde"
+  url "https://github.com/r-darwish/topgrade/archive/v6.3.2.tar.gz"
+  sha256 "2a4fbafecadba9c7df94b0a39756dc23bb0e36fb066778cf8df8c29c7be1569e"
+  license "GPL-3.0-or-later"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "fd2ce552d9162dd66e94f0d075c8e14c8a49c57e1c3237c1d02eeed54c52b1bd" => :catalina
-    sha256 "d4e3b6c42f5ce3a347d24d3325cd9710288faa211392eb05fb11cf41a0ac9be7" => :mojave
-    sha256 "46aac690711be4d393b66b5e2bbfe09682dad3dafe97522ead75649122ac56e3" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur: "d22afeb0ce41bb904c578d0937769106c4238786f2f1e99049a09acdc3e4c970"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "721e3bf97251b6f87f74f544de588665551ca8cde796cc3892c4c09930dcd647"
+    sha256 cellar: :any_skip_relocation, catalina: "0ced5032bb268646ed019ea9ee8ada679015b1cdfb3e7f1080d68c55c9efd63e"
+    sha256 cellar: :any_skip_relocation, mojave: "03df4f3f862729424b4fa9d874b46c9b0ca65cf2ea4b9145cf4517595a0fdeda"
   end
 
   depends_on "rust" => :build
+  depends_on xcode: :build if MacOS::CLT.version >= "11.4" # libxml2 module bug
 
   def install
-    system "cargo", "install", "--locked", "--root", prefix, "--path", "."
+    system "cargo", "install", *std_cargo_args
   end
 
   test do
-    # Configuraton path details: https://github.com/r-darwish/topgrade/blob/master/README.md#configuration-path
-    # Sample config file: https://github.com/r-darwish/topgrade/blob/master/config.example.toml
+    # Configuration path details: https://github.com/r-darwish/topgrade/blob/HEAD/README.md#configuration-path
+    # Sample config file: https://github.com/r-darwish/topgrade/blob/HEAD/config.example.toml
     (testpath/"Library/Preferences/topgrade.toml").write <<~EOS
       # Additional git repositories to pull
       #git_repos = [
@@ -30,7 +32,7 @@ class Topgrade < Formula
 
     assert_match version.to_s, shell_output("#{bin}/topgrade --version")
 
-    output = shell_output("#{bin}/topgrade -n")
+    output = shell_output("#{bin}/topgrade -n --only brew_formula")
     assert_match "Dry running: #{HOMEBREW_PREFIX}/bin/brew upgrade", output
     assert_not_match /\sSelf update\s/, output
   end

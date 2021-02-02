@@ -1,12 +1,14 @@
 class Webalizer < Formula
   desc "Web server log file analysis"
-  homepage "http://www.webalizer.org"
-  url "ftp://ftp.mrunix.net/pub/webalizer/webalizer-2.23-08-src.tgz"
+  homepage "https://web.archive.org/web/20200622121953/www.webalizer.org/"
+  url "https://web.archive.org/web/20200205152356/ftp.mrunix.net/pub/webalizer/webalizer-2.23-08-src.tgz"
   mirror "https://deb.debian.org/debian/pool/main/w/webalizer/webalizer_2.23.08.orig.tar.gz"
   sha256 "edaddb5aa41cc4a081a1500e3fa96615d4b41bc12086bcedf9938018ce79ed8d"
   revision 2
 
   bottle do
+    sha256 "c2b261ea2ecd03ee71f43ecc38ca50ad2de689199fafe0711bc639da2a0af94c" => :big_sur
+    sha256 "e5dd2dbc62dc88bcae72d46858d1ffc12bd32504e791419487e543bb0cc016c9" => :arm64_big_sur
     sha256 "c7b023658cc745cb0e5d383953e23a2d5a07dcf08b8e4addee7b7a108ef3a725" => :catalina
     sha256 "525c739550139303d96d823e9f50aca6255bb77eac70d45f2c1259aa59755f6b" => :mojave
     sha256 "e27c0dd7038a5a82e6fa127428c0b98750801e343b1b973b05bb08f38b055cdd" => :high_sierra

@@ -1,14 +1,16 @@
 class Logrotate < Formula
   desc "Rotates, compresses, and mails system logs"
   homepage "https://github.com/logrotate/logrotate"
-  url "https://github.com/logrotate/logrotate/releases/download/3.16.0/logrotate-3.16.0.tar.xz"
-  sha256 "442f6fdf61c349eeae5f76799878b88fe45a11c8863a38b618bac6988f4a7ce5"
+  url "https://github.com/logrotate/logrotate/releases/download/3.18.0/logrotate-3.18.0.tar.xz"
+  sha256 "841f81bf09d0014e4a2e11af166bb33fcd8429cc0c2d4a7d3d9ceb3858cfccc5"
+  license "GPL-2.0"
 
   bottle do
     cellar :any
-    sha256 "685db75f3f5c08510db50a7966f2b8d4028709cd02fd586ed21b17e978fd5446" => :catalina
-    sha256 "f32319879033d83978b6dbd4dc970880e733ae437df2de5954c3ca2a6708c850" => :mojave
-    sha256 "38b4e975405eb2a32b7a0d1c8904846198364036deaec47393e6475dc340ca7b" => :high_sierra
+    sha256 "8074cf8252a19b7be06a4600ab49b38c16b6ac884ca58744c1afc489cc04eac9" => :big_sur
+    sha256 "4302035ee1c9162e650852b38ad0b384cb3ad2f7e74a97ff72f57e2d50d5848e" => :arm64_big_sur
+    sha256 "a8a48494c6d57c20ac9ff7b38d0ca2ed41ec16640928f0f4c83bfb18ea744908" => :catalina
+    sha256 "c970d6bce04d119e0ba69d925b5230d61fa71b92d51792744d9590a9cb8ead18" => :mojave
   end
 
   depends_on "popt"
@@ -26,7 +28,7 @@ class Logrotate < Formula
     (etc/"logrotate.d").mkpath
   end
 
-  plist_options :manual => "logrotate"
+  plist_options manual: "logrotate"
 
   def plist
     <<~EOS

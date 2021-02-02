@@ -3,10 +3,20 @@ class DocbookXsl < Formula
   homepage "https://github.com/docbook/xslt10-stylesheets"
   url "https://github.com/docbook/xslt10-stylesheets/releases/download/release%2F1.79.2/docbook-xsl-nons-1.79.2.tar.bz2"
   sha256 "ee8b9eca0b7a8f89075832a2da7534bce8c5478fc8fc2676f512d5d87d832102"
+  # Except as otherwise noted, for example, under some of the /contrib/
+  # directories, the DocBook XSLT 1.0 Stylesheets use The MIT License.
+  license "MIT"
   revision 1
+
+  livecheck do
+    url :homepage
+    regex(%r{^(?:release/)?(\d+(?:\.\d+)+)$}i)
+  end
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "cfdfee3ff9db24a542cd8afd72cd05e67dffd88105b6af3bb1aabd9d48811dd2" => :big_sur
+    sha256 "9604b8989c3cc180c641b00f595e59d887aa85fbd410fb85bf4d459c6fb9f823" => :arm64_big_sur
     sha256 "65a5442556a88a865ef377cb73df0b3edf9ab2240e6f4bb2d71a71eabc74fa26" => :catalina
     sha256 "65a5442556a88a865ef377cb73df0b3edf9ab2240e6f4bb2d71a71eabc74fa26" => :mojave
     sha256 "65a5442556a88a865ef377cb73df0b3edf9ab2240e6f4bb2d71a71eabc74fa26" => :high_sierra
@@ -27,6 +37,7 @@ class DocbookXsl < Formula
   # see http://www.linuxfromscratch.org/blfs/view/9.1/pst/docbook-xsl.html for this patch
   patch do
     url "http://www.linuxfromscratch.org/patches/blfs/9.1/docbook-xsl-nons-1.79.2-stack_fix-1.patch"
+    mirror "https://raw.githubusercontent.com/Homebrew/formula-patches/5f2d6c1/docbook-xsl/docbook-xsl-nons-1.79.2-stack_fix-1.patch"
     sha256 "a92c39715c54949ba9369add1809527b8f155b7e2a2b2e30cb4b39ee715f2e30"
   end
 
@@ -54,12 +65,10 @@ class DocbookXsl < Formula
     etc_catalog = etc/"xml/catalog"
     ENV["XML_CATALOG_FILES"] = etc_catalog
 
-    [
-      ["xsl",    "xsl-nons"],
-      ["xsl-ns", "xsl"],
-    ].each do |nms|
-      old_name = nms[0]
-      new_name = nms[1]
+    {
+      "xsl"    => "xsl-nons",
+      "xsl-ns" => "xsl",
+    }.each do |old_name, new_name|
       loc = "file://#{opt_prefix}/docbook-#{old_name}"
 
       # add/replace catalog entries
@@ -68,14 +77,15 @@ class DocbookXsl < Formula
       system "xmlcatalog", "--noout", "--add", "nextCatalog", "", cat_loc, etc_catalog
 
       # add rewrites for the new and old catalog URLs
+      rewrites = ["rewriteSystem", "rewriteURI"]
       [
         "https://cdn.docbook.org/release/#{new_name}",
         "http://docbook.sourceforge.net/release/#{old_name}",
       ].each do |url_prefix|
         [version.to_s, "current"].each do |ver|
           system "xmlcatalog", "--noout", "--del", "#{url_prefix}/#{ver}", etc_catalog
-          ["rewriteSystem", "rewriteURI"].each do |k|
-            system "xmlcatalog", "--noout", "--add", k, "#{url_prefix}/#{ver}", loc, etc_catalog
+          rewrites.each do |rewrite|
+            system "xmlcatalog", "--noout", "--add", rewrite, "#{url_prefix}/#{ver}", loc, etc_catalog
           end
         end
       end

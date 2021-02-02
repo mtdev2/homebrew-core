@@ -1,14 +1,16 @@
 class Zig < Formula
   desc "Programming language designed for robustness, optimality, and clarity"
   homepage "https://ziglang.org/"
-  url "https://ziglang.org/download/0.5.0/zig-0.5.0.tar.xz"
-  sha256 "55ae16960f152bcb9cf98b4f8570902d0e559a141abf927f0d3555b7cc838a31"
+  url "https://ziglang.org/download/0.7.1/zig-0.7.1.tar.xz"
+  sha256 "2db3b944ab368d955b48743d9f7c963b8f96de1a441ba5a35e197237cc6dae44"
+  license "MIT"
   head "https://github.com/ziglang/zig.git"
 
   bottle do
-    sha256 "3b5659dac004dcdf68e57bed34f9b7f097524aebecd7cf263ff74d643fcc7d22" => :catalina
-    sha256 "3142c933d0a51bd29119cb242e4241cb012f22d9aa65380f1541bd16876206ae" => :mojave
-    sha256 "db30263fb131a6dce56904b5232dbba1165d58c58545b84a9958102f779fe13b" => :high_sierra
+    cellar :any
+    sha256 "f088607533abf8e77c38ad57b5c068b7c975d31d3558eda5ff9ef23221278650" => :big_sur
+    sha256 "f1168c13a73d6677a8d6eb04ecd0d67e93038bd33218bafadd9aac9a23045e7d" => :catalina
+    sha256 "eb2e0de16f666b740fb67529910712c517fed8ae3fd6e14d27acbbf19a41018a" => :mojave
   end
 
   depends_on "cmake" => :build
@@ -23,8 +25,8 @@ class Zig < Formula
     (testpath/"hello.zig").write <<~EOS
       const std = @import("std");
       pub fn main() !void {
-          var stdout_file = try std.io.getStdOut();
-          try stdout_file.write("Hello, world!");
+          var stdout_file: std.fs.File = std.io.getStdOut();
+          _ = try stdout_file.write("Hello, world!");
       }
     EOS
     system "#{bin}/zig", "build-exe", "hello.zig"

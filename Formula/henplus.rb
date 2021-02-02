@@ -3,6 +3,7 @@ class Henplus < Formula
   homepage "https://github.com/neurolabs/henplus"
   url "https://github.com/downloads/neurolabs/henplus/henplus-0.9.8.tar.gz"
   sha256 "ea7ca363d0503317235e97f66aa0efefe44463d8445e88b304ec0ac1748fe1ff"
+  license "GPL-2.0"
   revision 1
 
   bottle do
@@ -16,9 +17,11 @@ class Henplus < Formula
     sha256 "21f7ee166b94b30dd78cee8a6757fecd285544b8b12b332db9141e6a94eb29a7" => :mavericks
   end
 
+  disable! date: "2020-12-08", because: :unmaintained
+
   depends_on "ant" => :build
-  depends_on :java => "1.8"
   depends_on "libreadline-java"
+  depends_on "openjdk@8"
 
   def install
     inreplace "bin/henplus" do |s|

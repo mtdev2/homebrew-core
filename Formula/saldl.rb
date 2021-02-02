@@ -3,11 +3,14 @@ class Saldl < Formula
   homepage "https://saldl.github.io/"
   url "https://github.com/saldl/saldl/archive/v40.tar.gz"
   sha256 "1cb7950848517fb82ec39561bf36c8cbc0a0caf8fa85355a5b76cac0281346ce"
+  license "AGPL-3.0"
   revision 1
-  head "https://github.com/saldl/saldl.git", :shallow => false
+  head "https://github.com/saldl/saldl.git", shallow: false
 
   bottle do
     cellar :any
+    sha256 "98f348fdc98c856bce1374e98a0ec917584d2e760af3140429b7e49bcbef5912" => :big_sur
+    sha256 "b1c1dda8876efb75dde244cd94a70fcb3246b1d8d8818d2d5d83521e5bb4eb96" => :arm64_big_sur
     sha256 "2b377713f93e2cd853b9ef6a31a881215cffe3a35416309af31a13648cbf6f7d" => :catalina
     sha256 "7fd875e38f9506d4ca5cca0e14815cea29ba40bf61385f53f93c8a587d5b50d3" => :mojave
     sha256 "1c2f3b014669b8a19a1f3be6f654d8c438e62d5ed64e2c72b4f54a33e0f67b88" => :high_sierra

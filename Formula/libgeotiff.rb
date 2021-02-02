@@ -1,15 +1,17 @@
 class Libgeotiff < Formula
   desc "Library and tools for dealing with GeoTIFF"
-  homepage "https://geotiff.osgeo.org/"
-  url "https://github.com/OSGeo/libgeotiff/releases/download/1.5.1/libgeotiff-1.5.1.tar.gz"
-  sha256 "f9e99733c170d11052f562bcd2c7cb4de53ed405f7acdde4f16195cd3ead612c"
-  revision 1
+  homepage "https://github.com/OSGeo/libgeotiff"
+  url "https://github.com/OSGeo/libgeotiff/releases/download/1.6.0/libgeotiff-1.6.0.tar.gz"
+  sha256 "9311017e5284cffb86f2c7b7a9df1fb5ebcdc61c30468fb2e6bca36e4272ebca"
+  license "MIT"
 
   bottle do
     cellar :any
-    sha256 "7a51facc7a04ae6c9e032d5b989612044154a84779a17012e211dfaca2ece6e9" => :catalina
-    sha256 "2e19a2384be65ec690bbabefcf68fc9d33b48d48156de269f13a7ffce10518eb" => :mojave
-    sha256 "2eea9fd6e2b9ac89549ba249628824cffad7119aefebd06dd866c042d2002d0c" => :high_sierra
+    sha256 "06ba6dd5e945ac1491a2838df004efdfbe5bf8d1c5e1a1d0df4084689c08002f" => :big_sur
+    sha256 "a670b1daf400c747f5993a97888a8910a126a6e4668ddf3aa78e4f259db9246b" => :arm64_big_sur
+    sha256 "181da2f2a3860b23ee95eded5a9f5600f34e2ee016e76a7fbede959e565d0ca8" => :catalina
+    sha256 "7311abe41270eb90f91b69e84eab0528be0b76a11cc43ce0e2aca1529da585fe" => :mojave
+    sha256 "b52ce34a76c3510314e840753610d5d423cd0689d5b93d3d41e7c119ba67d09b" => :high_sierra
   end
 
   head do

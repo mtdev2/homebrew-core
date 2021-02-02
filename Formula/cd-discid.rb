@@ -1,11 +1,12 @@
 class CdDiscid < Formula
   desc "Read CD and get CDDB discid information"
-  homepage "http://linukz.org/cd-discid.shtml"
+  homepage "https://linukz.org/cd-discid.shtml"
+  license "GPL-2.0"
   revision 2
   head "https://github.com/taem/cd-discid.git"
 
   stable do
-    url "http://linukz.org/download/cd-discid-1.4.tar.gz"
+    url "https://linukz.org/download/cd-discid-1.4.tar.gz"
     mirror "https://deb.debian.org/debian/pool/main/c/cd-discid/cd-discid_1.4.orig.tar.gz"
     sha256 "ffd68cd406309e764be6af4d5cbcc309e132c13f3597c6a4570a1f218edd2c63"
 
@@ -19,6 +20,8 @@ class CdDiscid < Formula
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "6ffa8010d3a9ebbd8475901bca190ed9fe786ff7b9ff32ff161347b10ecd87fd" => :big_sur
+    sha256 "7effbc8d5fb1325aa629f1ec607d75c64c9547b0aa70deb4f05b07e5a6b94c84" => :arm64_big_sur
     sha256 "0a9f85136e9727175a4d861f759236d62cf24f19170e27bfd9bf8aeddbc4c8b3" => :catalina
     sha256 "158d91563b2e79574c0a336f775b49033d85ce3b290f122dae853dea45841f5b" => :mojave
     sha256 "26b88be0312f960484625161d94adf9a44aa88ef5817ba28b61af520a6e17e03" => :high_sierra

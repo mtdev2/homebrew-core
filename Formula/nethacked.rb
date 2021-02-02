@@ -23,8 +23,16 @@ class Nethacked < Formula
   homepage "https://nethacked.github.io/"
   url "https://github.com/nethacked/nethacked/archive/1.0.tar.gz"
   sha256 "4e3065a7b652d5fc21577e0b7ac3a60513cd30f4ee81c7f11431a71185b609aa"
+  license "NGPL"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
+    sha256 "7ec798bfda16ed59639e13d8ec29a572f8ccb33be28f40eecbb1990ce7324454" => :big_sur
+    sha256 "6e72ef5f73856fce288298607152d9ffbd322d592b4d5f451739482e5d632aae" => :arm64_big_sur
     sha256 "619034420b0ce7a657824a14c45af647132ac8263839b9a56fc0b64ff100aa64" => :catalina
     sha256 "77cec385d3ab1ba8c9d4ef1234d25a42a7aff77c9db2158fad7820f677a67cc0" => :mojave
     sha256 "4fe2af842c20dc95f4ae5bebcffed0b85da6a94a548b0d5f8115d1829c80e3cc" => :high_sierra

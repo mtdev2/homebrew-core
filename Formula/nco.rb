@@ -1,15 +1,20 @@
 class Nco < Formula
   desc "Command-line operators for netCDF and HDF files"
   homepage "https://nco.sourceforge.io/"
-  url "https://github.com/nco/nco/archive/4.9.2.tar.gz"
-  sha256 "1a98c37c946c00232fa7319d00d1d80f77603adda7c9239d10d68a8a3545a4d5"
-  revision 1
+  url "https://github.com/nco/nco/archive/4.9.7.tar.gz"
+  sha256 "934e247d9592f3e6087ea8985507077873559b52679b9c9a1ecae40668a352dc"
+  license "BSD-3-Clause"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
     cellar :any
-    sha256 "35f0438126a52c6ddfbf1f301be740c0589303a8fb61a63c695ca3d06cb2745a" => :catalina
-    sha256 "836dde6df4d77bca7a2e8f505241b1f2d0855c6cf5846ab13b2dd6d865fec519" => :mojave
-    sha256 "bb8b22c4ae16a13b48ec4f89fe3e521f71fd394d7550222c23762ea32ca9f67a" => :high_sierra
+    sha256 "2a4677771efffd1789efb5fc43e77654dcfae4f9591d41ea9ff7546866ed71bd" => :big_sur
+    sha256 "e8a685d69e1fa2703a8ff4998cc506269dcabf9f57ad6b621c03d180c215a02c" => :catalina
+    sha256 "66b0a10e785bed1b168de56de448bcf08fb362b6090254f1892c73d4460f0026" => :mojave
   end
 
   head do

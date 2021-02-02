@@ -1,13 +1,19 @@
 class Geeqie < Formula
   desc "Lightweight Gtk+ based image viewer"
   homepage "http://www.geeqie.org/"
-  url "http://www.geeqie.org/geeqie-1.5.1.tar.xz"
-  sha256 "4854d5d323c31f8f4068fd73ab2c454ff91e826c4ca4d37b22c246ad14dea10a"
+  url "http://www.geeqie.org/geeqie-1.6.tar.xz"
+  sha256 "48f8a4474454d182353100e43878754b76227f3b8f30cfc258afc9d90a4e1920"
+  license "GPL-2.0"
+
+  livecheck do
+    url :homepage
+    regex(/href=.*?geeqie[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
-    sha256 "a7bbe36c785e34b9c8b03aad0f654104cb771fff926e231f0996541ec4fec6af" => :catalina
-    sha256 "888a5a8a95a9c560203470469732c6a78933ef6936c0e30be9217fb48a61c024" => :mojave
-    sha256 "34bd849466a1f2c6984553a070e9b42446562c1b3e49867cd12457f8c2ce4db4" => :high_sierra
+    sha256 "2aa83988145308caaa7bdd49b0fabfff7e2b7805c988f4cb5a782696355d53e7" => :big_sur
+    sha256 "6cd0177bb8e510ce20c440f21491e390e0f4339cb0461bc24fa2e0cadda17a99" => :catalina
+    sha256 "de5e6de4c8b6098193cff623e96f0fbbd9204705bff0accfc1c354cfd8cc95e5" => :mojave
   end
 
   depends_on "autoconf" => :build
@@ -25,6 +31,7 @@ class Geeqie < Formula
   depends_on "imagemagick"
   depends_on "jpeg"
   depends_on "libtiff"
+  depends_on "libx11"
   depends_on "little-cms2"
   depends_on "pango"
 

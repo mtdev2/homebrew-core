@@ -1,13 +1,20 @@
 class Knot < Formula
   desc "High-performance authoritative-only DNS server"
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-2.9.3.tar.xz"
-  sha256 "f2adf137d70955a4a20df90c5409e10be8e1127204a98b27d626ac090531a07e"
+  url "https://secure.nic.cz/files/knot-dns/knot-3.0.4.tar.xz"
+  sha256 "451d8913a769b7e4bcb3e250a3181b448e28a82cfc58cea6f2509475d7327983"
+  license all_of: ["GPL-3.0-or-later", "0BSD", "BSD-3-Clause", "LGPL-2.0-or-later", "MIT"]
+
+  livecheck do
+    url "https://secure.nic.cz/files/knot-dns/"
+    regex(/href=.*?knot[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
-    sha256 "c5de8c5074e1f09b4b4deadfc9510c673d556c98a6cb637be71e8d44f7171e9e" => :catalina
-    sha256 "76ce20dd866c1189fbd660e48c498c7119fdc90b8c7bbc3282da579d52396d2b" => :mojave
-    sha256 "94113b40854b70f3ffd33077b6585ee78aa90666a05a1f281b5ef15f2a6c39ce" => :high_sierra
+    sha256 "15baa96e119e84a3386721b849679f443c82a6f488a07d63a10f0301aae7012e" => :big_sur
+    sha256 "54899e7b8b421ed4182e70203094cd253153f7dd21e6e09dff2235ccc055d63f" => :arm64_big_sur
+    sha256 "6c0eba2d71644cea054eb2ff736fd81128bf13054486f4f0e0f31bac98101a67" => :catalina
+    sha256 "31d745f5774fcfd6889628170dc5800a45e8549c56291f7d09b8b0d002c29878" => :mojave
   end
 
   head do
@@ -23,7 +30,8 @@ class Knot < Formula
   depends_on "fstrm"
   depends_on "gnutls"
   depends_on "libidn2"
-  depends_on :macos => :yosemite # due to AT_REMOVEDIR
+  depends_on "lmdb"
+  depends_on "nghttp2"
   depends_on "protobuf-c"
   depends_on "userspace-rcu"
 
@@ -71,7 +79,7 @@ class Knot < Formula
     EOS
   end
 
-  plist_options :startup => true
+  plist_options startup: true
 
   def plist
     <<~EOS

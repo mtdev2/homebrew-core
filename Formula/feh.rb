@@ -1,18 +1,27 @@
 class Feh < Formula
   desc "X11 image viewer"
   homepage "https://feh.finalrewind.org/"
-  url "https://feh.finalrewind.org/feh-3.3.tar.bz2"
-  sha256 "f3959958258111d5f7c9fbe2e165c52b9d5987f07fd1f37540a4abf9f9638811"
+  url "https://feh.finalrewind.org/feh-3.6.3.tar.bz2"
+  sha256 "437420f37f11614e008d066e2a3bdefcfc78144c8212998b2bacdd5d21ea23b4"
+  license "MIT-feh"
+
+  livecheck do
+    url :homepage
+    regex(/href=.*?feh[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
-    sha256 "5c9a6a77a491ac4bb9dd8bd347c9604c3887d991a69313270e65990c1fe778e2" => :catalina
-    sha256 "e3b395fac60062ddb22e25bf150cff78424e69a2345465943ccde406ddbb3273" => :mojave
-    sha256 "7fa85c8cada38cb4542092a31f9f6cd9f18d1e3426b48ad7061d3dc1513f60f6" => :high_sierra
+    sha256 "cc6e98325f1233c484f700f04cabb9b73061e2d1cb6c24de954ad33a9a4cfa7c" => :big_sur
+    sha256 "f907275a410ad5d1766936c4e3a88d970a8b71bc1a0acc029e71c36dfad9569d" => :arm64_big_sur
+    sha256 "a26d86d34fca0fe0a87aa9330e20614a5c1aaede90d79a8fc482fc64259008cc" => :catalina
+    sha256 "4328378783d1519676d8d53be065cd9ee52e583b9e917fc507afeff30eb85f2f" => :mojave
   end
 
   depends_on "imlib2"
   depends_on "libexif"
-  depends_on :x11
+  depends_on "libx11"
+  depends_on "libxinerama"
+  depends_on "libxt"
 
   def install
     system "make", "PREFIX=#{prefix}", "verscmp=0", "exif=1"

@@ -3,10 +3,13 @@ class ChromeCli < Formula
   homepage "https://github.com/prasmussen/chrome-cli"
   url "https://github.com/prasmussen/chrome-cli/archive/1.6.0.tar.gz"
   sha256 "ff1fba560743cba7b661e8daef52d4494acc084da4a21c3fad211f7cdf5e971f"
+  license "MIT"
   head "https://github.com/prasmussen/chrome-cli.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "dd36420b3b200890cd6e3acd0ad469750911197f02891301b0b1313da282e50e" => :big_sur
+    sha256 "d184bf01ce8451e1cff13435c7928c73f00815182ce4692a9e117ebb4c265e8e" => :arm64_big_sur
     sha256 "dcbd7ddb868c433f456921994be98e77d14bad4b51f3b1d5940def7bd845e7f5" => :catalina
     sha256 "45226a0320842d8e3d717ffdf6e8828b9d1b5f52609757670f4d542fd722ee68" => :mojave
     sha256 "b34f789eefdbb6312b05e4e55a71e9deaf889fe740e2d976cdf4279a0d74dd36" => :high_sierra
@@ -14,7 +17,7 @@ class ChromeCli < Formula
     sha256 "e1d04616371d4c7147f884886d2e61df3bdea48c388dc50a684434f89b417792" => :el_capitan
   end
 
-  depends_on :xcode => :build
+  depends_on xcode: :build
 
   def install
     # Release builds

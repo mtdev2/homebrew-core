@@ -3,11 +3,18 @@ class Libsvg < Formula
   homepage "https://cairographics.org/"
   url "https://cairographics.org/snapshots/libsvg-0.1.4.tar.gz"
   sha256 "4c3bf9292e676a72b12338691be64d0f38cd7f2ea5e8b67fbbf45f1ed404bc8f"
+  license "LGPL-2.1"
   revision 1
+
+  livecheck do
+    url "https://cairographics.org/snapshots/"
+    regex(/href=.*?libsvg[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
     cellar :any
     rebuild 1
+    sha256 "96c398556141fc2ad73955de0c52a0217eeeb627102099592d1ccc85250809c9" => :big_sur
     sha256 "e0f21af595963a7c99ffa098f593f5d46cf5f78facf1df84ffe97858f29fecbe" => :catalina
     sha256 "3984d65fa6524a142ad9094aa095f106ca9c8b6857cdd3f62b913e7e3c8f5b65" => :mojave
     sha256 "7cfe0b5417654beb7092afec3389a14a4c67eeaa760eb77c9b28082e40f0b11a" => :high_sierra

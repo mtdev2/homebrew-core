@@ -1,32 +1,32 @@
-require "language/haskell"
-
 class DhallYaml < Formula
-  include Language::Haskell::Cabal
-
   desc "Convert between Dhall and YAML"
   homepage "https://github.com/dhall-lang/dhall-haskell/tree/master/dhall-yaml"
-  url "https://hackage.haskell.org/package/dhall-yaml-1.0.3/dhall-yaml-1.0.3.tar.gz"
-  sha256 "b6314d2e189d72dc56ad277c1bdef0fcfd12515b163635852befbf85b9b8ddd2"
+  url "https://hackage.haskell.org/package/dhall-yaml-1.2.5/dhall-yaml-1.2.5.tar.gz"
+  sha256 "8e5780a38db78d1e0e9edba4715b0457805a050132081ae6cf9e9051d0255d39"
+  license "BSD-3-Clause"
   head "https://github.com/dhall-lang/dhall-haskell.git"
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
-    cellar :any_skip_relocation
-    sha256 "4e7aa075a5d21a38a08d1942195888c866d0f63588a3d7b02cefa7868e6b042f" => :catalina
-    sha256 "9559fb18526197b0d82025e9736a94025059a39de2d37b1a18434c24775005a4" => :mojave
-    sha256 "b8d8413255a6ec06b3f5c2ca3dfcb2ae134c534e38af4d42a54a0f12d525a50f" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur: "3087b77065c8fa639d7a93694cf10bea6eef7d047456a3298bbbe50598114b20"
+    sha256 cellar: :any_skip_relocation, catalina: "362fb816ee4371e2fba7c5671c44c185a4782006e5318793ffc91306a461636d"
+    sha256 cellar: :any_skip_relocation, mojave: "7559e67690e98b4b97d338d2483e3563de1268e458e8b3635779afb37dcf6a86"
   end
 
   depends_on "cabal-install" => :build
   depends_on "ghc" => :build
 
   def install
-    install_cabal_package
+    system "cabal", "v2-update"
+    system "cabal", "v2-install", *std_cabal_v2_args
   end
 
   test do
     assert_match "1", pipe_output("#{bin}/dhall-to-yaml-ng", "1", 0)
     assert_match "- 1\n- 2", pipe_output("#{bin}/dhall-to-yaml-ng", "[ 1, 2 ]", 0)
-    assert_match "x: 1\ny: 2", pipe_output("#{bin}/dhall-to-yaml-ng", "{ x = 1, y = 2 }", 0)
     assert_match "null", pipe_output("#{bin}/dhall-to-yaml-ng", "None Natural", 0)
   end
 end

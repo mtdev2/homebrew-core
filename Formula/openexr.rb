@@ -1,13 +1,16 @@
 class Openexr < Formula
   desc "High dynamic-range image file format"
   homepage "https://www.openexr.com/"
-  url "https://github.com/openexr/openexr/archive/v2.4.1.tar.gz"
-  sha256 "3ebbe9a8e67edb4a25890b98c598e9fe23b10f96d1416d6a3ff0732e99d001c1"
+  # NOTE: Please keep these values in sync with ilmbase.rb when updating.
+  url "https://github.com/openexr/openexr/archive/v2.5.4.tar.gz"
+  sha256 "dba19e9c6720c6f64fbc8b9d1867eaa75da6438109b941eefdc75ed141b6576d"
+  license "BSD-3-Clause"
 
   bottle do
-    sha256 "436a68a4101b82d9abe8f21045efa6d5912a4a6bb070614cc04a88487a0b8372" => :catalina
-    sha256 "d9cfcbd95203891e434ed18ffba6cc7e3ccf30295258b9335fa75ab385e74311" => :mojave
-    sha256 "834e89287ea987db4d6e392dd523c3ef193a991f44e015d54f7b40e1f49b48d0" => :high_sierra
+    sha256 "eb633be8c992dbfa2bb4406cd397abfe16aad0bf75f252e02e8ff7d720a9f93c" => :big_sur
+    sha256 "f23f4e7523ae27fbc1885360cc99dc60b35cca395b6f8f46d45c1d7c275f0e90" => :arm64_big_sur
+    sha256 "8f146ff213eda72a32613ba36649a865848786c0e843fc6a39e58bdeafebcb31" => :catalina
+    sha256 "b9f0b513b60da938425fd93805835cfaaa916db9406687a7aa11112ec152a6f7" => :mojave
   end
 
   depends_on "cmake" => :build
@@ -20,9 +23,6 @@ class Openexr < Formula
     url "https://github.com/openexr/openexr-images/raw/master/TestImages/AllHalfValues.exr"
     sha256 "eede573a0b59b79f21de15ee9d3b7649d58d8f2a8e7787ea34f192db3b3c84a4"
   end
-
-  # from https://github.com/openexr/openexr/commit/0b26a9dedda4924841323677f1ce0bce37bfbeb4.patch
-  patch :DATA
 
   def install
     cd "OpenEXR" do
@@ -37,22 +37,3 @@ class Openexr < Formula
     end
   end
 end
-
-__END__
-diff --git a/OpenEXR/config/CMakeLists.txt b/OpenEXR/config/CMakeLists.txt
-index 1ef829a2..8d6d7ac8 100644
---- a/OpenEXR/config/CMakeLists.txt
-+++ b/OpenEXR/config/CMakeLists.txt
-@@ -72,9 +72,9 @@ if(OPENEXR_INSTALL_PKG_CONFIG)
-   # use a helper function to avoid variable pollution, but pretty simple
-   function(openexr_pkg_config_help pcinfile)
-     set(prefix ${CMAKE_INSTALL_PREFIX})
--    set(exec_prefix ${CMAKE_INSTALL_BINDIR})
--    set(libdir ${CMAKE_INSTALL_LIBDIR})
--    set(includedir ${CMAKE_INSTALL_INCLUDEDIR})
-+    set(exec_prefix "\${prefix}")
-+    set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
-+    set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
-     set(LIB_SUFFIX_DASH ${OPENEXR_LIB_SUFFIX})
-     if(TARGET Threads::Threads)
-       # hrm, can't use properties as they end up as generator expressions

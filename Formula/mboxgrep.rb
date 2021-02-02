@@ -3,6 +3,7 @@ class Mboxgrep < Formula
   homepage "https://datatipp.se/mboxgrep/"
   url "https://downloads.sourceforge.net/project/mboxgrep/mboxgrep/0.7.9/mboxgrep-0.7.9.tar.gz"
   sha256 "78d375a05c3520fad4bca88509d4da0dbe9fba31f36790bd20880e212acd99d7"
+  license "GPL-2.0"
 
   bottle do
     cellar :any
@@ -14,6 +15,8 @@ class Mboxgrep < Formula
     sha256 "08cbb574005db6e34cc191ae4f46670ca35af252e4e6bbc2041a92e32397bc49" => :yosemite
     sha256 "bb5cefa83e2fb8b37dac858f3119aedb338b29e0eb2715cbff08b4644689ad86" => :mavericks
   end
+
+  disable! date: "2020-12-08", because: :unmaintained
 
   depends_on "pcre"
 

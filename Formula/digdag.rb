@@ -1,12 +1,18 @@
 class Digdag < Formula
   desc "Workload Automation System"
   homepage "https://www.digdag.io/"
-  url "https://dl.digdag.io/digdag-0.9.41.jar"
-  sha256 "1dc76896573a0cbb1e36f505bf61e16d7bb4b62a2798406a69deecccde780a40"
+  url "https://dl.digdag.io/digdag-0.10.0.jar"
+  sha256 "0a3aed836d8af1a47ed53dda63c02ce3ecfec6b564d55b556a18b122dec7f3d7"
+  license "Apache-2.0"
+
+  livecheck do
+    url "https://github.com/treasure-data/digdag.git"
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle :unneeded
 
-  depends_on :java => "1.8"
+  depends_on "openjdk@8"
 
   def install
     libexec.install "digdag-#{version}.jar"

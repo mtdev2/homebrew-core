@@ -1,8 +1,13 @@
 class Igv < Formula
   desc "Interactive Genomics Viewer"
   homepage "https://www.broadinstitute.org/software/igv"
-  url "https://data.broadinstitute.org/igv/projects/downloads/2.7/IGV_2.7.2.zip"
-  sha256 "cbaeb3d437374ad9d9057eeddaa963c573ddd86e1c2e01c8cad7660263e7cf86"
+  url "https://data.broadinstitute.org/igv/projects/downloads/2.8/IGV_2.8.13.zip"
+  sha256 "95c90ac4327c5bc135cd0c94f66123930bd05050f3a64271b00cca5b52ae9fc6"
+
+  livecheck do
+    url "https://software.broadinstitute.org/software/igv/download"
+    regex(/href=.*?IGV[._-]v?(\d+(?:\.\d+)+)\.zip/i)
+  end
 
   bottle :unneeded
 
@@ -13,7 +18,7 @@ class Igv < Formula
     bin.install "igv.sh" => "igv"
     bin.install "igvtools"
     libexec.install "igv.args", "lib"
-    bin.env_script_all_files libexec, :JAVA_HOME => Formula["openjdk"].opt_prefix
+    bin.env_script_all_files libexec, JAVA_HOME: Formula["openjdk"].opt_prefix
   end
 
   test do

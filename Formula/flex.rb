@@ -3,9 +3,12 @@ class Flex < Formula
   homepage "https://github.com/westes/flex"
   url "https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz"
   sha256 "e87aae032bf07c26f85ac0ed3250998c37621d95f8bd748b31f15b33c45ee995"
+  license "BSD-2-Clause"
   revision 1
 
   bottle do
+    sha256 "0efd85122905dd05c8feb197492a72fcd0435270366c89dbe347fcbbe5d66ac1" => :big_sur
+    sha256 "5067cf61a1b9e5fba26590a01f0a1464c7fefa5450c3d3c673acb237b45a9c3c" => :arm64_big_sur
     sha256 "902e2701bb4d8130fe3177211dda84b6ebc6a520467874a52bcd7ff043b949cc" => :catalina
     sha256 "2051ed8f0de322732b111f2cc82069e82f6dfd4d839e6d098bbebcd7f92220e6" => :mojave
     sha256 "9c224c27a3d40a53b6f778a6b825f8b4f14654080b144e50f1bec9cc608c757d" => :high_sierra
@@ -24,7 +27,7 @@ class Flex < Formula
     depends_on "libtool" => :build
   end
 
-  keg_only :provided_by_macos, "some formulae require a newer version of flex"
+  keg_only :provided_by_macos
 
   depends_on "help2man" => :build
   depends_on "gettext"

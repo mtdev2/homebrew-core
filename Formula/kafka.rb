@@ -1,26 +1,23 @@
 class Kafka < Formula
   desc "Publish-subscribe messaging rethought as a distributed commit log"
   homepage "https://kafka.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=kafka/2.4.1/kafka_2.12-2.4.1.tgz"
-  mirror "https://archive.apache.org/dist/kafka/2.4.1/kafka_2.12-2.4.1.tgz"
-  sha256 "2177cbd14118999e1d76fec628ca78ace7e6f841219dbc6035027c796bbe1a2a"
+  url "https://www.apache.org/dyn/closer.lua?path=kafka/2.7.0/kafka_2.13-2.7.0.tgz"
+  mirror "https://archive.apache.org/dist/kafka/2.7.0/kafka_2.13-2.7.0.tgz"
+  sha256 "1dd84b763676a02fecb48fa5d7e7e94a2bf2be9ff87bce14cf14109ce1cb7f90"
+  license "Apache-2.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "af2e8113b36f680291fb199f0554ba45d14e67fe733cdc1d18682c0a9fb7fc21" => :catalina
-    sha256 "af2e8113b36f680291fb199f0554ba45d14e67fe733cdc1d18682c0a9fb7fc21" => :mojave
-    sha256 "af2e8113b36f680291fb199f0554ba45d14e67fe733cdc1d18682c0a9fb7fc21" => :high_sierra
+    sha256 "ca872162f6fd02dc02a554a2c84f3b92cb5b2648f92dd8e0daf16eae6fd02ed3" => :big_sur
+    sha256 "ab63bbcd513acd2c9d39fda4f1888e5a8d96d3df819fb05b1c50e75fc3d2230f" => :catalina
+    sha256 "c7ef596aafc4e23c1144348e4e258e892135db6d9cebbd4d1a2a3d0da009ec79" => :mojave
   end
 
-  # Related to https://issues.apache.org/jira/browse/KAFKA-2034
-  # Since Kafka does not currently set the source or target compability version inside build.gradle
-  # if you do not have Java 1.8 installed you cannot used the bottled version of Kafka
-  pour_bottle? do
-    reason "The bottle requires Java 1.8."
-    satisfy { quiet_system("/usr/libexec/java_home --version 1.8 --failfast") }
-  end
-
-  depends_on :java => "1.8"
+  depends_on "openjdk"
   depends_on "zookeeper"
 
   def install
@@ -37,7 +34,7 @@ class Kafka < Formula
     libexec.install "libs"
 
     prefix.install "bin"
-    bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.8"))
+    bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env)
     Dir["#{bin}/*.sh"].each { |f| mv f, f.to_s.gsub(/.sh$/, "") }
 
     mv "config", "kafka"
@@ -48,7 +45,7 @@ class Kafka < Formula
     (var+"log/kafka").mkpath
   end
 
-  plist_options :manual => "zookeeper-server-start #{HOMEBREW_PREFIX}/etc/kafka/zookeeper.properties & kafka-server-start #{HOMEBREW_PREFIX}/etc/kafka/server.properties"
+  plist_options manual: "zookeeper-server-start #{HOMEBREW_PREFIX}/etc/kafka/zookeeper.properties & kafka-server-start #{HOMEBREW_PREFIX}/etc/kafka/server.properties"
 
   def plist
     <<~EOS

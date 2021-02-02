@@ -3,6 +3,7 @@ class Namazu < Formula
   homepage "http://www.namazu.org/"
   url "http://www.namazu.org/stable/namazu-2.0.21.tar.gz"
   sha256 "5c18afb679db07084a05aca8dffcfb5329173d99db8d07ff6d90b57c333c71f7"
+  license "GPL-2.0"
 
   bottle do
     rebuild 1
@@ -14,6 +15,8 @@ class Namazu < Formula
     sha256 "01a0bf11f2ad2095306055016b430c19900ea6203af5fcf4bb5c92c085d44a67" => :yosemite
     sha256 "ca6e854a626eaafd4ac26661b9a3db86dc9bc140f4aa98effd5843882aba7ecb" => :mavericks
   end
+
+  disable! date: "2020-12-08", because: :unmaintained
 
   def install
     cd "File-MMagic" do

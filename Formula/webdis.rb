@@ -1,14 +1,16 @@
 class Webdis < Formula
   desc "Redis HTTP interface with JSON output"
   homepage "https://webd.is/"
-  url "https://github.com/nicolasff/webdis/archive/0.1.9.tar.gz"
-  sha256 "49bbb41d8c6bdbcaf0d849ad463a53f2eb7d99832251df2d78e7f1489b5d0277"
+  url "https://github.com/nicolasff/webdis/archive/0.1.12.tar.gz"
+  sha256 "9f7eb4c7f9a06978611c8d2e38e919d81a288fd656fc815b0cd4392add7020ee"
+  license "BSD-2-Clause"
 
   bottle do
     cellar :any
-    sha256 "0ed607d2f26d3aa40821e3ef20ae493c58cb12b9df4edd4a0720ff3208f8fce1" => :catalina
-    sha256 "b00e9c19e7cd7846dae7bab59b8a71b18716195222c7b52a2ad2a8fb79f519f8" => :mojave
-    sha256 "906e5885c49a034a676cee68163c749bf1d55df7e26fae1f550bb911ce361bca" => :high_sierra
+    sha256 "fe2d73994d25c1291c308573029c7b408f9b3e3a76b62f9e96b6f54539abadf0" => :big_sur
+    sha256 "651e74b178a69eb2c1b1415343417d77c01c93adcfc7ebd1985067c613418519" => :arm64_big_sur
+    sha256 "11103600a67450f841b39f74739c2a381142f6562bb77d7bfe9ae9ae745c300c" => :catalina
+    sha256 "cef141b4ce5b61b6b616e7247e39cae283efc3e1774eae1678f6d525d4ed497f" => :mojave
   end
 
   depends_on "libevent"
@@ -29,7 +31,7 @@ class Webdis < Formula
     (var/"log").mkpath
   end
 
-  plist_options :manual => "webdis #{HOMEBREW_PREFIX}/etc/webdis.json"
+  plist_options manual: "webdis #{HOMEBREW_PREFIX}/etc/webdis.json"
 
   def plist
     <<~EOS
@@ -59,12 +61,16 @@ class Webdis < Formula
   end
 
   test do
+    port = free_port
+    cp "#{etc}/webdis.json", "#{testpath}/webdis.json"
+    inreplace "#{testpath}/webdis.json", "\"http_port\":\t7379,", "\"http_port\":\t#{port},"
+
     server = fork do
-      exec "#{bin}/webdis", "#{etc}/webdis.json"
+      exec "#{bin}/webdis", "#{testpath}/webdis.json"
     end
     sleep 0.5
     # Test that the response is from webdis
-    assert_match(/Server: Webdis/, shell_output("curl --silent -XGET -I http://localhost:7379/PING"))
+    assert_match(/Server: Webdis/, shell_output("curl --silent -XGET -I http://localhost:#{port}/PING"))
   ensure
     Process.kill "TERM", server
     Process.wait server

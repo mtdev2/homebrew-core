@@ -1,9 +1,9 @@
 class Jadx < Formula
   desc "Dex to Java decompiler"
   homepage "https://github.com/skylot/jadx"
-  url "https://github.com/skylot/jadx/releases/download/v1.1.0/jadx-1.1.0.zip"
-  sha256 "91948067a60feee36512e043b288f726678ddd760aa11a01496b53df95465b16"
-  revision 1
+  url "https://github.com/skylot/jadx/releases/download/v1.2.0/jadx-1.2.0.zip"
+  sha256 "e6ae92be16edae2098b1a9951533feba4278bb18f00fbab54eb23a427b98d425"
+  license "Apache-2.0"
 
   head do
     url "https://github.com/skylot/jadx.git"
@@ -28,7 +28,7 @@ class Jadx < Formula
     end
     bin.install libexec/"bin/jadx"
     bin.install libexec/"bin/jadx-gui"
-    bin.env_script_all_files libexec/"bin", :JAVA_HOME => "${JAVA_HOME:-#{Formula["openjdk"].opt_prefix}}"
+    bin.env_script_all_files libexec/"bin", Language::Java.overridable_java_home_env
   end
 
   test do

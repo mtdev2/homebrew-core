@@ -1,18 +1,21 @@
 class Vroom < Formula
   desc "Vehicle Routing Open-Source Optimization Machine"
   homepage "http://vroom-project.org/"
-  url "https://github.com/VROOM-Project/vroom/archive/v1.6.0.tar.gz"
-  sha256 "6bd8736f68c121cd8867f16b654cd36924605ebffea65f1e20fe042e4292175b"
+  url "https://github.com/VROOM-Project/vroom/archive/v1.8.0.tar.gz"
+  sha256 "7f339e1e0ed6c81c02dd78e10d36db5ec09f404b45731b5fc80ed4036634c67a"
+  license "BSD-2-Clause"
 
   bottle do
     cellar :any
-    sha256 "d456cedbd8a14b0bf4a522c1e982761487b8b93baa8db7198875c48ac84bca68" => :catalina
-    sha256 "678a00e9b7f1971bd55832bff3a73503e40d453a2c39e6c7499256ca7638937d" => :mojave
-    sha256 "aa74496ac296cf599254f6869e13ec0fc6ffb72d1d6e787f0ed302754bfcd44e" => :high_sierra
+    sha256 "0a8877fa647cc6998ec8ae81d39245b849805d0fe0d77e27456ba77da786f851" => :big_sur
+    sha256 "3647c26358309daf1436651727d47fbf230892e1dee393d8808a4af0f7fb79b9" => :arm64_big_sur
+    sha256 "afa201989a1bd34ddf8dc96379bffe303eaa855a05dbbae570f44974bf5bf7e6" => :catalina
+    sha256 "9ac415735021d7f3dd94247d0c9a8c7cfe2f4b1d1ec0ea1950663db92d70ff19" => :mojave
   end
 
   depends_on "pkg-config" => :build
-  depends_on "boost"
+  depends_on "asio"
+  depends_on macos: :mojave # std::optional C++17 support
   depends_on "openssl@1.1"
 
   def install
@@ -26,6 +29,7 @@ class Vroom < Formula
   test do
     output = shell_output("#{bin}/vroom -i #{pkgshare}/docs/example_2.json")
     expected_routes = JSON.parse((pkgshare/"docs/example_2_sol.json").read)["routes"]
-    assert_equal expected_routes, JSON.parse(output)["routes"]
+    actual_routes = JSON.parse(output)["routes"]
+    assert_equal expected_routes, actual_routes
   end
 end

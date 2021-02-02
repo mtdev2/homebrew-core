@@ -3,6 +3,7 @@ class Cryfs < Formula
   homepage "https://www.cryfs.org"
   url "https://github.com/cryfs/cryfs/releases/download/0.10.2/cryfs-0.10.2.tar.xz"
   sha256 "5531351b67ea23f849b71a1bc44474015c5718d1acce039cf101d321b27f03d5"
+  license "LGPL-3.0"
 
   bottle do
     cellar :any
@@ -14,14 +15,22 @@ class Cryfs < Formula
   end
 
   head do
-    url "https://github.com/cryfs/cryfs.git", :branch => "develop", :shallow => false
+    url "https://github.com/cryfs/cryfs.git", branch: "develop", shallow: false
   end
 
   depends_on "cmake" => :build
   depends_on "boost"
   depends_on "libomp"
   depends_on "openssl@1.1"
-  depends_on :osxfuse
+
+  on_macos do
+    deprecate! date: "2020-11-10", because: "requires FUSE"
+    depends_on :osxfuse
+  end
+
+  on_linux do
+    depends_on "libfuse"
+  end
 
   def install
     configure_args = [

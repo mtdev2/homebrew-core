@@ -3,10 +3,17 @@ class Mupen64plus < Formula
   homepage "https://www.mupen64plus.org/"
   url "https://github.com/mupen64plus/mupen64plus-core/releases/download/2.5/mupen64plus-bundle-src-2.5.tar.gz"
   sha256 "9c75b9d826f2d24666175f723a97369b3a6ee159b307f7cc876bbb4facdbba66"
+  license "GPL-2.0"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
     cellar :any
     rebuild 1
+    sha256 "5a9a16e37b0274e5c21b44f9b076f5b0b6140ff8017041f2cfb1c33963acfb9c" => :big_sur
     sha256 "999b60faedf8eb2299f854991995c44b81898de85a73ca0568902e5b63641e42" => :catalina
     sha256 "c88a4d9a47cdcc6b995615d5fd4b061a7046ec72fac75560d79998b7abf60b78" => :mojave
     sha256 "4dc531259b558fe987eecd74d87afb70284d36ec4e0c3008de751b820f83e64b" => :high_sierra

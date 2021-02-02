@@ -16,6 +16,12 @@ class GitHooks < Formula
     sha256 "ace6acaff04ef09795d26e6034bf411a89c9f348287dd95f756c82068cea123d" => :mavericks
   end
 
+  # The icefox/git-hooks repository has been deleted and it doesn't appear to
+  # have moved to an alternative location. There is a rewrite in Go by a
+  # different author which someone may want to work into a new formula as a
+  # replacement: https://github.com/git-hooks/git-hooks
+  deprecate! date: "2020-06-25", because: :repo_removed
+
   def install
     bin.install "git-hooks"
     (etc/"git-hooks").install "contrib"

@@ -1,25 +1,27 @@
 class Ffsend < Formula
   desc "Fully featured Firefox Send client"
   homepage "https://gitlab.com/timvisee/ffsend"
-  url "https://github.com/timvisee/ffsend/archive/v0.2.59.tar.gz"
-  sha256 "4eb33136ee4d0daaf5aeb6eba410181ddeed946cce6942796083e7218d520070"
+  url "https://github.com/timvisee/ffsend/archive/v0.2.68.tar.gz"
+  sha256 "749046507274f03a1e667cf2302b5b3ac2a977e44ae3f9594be65ce0fca40daf"
+  license "GPL-3.0-only"
 
   bottle do
-    cellar :any
-    sha256 "7c735529d5526478a1077b6cc8a3a516de8a3a3f701ef00159f99a17a30434c9" => :catalina
-    sha256 "de48fc060b6a5160359b97ddf7e0a8be4c280c2cfc0ffdecce6fe540b56bc94a" => :mojave
-    sha256 "87ed1c7fbfc9d11d8e341d54021dd7241cf00c7606ae1cb049dbf8de8a11ff65" => :high_sierra
+    cellar :any_skip_relocation
+    sha256 "eb967f89f7dcbaf1017a23b31ca538411d584ea900992bf1bfa3ebe3097afa41" => :big_sur
+    sha256 "0f95ad0452a8534e628485f3c049813c133cfe0c24e41c467c85e4b6ece2e335" => :catalina
+    sha256 "d68e8a1fe45f28ffec5d113aa32d107a3076020a7e52726d91f2316ea6dd65a3" => :mojave
+    sha256 "c5ddd8dadde02073f8d3daa7563ce3b770f0305bbcf1bd3b440be7ed8f72e8ed" => :high_sierra
   end
 
   depends_on "rust" => :build
-  depends_on "openssl@1.1"
+
+  on_linux do
+    depends_on "pkg-config" => :build
+    depends_on "openssl@1.1"
+  end
 
   def install
-    # Ensure that the `openssl` crate picks up the intended library.
-    # https://docs.rs/openssl/0.10.19/openssl/#manual
-    ENV["OPENSSL_DIR"] = Formula["openssl@1.1"].opt_prefix
-
-    system "cargo", "install", "--locked", "--root", prefix, "--path", "."
+    system "cargo", "install", *std_cargo_args
 
     bash_completion.install "contrib/completions/ffsend.bash"
     fish_completion.install "contrib/completions/ffsend.fish"

@@ -5,8 +5,15 @@ class Vncsnapshot < Formula
   sha256 "20f5bdf6939a0454bc3b41e87e41a5f247d7efd1445f4fac360e271ddbea14ee"
   revision 1
 
+  livecheck do
+    url :stable
+    regex(%r{url=.*?/vncsnapshot[._-]v?(\d+(?:\.\d+)+[a-z]?)-src\.t}i)
+  end
+
   bottle do
     cellar :any
+    sha256 "956e584f14bf76d1b5907cd6b2063c8fe90b746e556af41976d455475ab2a727" => :big_sur
+    sha256 "596c1f48bea3bddbb1d63e7e35de9b91c2ec3eb369d7722e583d2ff1a99f0fcd" => :arm64_big_sur
     sha256 "ebdef361f11059c2b912c727a4a8fee601ebd0fc9b4e36e4ef2a70f655a48983" => :catalina
     sha256 "873b5911f289edac2f6af11571981a107f7ed353c281ff0e68a596f0bf77d201" => :mojave
     sha256 "76511216d57e76f357ab805fc700f6d777db9d173436d1b65c3de0733352472b" => :high_sierra

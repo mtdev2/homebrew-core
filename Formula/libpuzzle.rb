@@ -3,6 +3,7 @@ class Libpuzzle < Formula
   homepage "https://www.pureftpd.org/project/libpuzzle"
   url "https://download.pureftpd.org/pub/pure-ftpd/misc/libpuzzle/releases/libpuzzle-0.11.tar.bz2"
   sha256 "ba628268df6956366cbd44ae48c3f1bab41e70b4737041a1f33dac9832c44781"
+  license "ISC"
 
   bottle do
     cellar :any
@@ -15,6 +16,8 @@ class Libpuzzle < Formula
     sha256 "d8f7de77378d0fa29e34876ccc8def7f8e60e6564a1c17dae77f4c32ebd8ae5a" => :yosemite
     sha256 "ed3d860aa40203a73921fc7f6919828599a28fb39e2d95f0c963ae4eb5c7811b" => :mavericks
   end
+
+  disable! date: "2020-12-08", because: :unmaintained
 
   depends_on "gd"
 

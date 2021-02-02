@@ -5,8 +5,13 @@ class Libsmf < Formula
   sha256 "d3549f15de94ac8905ad365639ac6a2689cb1b51fdfa02d77fa6640001b18099"
   revision 1
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
     cellar :any
+    sha256 "02243fbcfb6de40f0c04b2341132e19c946be2b9fdf017f1838b3043aeddcedb" => :big_sur
     sha256 "fa858ef4b6b179d578663bbdb0d5c7490ea75a3921713e577a7f848faa99b601" => :catalina
     sha256 "bbe040e330a998499e078129097a07f2c5de9fff9c5f26a638e6f5248badda3b" => :mojave
     sha256 "7a4b394b51e89bd781fcce0514b3cc58656da63fa2e317186e47828e2c271320" => :high_sierra

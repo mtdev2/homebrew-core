@@ -1,14 +1,15 @@
 class Kubeless < Formula
   desc "Kubernetes Native Serverless Framework"
   homepage "https://kubeless.io"
-  url "https://github.com/kubeless/kubeless/archive/v1.0.6.tar.gz"
-  sha256 "828a04600eb1506e107f23ddd02dad0335c24450ac89fcf8f261c5f5cd0e570a"
+  url "https://github.com/kubeless/kubeless/archive/v1.0.8.tar.gz"
+  sha256 "c25dd4908747ac9e2b1f815dfca3e1f5d582378ea5a05c959f96221cafd3e4cf"
+  license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3d9fcaea79166a2d8870050b8b53aabab94ab6c54897dabcb1c0137933aece71" => :catalina
-    sha256 "b644a1285d0a04a22374749bc2af3feec0e1c76446d9a87996ccef6305f1fe15" => :mojave
-    sha256 "1d75ba00b5b9956f585e9bee7e643bb5dc052fa8ee4107dadae88d629f9fc780" => :high_sierra
+    sha256 "617d7ec712263ee395d113e427a8557a0b4da5f0a13904aaa7b6dd88076d2e34" => :big_sur
+    sha256 "622d26db25c0c672ab9204caf7478453912916c6d3cf4626818afb1e7e029f56" => :catalina
+    sha256 "4892e5ecc077136f2259e496b82951e4601fbe4e5fc2b5c5d3cf84216b15f29d" => :mojave
   end
 
   depends_on "go" => :build
@@ -24,17 +25,17 @@ class Kubeless < Formula
   end
 
   test do
-    require "socket"
+    port = free_port
+    server = TCPServer.new("127.0.0.1", port)
 
-    server = TCPServer.new("127.0.0.1", 0)
-    port = server.addr[1]
     pid = fork do
       loop do
         socket = server.accept
         request = socket.gets
-        request_path = request.split(" ")[1]
-        if request_path == "/api/v1/namespaces/kubeless/configmaps/kubeless-config"
-          response = '{
+        request_path = request.split[1]
+        response = case request_path
+        when "/api/v1/namespaces/kubeless/configmaps/kubeless-config"
+          '{
             "kind": "ConfigMap",
             "apiVersion": "v1",
             "metadata": { "name": "kubeless-config", "namespace": "kubeless" },
@@ -49,20 +50,20 @@ class Kubeless < Formula
                 '}]"
               }
             }'
-        elsif request_path == "/apis/kubeless.io/v1beta1/namespaces/default/functions"
-          response = '{
+        when "/apis/kubeless.io/v1beta1/namespaces/default/functions"
+          '{
             "apiVersion": "kubeless.io/v1beta1",
             "kind": "Function",
             "metadata": { "name": "get-python", "namespace": "default" }
             }'
-        elsif request_path == "/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions/functions.kubeless.io"
-          response = '{
+        when "/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions/functions.kubeless.io"
+          '{
             "apiVersion": "apiextensions.k8s.io/v1beta1",
             "kind": "CustomResourceDefinition",
             "metadata": { "name": "functions.kubeless.io" }
             }'
         else
-          response = "OK"
+          "OK"
         end
         socket.print "HTTP/1.1 200 OK\r\n" \
                     "Content-Length: #{response.bytesize}\r\n" \

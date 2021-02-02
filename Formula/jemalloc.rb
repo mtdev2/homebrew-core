@@ -1,19 +1,22 @@
 class Jemalloc < Formula
-  desc "malloc implementation emphasizing fragmentation avoidance"
+  desc "Implementation of malloc emphasizing fragmentation avoidance"
   homepage "http://jemalloc.net/"
   url "https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2"
   sha256 "34330e5ce276099e2e8950d9335db5a875689a4c6a56751ef3b1d8c537f887f6"
+  license "BSD-2-Clause"
   revision 1
 
   bottle do
     cellar :any
+    sha256 "7797788be2da677a8343ac6199e2f180c2e6b627c0b9abc9da133fbc34e86678" => :big_sur
+    sha256 "724ab5947e53f571b9fed9e776a1ba22b1d71fe27ce5775553d70e990ef9dc63" => :arm64_big_sur
     sha256 "b1b211e5bead798c236d478dd74310a97a7b59470f607b608c07222648b08bf5" => :catalina
     sha256 "d3f6f85e74b08c8c97448e289734df484f884af35cd10ce9d9db43cf721fbf94" => :mojave
     sha256 "8080c98844153da08346431fe0a0592f6f718cb7a17525f9ffb909c395bc0b6d" => :high_sierra
   end
 
   head do
-    url "https://github.com/jemalloc/jemalloc.git", :branch => "dev"
+    url "https://github.com/jemalloc/jemalloc.git", branch: "dev"
 
     depends_on "autoconf" => :build
     depends_on "docbook-xsl" => :build

@@ -1,16 +1,25 @@
 class SolrAT77 < Formula
   desc "Enterprise search platform from the Apache Lucene project"
   homepage "https://lucene.apache.org/solr/"
-  url "https://www.apache.org/dyn/closer.lua?path=lucene/solr/7.7.2/solr-7.7.2.tgz"
-  mirror "https://archive.apache.org/dist/lucene/solr/7.7.2/solr-7.7.2.tgz"
-  sha256 "eb8ee4038f25364328355de3338e46961093e39166c9bcc28b5915ae491320df"
-  revision 2
+  url "https://www.apache.org/dyn/closer.lua?path=lucene/solr/7.7.3/solr-7.7.3.tgz"
+  mirror "https://archive.apache.org/dist/lucene/solr/7.7.3/solr-7.7.3.tgz"
+  sha256 "3ec67fa430afa5b5eb43bb1cd4a659e56ee9f8541e0116d6080c0d783870baee"
+  license "Apache-2.0"
+  revision 1
+
+  # Remove the `livecheck` block (so the check is automatically skipped) once
+  # the 7.7.x series is reported as EOL on the first-party downloads page:
+  # https://lucene.apache.org/solr/downloads.html#about-versions-and-support
+  livecheck do
+    url "https://lucene.apache.org/solr/downloads.html"
+    regex(/href=.*?solr[._-]v?(7(?:\.\d+)*)\.t/i)
+  end
 
   bottle :unneeded
 
   keg_only :versioned_formula
 
-  depends_on "openjdk"
+  depends_on "openjdk@11"
 
   def install
     pkgshare.install "bin/solr.in.sh"
@@ -18,11 +27,12 @@ class SolrAT77 < Formula
     prefix.install %w[contrib dist server]
     libexec.install "bin"
     bin.install [libexec/"bin/solr", libexec/"bin/post", libexec/"bin/oom_solr.sh"]
-    bin.env_script_all_files libexec,
-      :JAVA_HOME     => Formula["openjdk"].opt_prefix,
-      :SOLR_HOME     => var/"lib/solr",
-      :SOLR_LOGS_DIR => var/"log/solr",
-      :SOLR_PID_DIR  => var/"run/solr"
+
+    env = Language::Java.overridable_java_home_env("11")
+    env["SOLR_HOME"] = "${SOLR_HOME:-#{var/"lib/solr"}}"
+    env["SOLR_LOGS_DIR"] = "${SOLR_LOGS_DIR:-#{var/"log/solr"}}"
+    env["SOLR_PID_DIR"] = "${SOLR_PID_DIR:-#{var/"run/solr"}}"
+    bin.env_script_all_files libexec, env
     (libexec/"bin").rmtree
   end
 
@@ -31,7 +41,7 @@ class SolrAT77 < Formula
     (var/"log/solr").mkpath
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/solr@7.7/bin/solr start"
+  plist_options manual: "#{HOMEBREW_PREFIX}/opt/solr@7.7/bin/solr start"
 
   def plist
     <<~EOS
@@ -59,11 +69,8 @@ class SolrAT77 < Formula
   end
 
   test do
-    require "socket"
-
-    server = TCPServer.new(0)
-    port = server.addr[1]
-    server.close
+    ENV["SOLR_PID_DIR"] = testpath
+    port = free_port
 
     # Info detects no Solr node => exit code 3
     shell_output(bin/"solr -i", 3)

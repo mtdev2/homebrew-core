@@ -1,15 +1,24 @@
 class CfrDecompiler < Formula
   desc "Yet Another Java Decompiler"
   homepage "https://www.benf.org/other/cfr/"
-  url "https://github.com/leibnitz27/cfr/archive/0.149.tar.gz"
-  sha256 "6d1883710ed1585cc4b675bc0d56b87351aff14dfc74270790b7bb3ff8f79743"
+  url "https://github.com/leibnitz27/cfr.git",
+      tag:      "0.150",
+      revision: "1361cd7fa74f25f30a6bbf72c825d83647d2cdaf"
+  license "MIT"
   head "https://github.com/leibnitz27/cfr.git"
+
+  livecheck do
+    url :homepage
+    regex(/href=.*?cfr[._-]v?(\d+(?:\.\d+)+)\.jar/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "35b88d41ddbd0229f956d06a3b98e05dd6ab679bf54de808a9df272a8c2d133b" => :catalina
-    sha256 "f8fb1fa876f5fe62e99cd86d9adbfd618640ff6e1a7018bce7098669f6869802" => :mojave
-    sha256 "74d5486e47c43e6e58c007f6f2f7144b50ece8da29dd259645e9bc021fb433cb" => :high_sierra
+    rebuild 1
+    sha256 "c57a78cf07cfa022d923fdd3ae4a3121009745e27aef50ff44a64a3144732552" => :big_sur
+    sha256 "0fdf9bba0c9eab8903844218862ae65cbbae69f97b35f36024877d3d087702a5" => :arm64_big_sur
+    sha256 "15268d8c8cb85a283c6f122331cdfbbf380c097e8c0faeea53b92970569d95e1" => :catalina
+    sha256 "735f265fa827e2989a77f35781ca0f5ebae56c076c39a0368d41025d3a28edb5" => :mojave
   end
 
   depends_on "maven" => :build
@@ -29,7 +38,7 @@ class CfrDecompiler < Formula
       if build.head?
         lib_jar = Dir["cfr-*-SNAPSHOT.jar"]
         doc_jar = Dir["cfr-*-SNAPSHOT-javadoc.jar"]
-        odie "Unexpected number of artifacts!" unless (lib_jar.length == 1) && (doc_jar.length == 1)
+        odie "Unexpected number of artifacts!" if (lib_jar.length != 1) || (doc_jar.length != 1)
         lib_jar = lib_jar[0]
         doc_jar = doc_jar[0]
       else

@@ -3,14 +3,16 @@ class Hunspell < Formula
   homepage "https://hunspell.github.io"
   url "https://github.com/hunspell/hunspell/archive/v1.7.0.tar.gz"
   sha256 "bb27b86eb910a8285407cf3ca33b62643a02798cf2eef468c0a74f6c3ee6bc8a"
+  license "GPL-2.0"
   revision 2
 
   bottle do
     cellar :any
-    sha256 "3b7a02908774fa50dafee913969963ce223a09de100b62269fdb0fd71cd09115" => :catalina
-    sha256 "30927ed74597ba96c52ec0c1e9380aaaadee2adadf2e17414e1b494bfd8066b3" => :mojave
-    sha256 "4ada0a39e041b9e6676b4cd68e95c6523725043088f3555d1cac1216c8f91944" => :high_sierra
-    sha256 "65b1d0fc54a0de1fc7e8520aaee4dbe192a2f441757002c7b305b0fb93e3e341" => :sierra
+    rebuild 1
+    sha256 "20b0f5dc7973a4cca3a8c3ea5778938d169bde2d183210f64526df8bca9512f7" => :big_sur
+    sha256 "8d48ffd83009503b5a2c1b968ddd930e80f41731e02576d6dfea2f53fc50d97c" => :arm64_big_sur
+    sha256 "d5144178eba9ff325c297a5a0ae05f1caa9b1d567803250d5dbd86876e0718a3" => :catalina
+    sha256 "eaabf6b66c21a94a7f6810287ff84e83fdef0ed6d3db635c8ad2c810d9f84d46" => :mojave
   end
 
   depends_on "autoconf" => :build
@@ -19,7 +21,7 @@ class Hunspell < Formula
   depends_on "gettext"
   depends_on "readline"
 
-  conflicts_with "freeling", :because => "both install 'analyze' binary"
+  conflicts_with "freeling", because: "both install 'analyze' binary"
 
   def install
     system "autoreconf", "-fiv"
@@ -30,8 +32,6 @@ class Hunspell < Formula
     system "make"
     system "make", "check"
     system "make", "install"
-
-    pkgshare.install "tests"
   end
 
   def caveats

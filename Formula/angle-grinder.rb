@@ -1,21 +1,27 @@
 class AngleGrinder < Formula
   desc "Slice and dice log files on the command-line"
   homepage "https://github.com/rcoh/angle-grinder"
-  url "https://github.com/rcoh/angle-grinder/archive/v0.13.0.tar.gz"
-  sha256 "b257b9869f5350bc75754ecdd883341a7ede74bde05dd1e934dfd3b40d962d7c"
-  revision 1
+  url "https://github.com/rcoh/angle-grinder/archive/v0.16.tar.gz"
+  sha256 "575e5398cfcddc78152f76ade632f7be2aa6b54b4adaaf1776344529fb9c0561"
+  license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ab4027c863beaa9da3593844c89465ec95ba88d829ef76b4eb0b6c648d01af9a" => :catalina
-    sha256 "5d1c7560b7a8e0437d7534253ad360d9d5d0560d2d8f2e092461691faf0e30fa" => :mojave
-    sha256 "4aedebd2abddc24893f849fd86830efc1247739782fdf239ea04ef6cf25fcd2b" => :high_sierra
+    sha256 "25e2cec189b99c508be9de6ef7076028e49dfb8c806bb2c0637071c4c4479f6a" => :big_sur
+    sha256 "15d4fb499d5ba409e212603382bfa5277d24d84ab53561fb78bbb14ac1e6bfaa" => :arm64_big_sur
+    sha256 "567fb4aea30314ed1ff6b5bfe07b84ccdebaadf5de7e150c849fd2bd59fe020b" => :catalina
+    sha256 "003d5093badf3df2e29df03a0098d1ad346f788979e03568638c5c7067168112" => :mojave
   end
 
   depends_on "rust" => :build
 
+  on_linux do
+    depends_on "pkg-config" => :build
+    depends_on "openssl@1.1"
+  end
+
   def install
-    system "cargo", "install", "--locked", "--root", prefix, "--path", "."
+    system "cargo", "install", *std_cargo_args
   end
 
   test do

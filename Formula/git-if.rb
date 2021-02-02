@@ -4,10 +4,13 @@ class GitIf < Formula
   url "https://ifarchive.org/if-archive/programming/glulx/interpreters/git/git-135.zip"
   version "1.3.5"
   sha256 "4bdfae2e1ab085740efddf99d43ded6a044f1f2df274f753737e5f0e402fc4e9"
+  license "MIT"
   head "https://github.com/DavidKinder/Git.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "516c050a97d3f364c0fd9358a3e98d7a71e1a99ab948d02ac7dca05ed43a33f8" => :big_sur
+    sha256 "77774c3b7c788df05c109ad9c40dd256ce0a6d23d39708151acdf39f31e6bb3f" => :arm64_big_sur
     sha256 "f87fdd2951218631adc744bc2c9f1d83f3230bc49256f45735fc2d611f49dcc8" => :catalina
     sha256 "37dc94c423003dedaf313ffa9343879ecb5d72f277a2f250100481cde240420e" => :mojave
     sha256 "bedbf580c8b073c7dfcd6bbb470aee7c14fb31d2c3ec54b4be8fd2cf8545e577" => :high_sierra

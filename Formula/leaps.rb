@@ -2,11 +2,13 @@ class Leaps < Formula
   desc "Collaborative web-based text editing service written in Golang"
   homepage "https://github.com/jeffail/leaps"
   url "https://github.com/Jeffail/leaps.git",
-      :tag      => "v0.9.0",
-      :revision => "89d8ab9e9130238e56a0df283edbcd1115ec9225"
+      tag:      "v0.9.0",
+      revision: "89d8ab9e9130238e56a0df283edbcd1115ec9225"
+  license "MIT"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "b5f0bd311313d4cf0fbb32a178349a4052381e16b45009ad63ad2d29ae2e2188" => :big_sur
     sha256 "5cecda6732be6b32d1184038a5e1ad008c438053eabed0880c2f2ad194c4fefb" => :catalina
     sha256 "9e40e4b5b75c73411f6ab74bea028f72f25f8b788eadf032f0f5cfed03baefae" => :mojave
     sha256 "37343e978d4035fa9b2881c038748ec4704bf8a57308c59e64592dd404166e36" => :high_sierra
@@ -28,7 +30,7 @@ class Leaps < Formula
   end
 
   test do
-    port = ":8080"
+    port = ":#{free_port}"
 
     # Start the server in a fork
     leaps_pid = fork do

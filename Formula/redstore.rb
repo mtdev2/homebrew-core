@@ -3,9 +3,12 @@ class Redstore < Formula
   homepage "https://www.aelius.com/njh/redstore/"
   url "https://www.aelius.com/njh/redstore/redstore-0.5.4.tar.gz"
   sha256 "58bd65fda388ab401e6adc3672d7a9c511e439d94774fcc5a1ef6db79c748141"
+  license "GPL-3.0"
 
   bottle do
     cellar :any
+    sha256 "fa44b96b71ff73060973893222eb264f18c54f8c64ebb73c903eef2e544868ee" => :big_sur
+    sha256 "03952d80ba4b35e0a1a7a85a9ae9fe56e9e31bd6e2797729c28ffee377ee2fcf" => :arm64_big_sur
     sha256 "f473645a1903ac48caf0bea886c13636ca093c4ca6f57f83ce9ffc4864f88ee5" => :catalina
     sha256 "a17c99ed5d7162eb742eef7b8764c64082fff26895baa81cb26cb75ced03db5e" => :mojave
     sha256 "fbd9814ed5e35fb1c964d6f581edebfc35e7d35cba0b89ea735247131c5559ac" => :high_sierra

@@ -1,15 +1,16 @@
 class GitArchiveAll < Formula
   desc "Archive a project and its submodules"
   homepage "https://github.com/Kentzo/git-archive-all"
-  url "https://github.com/Kentzo/git-archive-all/archive/1.21.0.tar.gz"
-  sha256 "b86681429124908645ac4cf26916519f23cdf2599e7c8e37ae21d86be4ca02c4"
+  url "https://github.com/Kentzo/git-archive-all/archive/1.23.0.tar.gz"
+  sha256 "25f36948b704e57c47c98a33280df271de7fbfb74753b4984612eabb08fb2ab1"
+  license "MIT"
   head "https://github.com/Kentzo/git-archive-all.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "74c509f8ce278c1b12ef694749c5fedc9d056614f14ce4d6a01de1bb3803680f" => :catalina
-    sha256 "74c509f8ce278c1b12ef694749c5fedc9d056614f14ce4d6a01de1bb3803680f" => :mojave
-    sha256 "74c509f8ce278c1b12ef694749c5fedc9d056614f14ce4d6a01de1bb3803680f" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur: "27e8df90701d0399573a59237fdaa2a1c233ebd1e9007686df7e8a0b2b7d3be4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "6b56c146d2bc161c6214878d142cd67bc646ade222b7e45aab1691f7f3987a37"
+    sha256 cellar: :any_skip_relocation, catalina: "7a8f0e71281afa27399fab199e975f0d717c0593526701d2f43eac2f096a41b9"
+    sha256 cellar: :any_skip_relocation, mojave: "a375cfca74cda33d29bc74ed712e0dedb0495c56a1378a25009edcabcbdb44fc"
   end
 
   def install

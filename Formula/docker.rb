@@ -1,15 +1,17 @@
 class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
-  url "https://github.com/docker/docker-ce.git",
-      :tag      => "v19.03.8",
-      :revision => "afacb8b7f0d8d4f9d2a8e8736e9c993e672b41f3"
+  url "https://github.com/docker/cli.git",
+      tag:      "v20.10.3",
+      revision: "48d30b5b32e99c932b4ea3edca74353feddd83ff"
+  license "Apache-2.0"
+  head "https://github.com/docker/cli.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "198515494e343db1d955f7027ba81517195f66c1ab76d5a77c17e23e9855533c" => :catalina
-    sha256 "ebd73dadcc26794e5e415a63f5eeea08c966bf7ebf257b83234ec788ad6281b2" => :mojave
-    sha256 "e0684b2f6f45cae96788f577f1aa1a7f65bd2529282b6d3c3479219080e4a464" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur: "3e87d3a378049183f43aec030c916107dbd5bb613d0e7f0a8b5edd9e4a39a333"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "2c273b146a2f75d0e8ea241936b237a9df4fa57d6630d2ef048a9e5a6bf17b90"
+    sha256 cellar: :any_skip_relocation, catalina: "174df73c2f40d9d059a4e37c427dcd6558f39b7691d9e7e08ddc03b9978bc7be"
+    sha256 cellar: :any_skip_relocation, mojave: "bcc4af650906a9a697212d380564a9e0e6c3d707927aa05a5c5d001abb7fb9f6"
   end
 
   depends_on "go" => :build
@@ -17,11 +19,12 @@ class Docker < Formula
 
   def install
     ENV["GOPATH"] = buildpath
+    ENV["GO111MODULE"] = "auto"
     dir = buildpath/"src/github.com/docker/cli"
-    dir.install (buildpath/"components/cli").children
+    dir.install (buildpath/"").children
     cd dir do
-      commit = Utils.popen_read("git rev-parse --short HEAD").chomp
-      build_time = Utils.popen_read("date -u +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null").chomp
+      commit = Utils.git_short_head
+      build_time = Utils.safe_popen_read("date -u +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null").chomp
       ldflags = ["-X \"github.com/docker/cli/cli/version.BuildTime=#{build_time}\"",
                  "-X github.com/docker/cli/cli/version.GitCommit=#{commit}",
                  "-X github.com/docker/cli/cli/version.Version=#{version}",

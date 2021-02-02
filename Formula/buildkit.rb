@@ -2,21 +2,28 @@ class Buildkit < Formula
   desc "Сoncurrent, cache-efficient, and Dockerfile-agnostic builder toolkit"
   homepage "https://github.com/moby/buildkit"
   url "https://github.com/moby/buildkit.git",
-      :tag      => "v0.7.0",
-      :revision => "c60a1eb215d795a12e43ceff6a5ed67ce1ad958d"
+      tag:      "v0.8.1",
+      revision: "8142d66b5ebde79846b869fba30d9d30633e74aa"
+  license "Apache-2.0"
   head "https://github.com/moby/buildkit.git"
+
+  livecheck do
+    url :head
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "2366e2aff20896e75b862e054eace8f08b6df35b91874f6bb72e16d05d8ddb9a" => :catalina
-    sha256 "d3ef111b9494b03c7c3dff185f59b9d2299e6d2502c0959baa1b7cdd1807c6ae" => :mojave
-    sha256 "fe0166769a3ba14f3d307c5b363563e88898455022efe8432acf6210afa2e750" => :high_sierra
+    sha256 "3e71ae1f0248956f11e74d4d2d90decc62763e61c526ec77d65353d2bc42eeb3" => :big_sur
+    sha256 "1d9745061ffdead3c2a13af9ea53ccb35387188d301aff52308027d72da7918b" => :arm64_big_sur
+    sha256 "ba36ac1a8b1b3c7c2f8e0e6bbbd403be303fa6ca0d193a5193eeb4e22f21d0cb" => :catalina
+    sha256 "e6b41db313e3c7fb44dc70931dbab30e6f59274d522e58e194d5307977680d3d" => :mojave
   end
 
   depends_on "go" => :build
 
   def install
-    revision = Utils.popen_read("git rev-parse HEAD").chomp
+    revision = Utils.git_head
     ldflags = %W[
       -s -w
       -X github.com/moby/buildkit/version.Version=#{version}

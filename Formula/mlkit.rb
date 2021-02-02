@@ -3,6 +3,7 @@ class Mlkit < Formula
   homepage "https://melsman.github.io/mlkit"
   url "https://github.com/melsman/mlkit/archive/mlkit-4.4.3.tar.gz"
   sha256 "51ee5ced1dc639f2c58556dca0dec5c3243dba4705e1cdb91247fa9644b16625"
+  license "GPL-2.0"
   head "https://github.com/melsman/mlkit.git"
 
   bottle do
@@ -10,6 +11,8 @@ class Mlkit < Formula
     sha256 "79694e15c915cb2c08b680b2b4404cfbbb6fff56e8f6b5f0196fcc485466d41b" => :high_sierra
     sha256 "5df6b95fad69e10b31352824433251d3306a42c55c5e7164b0c47b986ea1009d" => :sierra
   end
+
+  disable! date: "2020-12-08", because: :unmaintained
 
   depends_on "autoconf" => :build
   depends_on "mlton" => :build

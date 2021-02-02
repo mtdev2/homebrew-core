@@ -1,35 +1,43 @@
 class Cups < Formula
   desc "Common UNIX Printing System"
-  homepage "https://www.cups.org"
-  url "https://github.com/apple/cups/releases/download/v2.3.1/cups-2.3.1-source.tar.gz"
-  sha256 "1bca9d89507e3f68cbc84482fe46ae8d5333af5bc2b9061347b2007182ac77ce"
+  homepage "https://github.com/OpenPrinting/cups"
+  url "https://github.com/OpenPrinting/cups/releases/download/v2.3.3op1/cups-2.3.3op1-source.tar.gz"
+  # This is the author's fork of CUPS. Debian have switched to this fork:
+  # https://lists.debian.org/debian-printing/2020/12/msg00006.html
+  sha256 "5cf7988081d9003f589ba173b37bc2bbf81db43bb94e5e7d3e7d4c0afb0f9bc2"
+  license "Apache-2.0"
+  head "https://github.com/OpenPrinting/cups.git"
 
   bottle do
-    sha256 "028330028dca9194605bdf6ec807b413adae82b1491bb69cbee64d31fc04a6f3" => :catalina
-    sha256 "4fd5c5705dfb551e9fd5091f63a69d985bae05bc0b29fb253c9877138b254e7b" => :mojave
-    sha256 "932ce69ebe900f3e307939ffb475a1d2d3f46d079b3c6b5238385051bdc110a1" => :high_sierra
+    sha256 "8eed2907ba0d36d073a53a2556693826113b2aad09256c1451f3c9defd275c75" => :big_sur
+    sha256 "d874c7af4aea94eb15304c13bc1b5c10c63db79f3d4e78ae6f41a73ecc78d4fd" => :arm64_big_sur
+    sha256 "8f00138524b80aa2b4df62a75ddee6e2ebbd89670335b733f58fc529b2e2872d" => :catalina
+    sha256 "e749bd85f784c552184fce875caa01d6095991362a95796e4ceeb68bf68f9bd3" => :mojave
   end
 
   keg_only :provided_by_macos
 
+  uses_from_macos "krb5"
   uses_from_macos "zlib"
 
   def install
     system "./configure", "--disable-debug",
                           "--with-components=core",
                           "--without-bundledir",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--libdir=#{lib}"
     system "make", "install"
   end
 
   test do
+    port = free_port.to_s
     pid = fork do
-      exec "#{bin}/ippeveprinter", "Homebrew Test Printer"
+      exec "#{bin}/ippeveprinter", "-p", port, "Homebrew Test Printer"
     end
 
     begin
       sleep 2
-      system "#{bin}/ippfind"
+      assert_match("Homebrew Test Printer", shell_output("curl localhost:#{port}"))
     ensure
       Process.kill("TERM", pid)
       Process.wait(pid)

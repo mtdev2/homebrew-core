@@ -1,16 +1,23 @@
 class Lftp < Formula
   desc "Sophisticated file transfer program"
   homepage "https://lftp.yar.ru/"
-  url "https://lftp.yar.ru/ftp/lftp-4.9.1.tar.xz"
-  sha256 "5969fcaefd102955dd882f3bcd8962198bc537224749ed92f206f415207a024b"
+  url "https://lftp.yar.ru/ftp/lftp-4.9.2.tar.xz"
+  sha256 "c517c4f4f9c39bd415d7313088a2b1e313b2d386867fe40b7692b83a20f0670d"
+  license "GPL-3.0-or-later"
+  revision 1
 
-  bottle do
-    sha256 "88341463e443203acace85f22c68bfecc1e374e97c3bc61a4d55992a7894dbdc" => :catalina
-    sha256 "7fb04159e36521d586e023c99ac6f63d3a695e6043ae62645c68da964776eebc" => :mojave
-    sha256 "54a5bfc00d589ffec053ceb367cb1acee8ad1d13a5549eeda097f9b3fb5c92e2" => :high_sierra
+  livecheck do
+    url "https://github.com/lavv17/lftp.git"
   end
 
-  depends_on "libidn"
+  bottle do
+    sha256 "68cdb9b693cf4ea5b7a8c9c0cdd02a2a2eb391c78df5e657767a59819dcbd9af" => :big_sur
+    sha256 "c6e871000f9337c8fa0d56ff9b345209c13449be17e00e4e0248deeae3fd589f" => :arm64_big_sur
+    sha256 "16e629365517da3f55e271f5e55c1d8ae759b5f2a2d7df669b87e93e05b948f9" => :catalina
+    sha256 "7165e8f2ed29e55cc2cb819961d167fb7da7c8ebba7ababf4475c792b6f29afb" => :mojave
+  end
+
+  depends_on "libidn2"
   depends_on "openssl@1.1"
   depends_on "readline"
 
@@ -23,13 +30,15 @@ class Lftp < Formula
       ENV.delete("SDKROOT")
     end
 
+    # Work around configure issues with Xcode 12
+    # https://github.com/lavv17/lftp/issues/611
+    ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-openssl=#{Formula["openssl@1.1"].opt_prefix}",
                           "--with-readline=#{Formula["readline"].opt_prefix}",
-                          "--with-libidn=#{Formula["libidn"].opt_prefix}",
-                          # Work around a gnulib issue with macOS Catalina
-                          "gl_cv_func_ftello_works=yes"
+                          "--with-libidn2=#{Formula["libidn2"].opt_prefix}"
 
     system "make", "install"
   end

@@ -3,8 +3,14 @@ class Infer < Formula
   homepage "https://fbinfer.com/"
   # pull from git tag to get submodules
   url "https://github.com/facebook/infer.git",
-      :tag      => "v0.17.0",
-      :revision => "99464c01da5809e7159ed1a75ef10f60d34506a4"
+      tag:      "v0.17.0",
+      revision: "99464c01da5809e7159ed1a75ef10f60d34506a4"
+  license "MIT"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
     cellar :any
@@ -14,24 +20,26 @@ class Infer < Formula
     sha256 "7630571f8e391ce0ba991ffe7a5d7b2b4a1029cda1d56497800d8ae0a260d4b6" => :high_sierra
   end
 
+  deprecate! date: "2020-11-13", because: :does_not_build
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "cmake" => :build
-  depends_on :java => ["1.8", :build, :test]
   depends_on "libtool" => :build
   depends_on "ocaml" => :build
   depends_on "ocaml-findlib" => :build
   depends_on "ocaml-num" => :build
   depends_on "opam" => :build
+  depends_on "openjdk@8" => [:build, :test]
   depends_on "pkg-config" => :build
   depends_on "gmp"
+  depends_on :macos # Due to Python 2 (https://github.com/facebook/infer/issues/934)
   depends_on "mpfr"
   depends_on "sqlite"
 
   uses_from_macos "m4" => :build
   uses_from_macos "unzip" => :build
   uses_from_macos "ncurses"
-  uses_from_macos "python@2" # python@2 dependency will be removed in https://github.com/facebook/infer/issues/934
   uses_from_macos "xz"
   uses_from_macos "zlib"
 
@@ -89,7 +97,7 @@ class Infer < Formula
     ENV["OPAMIGNORECONSTRAINTS"] = "ocaml,ocamlfind,num,#{pinned_deps.keys.join(",")}"
 
     # Remove ocaml-variants dependency (we won't be using it)
-    inreplace "opam.locked", /^ +"ocaml-variants" {= ".*?"}$\n/, ""
+    inreplace "opam.locked", /^ +"ocaml-variants" \{= ".*?"\}$\n/, ""
 
     system "opam", "exec", "--", "./build-infer.sh", "all", "--yes", "--user-opam-switch"
     system "opam", "exec", "--", "make", "install-with-libs"

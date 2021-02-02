@@ -3,6 +3,12 @@ class Fakeroot < Formula
   homepage "https://tracker.debian.org/pkg/fakeroot"
   url "https://deb.debian.org/debian/pool/main/f/fakeroot/fakeroot_1.24.orig.tar.gz"
   sha256 "2e045b3160370b8ab4d44d1f8d267e5d1d555f1bb522d650e7167b09477266ed"
+  license "GPL-3.0"
+
+  livecheck do
+    url "https://deb.debian.org/debian/pool/main/f/fakeroot/"
+    regex(/href=.*?fakeroot[._-]v?(\d+(?:\.\d+)+)\.orig\.t/i)
+  end
 
   bottle do
     cellar :any
@@ -66,11 +72,7 @@ class Fakeroot < Formula
   end
 
   test do
-    if MacOS.version <= :yosemite
-      assert_equal "root", shell_output("#{bin}/fakeroot whoami").strip
-    else
-      assert_match version.to_s, shell_output("#{bin}/fakeroot -v")
-    end
+    assert_match version.to_s, shell_output("#{bin}/fakeroot -v")
   end
 end
 

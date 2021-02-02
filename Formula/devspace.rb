@@ -2,22 +2,33 @@ class Devspace < Formula
   desc "CLI helps develop/deploy/debug apps with Docker and k8s"
   homepage "https://devspace.cloud/docs"
   url "https://github.com/devspace-cloud/devspace.git",
-    :tag      => "v4.9.3",
-    :revision => "42237ecda2c7ffd7c3cfce85af736694e080021b"
+      tag:      "v5.7.4",
+      revision: "604895a048dbdb2ed441ca9fcde12b2c9daeeb51"
+  license "Apache-2.0"
+  head "https://github.com/devspace-cloud/devspace.git"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c520b585b2fc4bd2cf44857a6572a180ef2a67b60f9638c3d66ab7fb265fcab8" => :catalina
-    sha256 "645d0d87a396825e979d251cfc083c5599e2ff9342dd501772b44cf2a3a76285" => :mojave
-    sha256 "41e0082d0603f6ba06b974ded636d0bc7172fb788552244354988163b12597d6" => :high_sierra
+    sha256 "ed68f34ac9ae4eed9669d9c5c144ab71c17a3001b5f801bacf33565f09b6d673" => :big_sur
+    sha256 "b25e074c7f8c96dc252cf38a5c15cd4c3178b4174e1f5ce8dd75c0bff1221c89" => :catalina
+    sha256 "5bc870b0ff49cfa0eeb2bbf5627eb7213c275c1006fe1035f60168685b3bcba3" => :mojave
   end
 
   depends_on "go" => :build
   depends_on "kubernetes-cli"
 
   def install
-    system "go", "build", "-trimpath", "-o", bin/"devspace"
-    prefix.install_metafiles
+    ldflags = %W[
+      -s -w
+      -X main.commitHash=#{Utils.git_head}
+      -X main.version=#{version}
+    ]
+    system "go", "build", "-ldflags", ldflags.join(" "), *std_go_args
   end
 
   test do

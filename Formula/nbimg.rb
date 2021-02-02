@@ -3,9 +3,12 @@ class Nbimg < Formula
   homepage "https://github.com/poliva/nbimg"
   url "https://github.com/poliva/nbimg/archive/v1.2.1.tar.gz"
   sha256 "f72846656bb8371564c245ab34550063bd5ca357fe8a22a34b82b93b7e277680"
+  license "GPL-3.0"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "59cb045e4e21e2e205b0b51bbbaa189838c212741fdbbed061596e924286ec97" => :big_sur
+    sha256 "0d03cde2be335d6c4b096090f9c61b9f2af639fe7e10b9d25ca876bcb2613aed" => :arm64_big_sur
     sha256 "50cafca29cd1fb950794b9f240da2813dbd7dc682dfdb8c75c091cdc9666737e" => :catalina
     sha256 "f78297721594cdf2c825c589c193fc29f01bfd2e3bfe6f63c3c788ed2699fcc5" => :mojave
     sha256 "20d4ae1588773f9ccd4ff2181def08297ea1119ca70f39392ef11648cb72270f" => :high_sierra

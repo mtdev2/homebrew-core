@@ -5,10 +5,12 @@ class SSearch < Formula
   homepage "https://github.com/zquestz/s"
   url "https://github.com/zquestz/s/archive/v0.5.14.tar.gz"
   sha256 "c32eedf6a4080cbe221c902cf7f63b1668b3927edfc448d963d69ed66c8ec2fb"
+  license "MIT"
   head "https://github.com/zquestz/s.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "477cae54c3f7a8914298f8a06b890b0ecf62be4fa8281691ac5c636880968706" => :big_sur
     sha256 "cd7352e1c4092774fdd4cbff61bd107e6447ea00e96ec94431dcbc1be7bbade5" => :catalina
     sha256 "04281fb66e28cf23c3ea1cd23ec6286432191fde31ac8c7b6c9c13bc6b365b0a" => :mojave
     sha256 "4a0c5595943e8b7b4892ff3caf4d03b29533405a411268a77e0a51272a3d7823" => :high_sierra
@@ -19,7 +21,7 @@ class SSearch < Formula
 
   go_resource "github.com/FiloSottile/gvt" do
     url "https://github.com/FiloSottile/gvt.git",
-        :revision => "50d83ea21cb0405e81efd284951e111b3a68d701"
+        revision: "50d83ea21cb0405e81efd284951e111b3a68d701"
   end
 
   def install

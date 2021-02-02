@@ -1,15 +1,20 @@
 class KnotResolver < Formula
   desc "Minimalistic, caching, DNSSEC-validating DNS resolver"
   homepage "https://www.knot-resolver.cz"
-  url "https://secure.nic.cz/files/knot-resolver/knot-resolver-5.0.1.tar.xz"
-  sha256 "4a93264ad0cda7ea2252d1ba057e474722f77848165f2893e0c76e21ae406415"
-  revision 1
+  url "https://secure.nic.cz/files/knot-resolver/knot-resolver-5.2.1.tar.xz"
+  sha256 "aa37b744c400f437acba7a54aebcbdbe722ece743d342cbc39f2dd8087f05826"
+  license all_of: ["CC0-1.0", "GPL-3.0-or-later", "LGPL-2.1-or-later", "MIT"]
   head "https://gitlab.labs.nic.cz/knot/knot-resolver.git"
 
+  livecheck do
+    url "https://secure.nic.cz/files/knot-resolver/"
+    regex(/href=.*?knot-resolver[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
-    sha256 "044564e3cf60e137b105aaeea9cb82bfe687f3a33df9e6f76197016960b9b28d" => :catalina
-    sha256 "b3d71ec2cb19c7b80a945c664824cde1b0b6756232b2b5a496e74fc2534e0f8b" => :mojave
-    sha256 "f3f2b97e386374eccd8c21385491adf5cbfc1fe9f700ae910a72c4c5762fd770" => :high_sierra
+    sha256 "f4a73132e03dfdff1f370ccaabff44f14bccf46d4f4b7f7f91f653bf98d28252" => :big_sur
+    sha256 "47a56833e4c305195e188b8eb616ee232cb6738a7929c18df556ec5962a8171f" => :catalina
+    sha256 "af1a5075c8b0bc38054b0466d4475e7b4f2839fe386dc419d1be33ec448c328e" => :mojave
   end
 
   depends_on "meson" => :build
@@ -23,20 +28,17 @@ class KnotResolver < Formula
 
   def install
     mkdir "build" do
-      system "meson", "--prefix=#{prefix}", "--default-library=static", ".."
+      system "meson", *std_meson_args, "--default-library=static", ".."
       system "ninja"
       system "ninja", "install"
     end
   end
 
-  # DNSSEC root anchor published by IANA (https://www.iana.org/dnssec/files)
-  def root_keys
-    <<~EOS
-      . IN DS 20326 8 2 e06d44b80b8f1d39a95c0b0d7c65d08458e880409bbc683457104237c7f8ec8d
-    EOS
+  def post_install
+    (var/"knot-resolver").mkpath
   end
 
-  plist_options :startup => true
+  plist_options startup: true
 
   def plist
     <<~EOS
@@ -47,29 +49,29 @@ class KnotResolver < Formula
         <key>Label</key>
         <string>#{plist_name}</string>
         <key>WorkingDirectory</key>
-        <string>#{var}/kresd</string>
+        <string>#{var}/knot-resolver</string>
         <key>RunAtLoad</key>
         <true/>
         <key>ProgramArguments</key>
         <array>
           <string>#{sbin}/kresd</string>
           <string>-c</string>
-          <string>#{etc}/kresd/config</string>
-          <string>-f</string>
-          <string>1</string>
+          <string>#{etc}/knot-resolver/kresd.conf</string>
+          <string>-n</string>
         </array>
         <key>StandardInPath</key>
         <string>/dev/null</string>
         <key>StandardOutPath</key>
         <string>/dev/null</string>
         <key>StandardErrorPath</key>
-        <string>#{var}/log/kresd.log</string>
+        <string>#{var}/log/knot-resolver.log</string>
       </dict>
       </plist>
     EOS
   end
 
   test do
+    assert_path_exist var/"knot-resolver"
     system sbin/"kresd", "--version"
   end
 end

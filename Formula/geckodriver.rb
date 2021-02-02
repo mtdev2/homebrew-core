@@ -1,37 +1,44 @@
 class Geckodriver < Formula
   desc "WebDriver <-> Marionette proxy"
   homepage "https://github.com/mozilla/geckodriver"
-  head "https://hg.mozilla.org/mozilla-central/", :using => :hg
+  license "MPL-2.0"
+  head "https://hg.mozilla.org/mozilla-central/", using: :hg
 
   stable do
-    # Get the hg_revision for stable releases from https://github.com/mozilla/geckodriver/releases
-    hg_revision = "e9783a644016aa9b317887076618425586730d73"
+    # Get the hg_revision for stable releases from
+    # https://searchfox.org/mozilla-central/source/testing/geckodriver/CHANGES.md
+    hg_revision = "cf6956a5ec8e21896736f96237b1476c9d0aaf45"
     url "https://hg.mozilla.org/mozilla-central/archive/#{hg_revision}.zip/testing/geckodriver/"
-    version "0.26.0"
-    sha256 "c5854000621938de2aac0bdc853da62539e694adcba98b61851adcbb9ce54dd3"
+    version "0.29.0"
+    sha256 "26b86be8c1fe47d1a7b25ae6dfc280776567c9d48b6c7491eb0e7fcc1944a8d2"
 
     resource "webdriver" do
       url "https://hg.mozilla.org/mozilla-central/archive/#{hg_revision}.zip/testing/webdriver/"
-      sha256 "d84d6b84d4b37bb4fadda639026eca63dc61dd289bbeb3961eef1257be49266b"
+      sha256 "d8579cd155aad688931361b3ca8f1e8260592641162d5e51a78b59e189e44c56"
     end
 
     resource "mozbase" do
       url "https://hg.mozilla.org/mozilla-central/archive/#{hg_revision}.zip/testing/mozbase/rust/"
-      sha256 "a838ae82753aaed38eff52bd2076e47a418858be39c7dc5d833070c6ee2f7beb"
+      sha256 "d3693c78c0186b34197b1fdfd34a2694a155dc36ce0a50d5ccfc558aca54fd0b"
     end
 
     resource "Cargo.lock" do
       url "https://hg.mozilla.org/mozilla-central/raw-file/#{hg_revision}/Cargo.lock"
-      sha256 "107aaf145d4840a389c2d4586660e95e3fa336a42bb9f94524f9a72c89c21d09"
+      sha256 "048970448a118b1569b9e70192c0214a86363e0c25094819d4cf6b99ee54eef0"
     end
+  end
+
+  livecheck do
+    url "https://github.com/mozilla/geckodriver.git"
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "2b9a2eb29b8199df3f0c8e3a4395337fcdd1ae00cea28970df0add10a36b94ce" => :catalina
-    sha256 "13dd973454d187da00ccd4ab24f72987ea47f4984caa2e1fa5b3c36273d96bfa" => :mojave
-    sha256 "2e57ba33554f7b0180873d49dc8dc1b1587e9c8d637d8f50146395dcb923afea" => :high_sierra
+    sha256 "5e3b3b2ea70199fbfb3dc656eab997e2d99cc298579fdf03097f11ab4d046161" => :big_sur
+    sha256 "22254633b2eb8926074a54c4304df503d44e52ba91192aa248143df17c91fd30" => :arm64_big_sur
+    sha256 "2831a5194598fa63d7c5db952c14e9a95371db0ebf0fb93c88e992181c64e36a" => :catalina
+    sha256 "c8b8c5e4de9f8e6746b1e6a565bea4438274d021fee94d0976f8ad46092e1955" => :mojave
   end
 
   depends_on "rust" => :build
@@ -51,12 +58,18 @@ class Geckodriver < Formula
     end
 
     cd "testing/geckodriver" do
-      system "cargo", "install", "--locked", "--root", prefix, "--path", "."
+      system "cargo", "install", *std_cargo_args
     end
     bin.install_symlink bin/"geckodriver" => "wires"
   end
 
   test do
-    system bin/"geckodriver", "--help"
+    test_port = free_port
+    fork do
+      exec "#{bin}/geckodriver --port #{test_port}"
+    end
+    sleep 2
+
+    system "nc", "-z", "localhost", test_port
   end
 end

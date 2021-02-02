@@ -3,15 +3,17 @@ require "language/node"
 class Chronograf < Formula
   desc "Open source monitoring and visualization UI for the TICK stack"
   homepage "https://docs.influxdata.com/chronograf/latest/"
-  url "https://github.com/influxdata/chronograf/archive/1.8.0.tar.gz"
-  sha256 "f1c6fa57a11e3ee11756c4a3b6e59845aede0f7e6191f41193b1f94a2453eb08"
+  url "https://github.com/influxdata/chronograf/archive/1.8.9.1.tar.gz"
+  sha256 "edf5038b301bc0cf49b2f74f1fcdc0a2d66fe5e4b69f753fd879972b7e04a7ee"
+  license "AGPL-3.0-or-later"
   head "https://github.com/influxdata/chronograf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "836f37308ba8caf34aa8acc9190c9a6a1762bb8aee13c7c203c36744d70d2019" => :catalina
-    sha256 "ef17bb23eb3510cf38c15a35f1f2ea9d273af833d2f39cd48787f4ce7e958f56" => :mojave
-    sha256 "65aab11960c0c5176b1781be726d50adc06ee073ab821963778af522f8a73c5b" => :high_sierra
+    sha256 "9c3ca12cf1f5694468d1b38f5306467e5720feab4e6d99f3c9fd4f26a623bea3" => :big_sur
+    sha256 "8688a32e5306ca3f821e58d5c751a2ba3d79ea17d0b5c69a5548989097b9024b" => :arm64_big_sur
+    sha256 "0dc8c14ac9fe9d682d7459a69f4208e36471e2f7f791b3719c872294b068ad4e" => :catalina
+    sha256 "23e175b2e6c9d10af4e8a67e2bb53eee074facf82299336a9d5869731d161e44" => :mojave
   end
 
   depends_on "go" => :build
@@ -22,25 +24,18 @@ class Chronograf < Formula
   depends_on "kapacitor"
 
   def install
-    ENV["GOPATH"] = buildpath
-    ENV.prepend_create_path "PATH", buildpath/"bin"
     Language::Node.setup_npm_environment
-    chronograf_path = buildpath/"src/github.com/influxdata/chronograf"
-    chronograf_path.install buildpath.children
 
-    cd chronograf_path do
-      cd "ui" do # fix node 12 compatibility
-        system "yarn", "upgrade", "parcel@1.11.0", "node-sass@4.12.0"
-      end
-      system "make", "dep"
-      system "make", ".jssrc"
-      system "make", "chronograf"
-      bin.install "chronograf"
-      prefix.install_metafiles
+    cd "ui" do # fix compatibility with the latest node
+      system "yarn", "upgrade", "parcel@1.11.0"
     end
+    system "make", "dep"
+    system "make", ".jssrc"
+    system "make", "chronograf"
+    bin.install "chronograf"
   end
 
-  plist_options :manual => "chronograf"
+  plist_options manual: "chronograf"
 
   def plist
     <<~EOS
@@ -73,15 +68,16 @@ class Chronograf < Formula
   end
 
   test do
+    port = free_port
     pid = fork do
-      exec "#{bin}/chronograf"
+      exec "#{bin}/chronograf --port=#{port}"
     end
     sleep 10
-    output = shell_output("curl -s 0.0.0.0:8888/chronograf/v1/")
+    output = shell_output("curl -s 0.0.0.0:#{port}/chronograf/v1/")
     sleep 1
     assert_match %r{/chronograf/v1/layouts}, output
   ensure
-    Process.kill("SIGINT", pid)
+    Process.kill("SIGTERM", pid)
     Process.wait(pid)
   end
 end

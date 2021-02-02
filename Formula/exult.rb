@@ -1,17 +1,22 @@
 class Exult < Formula
   desc "Recreation of Ultima 7"
   homepage "https://exult.sourceforge.io/"
-  url "https://github.com/exult/exult.git", :revision => "75aff2e97a4867d7810f8907796f58cb11b87a39"
-  version "1.4.9rc1+r7520"
+  url "https://github.com/exult/exult/archive/v1.6.tar.gz"
+  sha256 "6176d9feba28bdf08fbf60f9ebb28a530a589121f3664f86711ff8365c86c17a"
+  license "GPL-2.0-or-later"
   head "https://github.com/exult/exult.git"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
     rebuild 1
-    sha256 "4a0df0a28c993f5e52c51de40e0b4194e73ea1869ca1277dda10e8793258c3c6" => :catalina
-    sha256 "43967db7a4ff32b78f7478c920eeaf1c730a11952462d9b5bcc2d5b8ee27b932" => :mojave
-    sha256 "642d16cef7ecf374ff50e10b32497f2744468010ee452e3e5819cc698215f8dc" => :high_sierra
-    sha256 "01c7906864324d3ffe1ce9a11ba7bb60093c379e07d15aab2822e0bdd4789cc3" => :sierra
-    sha256 "dcf630b85968a5f4a44f31de4dcc38727ed2d8dbfe3d2e645c585ea3adadfbba" => :el_capitan
+    sha256 "af93f694844a8f0abdf22f7f8048ffac29992b6d027841fde98d98509876a00b" => :big_sur
+    sha256 "1dafcc7b0c6a54ced59284c8109a01deb628a8bd7e8b2138e38cc540280fa97c" => :arm64_big_sur
+    sha256 "1b5343fcca2332c05f7b75412dccdc0bb84fb7dd2cceb47fdb3ed7a8cdb319ae" => :catalina
+    sha256 "45efe9a12cb0a446543a03c45f412c96355ef4d7dd4bef4b016b8e9bc98e3df7" => :mojave
   end
 
   depends_on "autoconf" => :build
@@ -22,12 +27,10 @@ class Exult < Formula
   depends_on "libvorbis"
   depends_on "sdl2"
 
-  # Upstream's fix for recent clang (Xcode 9)
-  # https://github.com/exult/exult/commit/083ea2fa
-  # Can be removed in next version
+  # Xcode 12 compile fix for 1.6.x branch - https://github.com/exult/exult/pull/61
   patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/c9cb2e28/exult/clang9.patch"
-    sha256 "e661b7e2e30820bcb74938a203bd367c66c00bc2a7c8de8525e78d70a87a3bd8"
+    url "https://github.com/exult/exult/commit/b98a9eb195bf8b3f55df56499d2a7c2c5d8809d0.patch?full_index=1"
+    sha256 "c1c5b1e9e4994ecdfaba6285b86222123ee6b5590bcd8e7400871a4e65836fe0"
   end
 
   def install

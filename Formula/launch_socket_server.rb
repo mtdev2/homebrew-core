@@ -3,10 +3,12 @@ class LaunchSocketServer < Formula
   homepage "https://github.com/mistydemeo/launch_socket_server"
   url "https://github.com/mistydemeo/launch_socket_server/archive/v2.0.0.tar.gz"
   sha256 "507184544d170dab63e6112198212033aaa84edf0e092c1dfe641087f092f365"
+  license "MIT"
   head "https://github.com/mistydemeo/launch_socket_server.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "0d490a674d736272ea67f2289d5eb715b5aa48acf5e289a6a8e8327cd4cbc4a4" => :big_sur
     sha256 "ff86499103ad1d9d33cdc039e24f065aa08405bda980c9e242c46ed157bc33ff" => :catalina
     sha256 "823d84eddeb72fdabeccdc189bc19269485bfeb23d0a57824cdbf95c92a6ccb8" => :mojave
     sha256 "ef58f2afc33d6454282d1e1b92e4d16269885464707ae58079c29514f4cadc60" => :high_sierra
@@ -18,7 +20,7 @@ class LaunchSocketServer < Formula
     system "make", "install", "PREFIX=#{prefix}"
   end
 
-  plist_options :startup => true
+  plist_options startup: true
 
   def plist
     <<~EOS

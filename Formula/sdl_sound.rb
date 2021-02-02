@@ -6,8 +6,15 @@ class SdlSound < Formula
   sha256 "3999fd0bbb485289a52be14b2f68b571cb84e380cc43387eadf778f64c79e6df"
   revision 1
 
+  livecheck do
+    url "https://icculus.org/SDL_sound/downloads/"
+    regex(/href=.*?SDL_sound[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
     cellar :any
+    sha256 "8a2c07271bbc94a345cd8951ed897e9d12edda47d713c247a77e3186780247fc" => :big_sur
+    sha256 "2da102c4035e6cd0138668695cbee5eed9f730077a78e7221e73cb2a047d915c" => :arm64_big_sur
     sha256 "b8ac8b382c94d4a92032a8bc9c93d777fac1367851bd3df382089f747c347f05" => :catalina
     sha256 "3661daa8d14b8b8ab613a5fb449ad6b3f758739eb3b69700b23c0ccdc49068b6" => :mojave
     sha256 "c571e007bcbb022e6fd0042e506ce6cd47a26d814de06f348b13231fc95a1581" => :high_sierra
@@ -17,7 +24,7 @@ class SdlSound < Formula
   end
 
   head do
-    url "https://hg.icculus.org/icculus/SDL_sound", :using => :hg
+    url "https://hg.icculus.org/icculus/SDL_sound", using: :hg
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

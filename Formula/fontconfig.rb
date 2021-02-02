@@ -3,8 +3,16 @@ class Fontconfig < Formula
   homepage "https://wiki.freedesktop.org/www/Software/fontconfig/"
   url "https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.1.tar.bz2"
   sha256 "f655dd2a986d7aa97e052261b36aa67b0a64989496361eca8d604e6414006741"
+  license "MIT"
+
+  livecheck do
+    url :stable
+    regex(/href=.*?fontconfig[._-]v?(\d+\.\d+\.(?:\d|[0-8]\d+))\.t/i)
+  end
 
   bottle do
+    sha256 "ee5961891c9e943c8bea6ad280d2346caa2d3efafdbd726670e663d0bdfdb010" => :big_sur
+    sha256 "19dd1db44a74a3fedf20bc6576f81469d0ba6c4301fc865a56c3bbda2733d519" => :arm64_big_sur
     sha256 "64ff208b28613dfe2a65b9d74fd9b0129f3ca7e423db78329144cdaf51b36f70" => :catalina
     sha256 "1c704a5a4249252bf42dc4f2a458f911a7858a931858ad257d9ec39978ca5095" => :mojave
     sha256 "3b763143a4d6e3c74b3a8b237d2e5a383696347ea3599d07957f73a3f6521d23" => :high_sierra
@@ -13,25 +21,40 @@ class Fontconfig < Formula
   end
 
   pour_bottle? do
-    reason "The bottle needs to be installed into /usr/local."
+    reason "The bottle needs to be installed into #{Homebrew::DEFAULT_PREFIX}."
     # c.f. the identical hack in lua
     # https://github.com/Homebrew/homebrew/issues/47173
-    satisfy { HOMEBREW_PREFIX.to_s == "/usr/local" }
+    satisfy { HOMEBREW_PREFIX.to_s == Homebrew::DEFAULT_PREFIX }
   end
 
   head do
-    url "https://anongit.freedesktop.org/git/fontconfig", :using => :git
+    url "https://gitlab.freedesktop.org/fontconfig/fontconfig.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
+    depends_on "gettext" => :build
     depends_on "libtool" => :build
   end
 
   depends_on "pkg-config" => :build
   depends_on "freetype"
 
+  uses_from_macos "gperf" => :build
   uses_from_macos "bzip2"
   uses_from_macos "expat"
+
+  on_linux do
+    depends_on "gettext" => :build
+    depends_on "json-c" => :build
+    depends_on "util-linux"
+  end
+
+  # Fix crash issues on arm64.
+  # Remove with the next release.
+  patch do
+    url "https://github.com/freedesktop/fontconfig/commit/6def66164a36eed968aae872d76acfac3173d44a.patch?full_index=1"
+    sha256 "1dbe6247786c75f2b3f5a7e21133a3f9c09189f59fff08b2df7cb15389b0e405"
+  end
 
   def install
     font_dirs = %w[
@@ -43,6 +66,9 @@ class Fontconfig < Formula
     font_dirs << Dir["/System/Library/Assets{,V2}/com_apple_MobileAsset_Font*"].max if MacOS.version >= :sierra
 
     system "autoreconf", "-iv" if build.head?
+    on_linux do
+      ENV["UUID_CFLAGS"] = "-I#{Formula["util-linux"].include}"
+    end
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--enable-static",

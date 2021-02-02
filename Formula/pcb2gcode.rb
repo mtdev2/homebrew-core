@@ -1,27 +1,34 @@
 class Pcb2gcode < Formula
   desc "Command-line tool for isolation, routing and drilling of PCBs"
   homepage "https://github.com/pcb2gcode/pcb2gcode"
-  url "https://github.com/pcb2gcode/pcb2gcode/archive/v2.0.0.tar.gz"
-  sha256 "3b7e8cdc58852294d95b0ed705933f528a9e56428863490f5a27f22153cd713e"
+  url "https://github.com/pcb2gcode/pcb2gcode/archive/v2.1.0.tar.gz"
+  sha256 "ee546f0e002e83434862c7a5a2171a2276038d239909a09adb36e148e7d7319a"
+  license "GPL-3.0-or-later"
   revision 1
   head "https://github.com/pcb2gcode/pcb2gcode.git"
 
   bottle do
     cellar :any
-    sha256 "cb5117bb2a37a8bec3353d77f02d9992b07ecc5a8b4d5394cf83b640a02145c1" => :catalina
-    sha256 "e22d8eba9bdecf87719ee96fe8f7c4d2f02dc9d92f73304da07fe126f3ef05dc" => :mojave
-    sha256 "aa37eb099526a7acee7efd4f6e62a7522d162c1ef1c5abc2cb7e3afe25f2cd47" => :high_sierra
-    sha256 "434bd10eebb50332d8d20181285165c0aee158738de660549c32e3a0c4820086" => :sierra
+    sha256 "ebeae69a3b6c8ce423c361efbf21914582de1953dd1435829249d1179dc8d59c" => :big_sur
+    sha256 "25c1b52ff023dd2137810355ba205d3be3e065ccf90851b2f49329f665ff54a5" => :catalina
+    sha256 "cc6d2180685fa076d25a24db6ccd39b7346f28ad52f90a1d72cc3d22bfe840df" => :mojave
   end
 
   # Release 2.0.0 doesn't include an autoreconfed tarball
+  # glibmm, gtkmm and librsvg are used only in unittests,
+  # and are therefore not needed at runtime.
+  depends_on "atkmm" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on "cairomm@1.14" => :build
+  depends_on "glibmm" => :build
+  depends_on "gtkmm" => :build
+  depends_on "librsvg" => :build
+  depends_on "libsigc++@2" => :build
   depends_on "libtool" => :build
+  depends_on "pangomm" => :build
   depends_on "pkg-config" => :build
   depends_on "gerbv"
-  depends_on "gtkmm"
-  depends_on "librsvg"
 
   # Upstream maintainer claims that the geometry library from boost >= 1.67
   # is severely broken. Remove the vendoring once fixed.
@@ -30,6 +37,13 @@ class Pcb2gcode < Formula
   resource "boost" do
     url "https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2"
     sha256 "5721818253e6a0989583192f96782c4a98eb6204965316df9f5ad75819225ca9"
+
+    # Fix build on Xcode 11.4
+    patch do
+      url "https://github.com/boostorg/build/commit/b3a59d265929a213f02a451bb63cea75d668a4d9.patch?full_index=1"
+      sha256 "04a4df38ed9c5a4346fbb50ae4ccc948a1440328beac03cb3586c8e2e241be08"
+      directory "tools/build"
+    end
   end
 
   def install
@@ -125,7 +139,6 @@ class Pcb2gcode < Formula
       M30
     EOS
     (testpath/"millproject").write <<~EOS
-      dpi=500
       metric=true
       zchange=10
       zsafe=5
@@ -143,7 +156,6 @@ class Pcb2gcode < Formula
       cut-speed=10000
       cutter-diameter=3
       fill-outline=true
-      outline-width=0.15
       zbridges=-0.6
       zcut=-2.5
       al-front=true

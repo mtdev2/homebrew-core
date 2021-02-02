@@ -3,9 +3,17 @@ class Libtrng < Formula
   homepage "https://www.numbercrunch.de/trng/"
   url "https://www.numbercrunch.de/trng/trng-4.22.tar.gz"
   sha256 "6acff0a6136e41cbf0b265ae1f4392c8f4394ecfe9803bc98255e9e8d926f3d8"
+  license "BSD-3-Clause"
+
+  livecheck do
+    url :homepage
+    regex(/href=.*?trng[._-]v?(\d+(?:\.\d+)+)\.t.*?latest/i)
+  end
 
   bottle do
     cellar :any
+    sha256 "8eff7623b750819d2bc64e993601623805898bc279b0790841485e4c089735cb" => :big_sur
+    sha256 "fbf1971402ee149d4a60e6dec96a2c44ca500871848e0a5bd4974ce4f8b11369" => :arm64_big_sur
     sha256 "b0e5af117a32d265de30662de4d7ef61e412853f262949e86ac1ff91dfd69875" => :catalina
     sha256 "4b753374a4fb6305e417ea5d89237f6e62b47b8c9e2c034c76e26475184de48c" => :mojave
     sha256 "4f269f561d5b8b692189e90cba163578ad68b2fa83a84660d8da4d367c4a2e93" => :high_sierra

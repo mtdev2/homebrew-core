@@ -1,22 +1,24 @@
 class Asciidoctor < Formula
   desc "Text processor and publishing toolchain for AsciiDoc"
   homepage "https://asciidoctor.org/"
-  url "https://github.com/asciidoctor/asciidoctor/archive/v2.0.10.tar.gz"
-  sha256 "afca74837e6d4b339535e8ba0b79f2ad00bd1eef78bf391cc36995ca2e31630a"
+  url "https://github.com/asciidoctor/asciidoctor/archive/v2.0.12.tar.gz"
+  sha256 "cd98047c68bf1074a7058b174c93a64f2bd39c2f33941398f6889c562ed5bce8"
+  license "MIT"
 
   depends_on "ruby" if MacOS.version <= :sierra
 
   bottle do
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "db4b7fcb39a5d783d294f01094becbd6ff7fab7f258661eb1f2e8be2b8efb5bc" => :catalina
-    sha256 "666df89ed2734108ca6d60ea66780e3fc3cc79bc03924f33e45c33c3f73ebe17" => :mojave
-    sha256 "1d16ba582ee12787f64ed619600f911cc545ce931c9862f52adb48ec110e9505" => :high_sierra
+    sha256 "4af4798f8081100713a1b3d301107b5ddd01d1f85d40d5f351d12b3261148fbe" => :big_sur
+    sha256 "bd10fcb661d700a6dc30113b6af905708978ca6d4198ea6531abc80628a34f2a" => :arm64_big_sur
+    sha256 "b6d75bed00d6ab5586634823bee006e5f0bb3c57f9f46317b675c33b28eb7552" => :catalina
+    sha256 "8ce4eb3ad0b311775a31f15d32939df21f3eefbac6dc39ac76f2d2573920b5af" => :mojave
+    sha256 "d4fa41fc1f142f4d8ad25c2063ed79dd04091386d87c7996c17c9adcb10be301" => :high_sierra
   end
 
   resource "concurrent-ruby" do
-    url "https://rubygems.org/gems/concurrent-ruby-1.1.6.gem"
-    sha256 "14da21d5cfe9ccb02e9359b01cb7291e0167ded0ec805d4f3a4b2b4ffa418324"
+    url "https://rubygems.org/gems/concurrent-ruby-1.1.7.gem"
+    sha256 "ff4befc88d522ccb2109596da26309f4b0b041683ca62d3cb903b313e1caddee"
   end
 
   resource "pdf-core" do
@@ -40,8 +42,8 @@ class Asciidoctor < Formula
   end
 
   resource "public_suffix" do
-    url "https://rubygems.org/gems/public_suffix-4.0.3.gem"
-    sha256 "87a9b64575e6d04a2e83882a2610470ea47132828c96650610b4c511b4c1d3b0"
+    url "https://rubygems.org/gems/public_suffix-4.0.6.gem"
+    sha256 "a99967c7b2d1d2eb00e1142e60de06a1a6471e82af574b330e9af375e87c0cf7"
   end
 
   resource "addressable" do
@@ -85,8 +87,8 @@ class Asciidoctor < Formula
   end
 
   resource "pdf-reader" do
-    url "https://rubygems.org/gems/pdf-reader-2.4.0.gem"
-    sha256 "de3968992d64c3fefe4e3976191cb4ab6d8a07e6926c67b684e50843aac86fbc"
+    url "https://rubygems.org/gems/pdf-reader-2.4.1.gem"
+    sha256 "705502cf151ac59a774a368819bd96c174bc63552cdc4a2f7db80ad0187d0725"
   end
 
   resource "prawn-templates" do
@@ -110,13 +112,23 @@ class Asciidoctor < Formula
   end
 
   resource "treetop" do
-    url "https://rubygems.org/gems/treetop-1.6.10.gem"
-    sha256 "67df9f52c5fdeb7b2b8ce42156f9d019c1c4eb643481a68149ff6c0b65bc613c"
+    url "https://rubygems.org/gems/treetop-1.6.11.gem"
+    sha256 "102e13adf065fc916eae60b9539a76101902a56e4283c847468eaea9c2c72719"
   end
 
   resource "asciidoctor-pdf" do
     url "https://rubygems.org/gems/asciidoctor-pdf-1.5.3.gem"
     sha256 "3e70d0e513f4d631a4b667fed634700d93b104e0d3b4c33f993979df6a67d3f1"
+  end
+
+  resource "coderay" do
+    url "https://rubygems.org/gems/coderay-1.1.3.gem"
+    sha256 "dc530018a4684512f8f38143cd2a096c9f02a1fc2459edcfe534787a7fc77d4b"
+  end
+
+  resource "rouge" do
+    url "https://rubygems.org/gems/rouge-3.24.0.gem"
+    sha256 "228df3eae97599f49546b2b34ffba34bff86a9f3a712327b27586d301f00f4c5"
   end
 
   def install
@@ -130,7 +142,7 @@ class Asciidoctor < Formula
     system "gem", "install", "asciidoctor-#{version}.gem"
     bin.install Dir[libexec/"bin/asciidoctor"]
     bin.install Dir[libexec/"bin/asciidoctor-pdf"]
-    bin.env_script_all_files(libexec/"bin", :GEM_HOME => ENV["GEM_HOME"])
+    bin.env_script_all_files(libexec/"bin", GEM_HOME: ENV["GEM_HOME"])
     man1.install_symlink "#{libexec}/gems/asciidoctor-#{version}/man/asciidoctor.1" => "asciidoctor.1"
   end
 
@@ -160,6 +172,6 @@ class Asciidoctor < Formula
     system bin/"asciidoctor", "-b", "html5", "-o", "test.html", "test.adoc"
     assert_match "<h1>AsciiDoc is Writing Zen</h1>", File.read("test.html")
     system bin/"asciidoctor", "-r", "asciidoctor-pdf", "-b", "pdf", "-o", "test.pdf", "test.adoc"
-    assert_match "/Title (AsciiDoc is Writing Zen)", File.read("test.pdf", :mode => "rb")
+    assert_match "/Title (AsciiDoc is Writing Zen)", File.read("test.pdf", mode: "rb")
   end
 end

@@ -3,9 +3,12 @@ class Hoedown < Formula
   homepage "https://github.com/hoedown/hoedown"
   url "https://github.com/hoedown/hoedown/archive/3.0.7.tar.gz"
   sha256 "01b6021b1ec329b70687c0d240b12edcaf09c4aa28423ddf344d2bd9056ba920"
+  license "ISC"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "8878fa04ace3327364bb0d18113bbb56006f169d7f169bc41d03986e1bfe6270" => :big_sur
+    sha256 "748004674d9036262032eda6a9b574137cff8a01178977c45d735adba7160587" => :arm64_big_sur
     sha256 "578d2db4436012569cd56a47cca8967e106cd83474ed80f52dd7deeda6b1a134" => :catalina
     sha256 "4028b7bb88b6da75f735c58f3497d354dda4bc7ce33288a0ae71932878991c5b" => :mojave
     sha256 "1be6101d978f2df1749712dd39d3fc8b9c7cc014c2402eab5060e8656f6b22cf" => :high_sierra

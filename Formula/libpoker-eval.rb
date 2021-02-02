@@ -4,10 +4,13 @@ class LibpokerEval < Formula
   # http://download.gna.org/pokersource/sources/poker-eval-138.0.tar.gz is offline
   url "https://deb.debian.org/debian/pool/main/p/poker-eval/poker-eval_138.0.orig.tar.gz"
   sha256 "92659e4a90f6856ebd768bad942e9894bd70122dab56f3b23dd2c4c61bdbcf68"
+  license "GPL-3.0"
 
   bottle do
     cellar :any
     rebuild 1
+    sha256 "08b9a0817303ed87c19ce2345e92ccf6d1698d3b48f1d8ed7332663bb16dc227" => :big_sur
+    sha256 "3b2910848df5a62c48ff9ecca9797de0c6c82c73e5392c0bc63202fd7a51815a" => :arm64_big_sur
     sha256 "803f48db07d845ec9784792ed0fe5cdc86cb67e6632ed9f72dde75619481bf83" => :catalina
     sha256 "313ff85dd7ec513a95ee8846c657819fdadbebccf0bdce228f180305ee56a716" => :mojave
     sha256 "415934c921d4ccced5426f9aa807b0cf11da031cb2c973e17d506a9f740ac645" => :high_sierra

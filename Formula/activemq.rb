@@ -1,21 +1,28 @@
 class Activemq < Formula
   desc "Apache ActiveMQ: powerful open source messaging server"
   homepage "https://activemq.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=activemq/5.15.12/apache-activemq-5.15.12-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/activemq/5.15.12/apache-activemq-5.15.12-bin.tar.gz"
-  sha256 "415fbe3ef85e83b92dfbb1b14c4018b87b9a6a03d918984ec679e39ff2096193"
+  url "https://www.apache.org/dyn/closer.lua?path=activemq/5.16.1/apache-activemq-5.16.1-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/activemq/5.16.1/apache-activemq-5.16.1-bin.tar.gz"
+  sha256 "43d3f3a890bffae85c6f1002e9cf950fcc1fd17f3f5e55dc3b85d39d09e2e323"
+  license "Apache-2.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle :unneeded
 
   depends_on "openjdk"
 
   def install
-    rm_rf Dir["bin/linux-x86-*"]
+    on_macos do
+      rm_rf Dir["bin/linux-x86-*"]
+    end
     libexec.install Dir["*"]
-    (bin/"activemq").write_env_script libexec/"bin/activemq", :JAVA_HOME => Formula["openjdk"].opt_prefix
+    (bin/"activemq").write_env_script libexec/"bin/activemq", JAVA_HOME: Formula["openjdk"].opt_prefix
   end
 
-  plist_options :manual => "activemq start"
+  plist_options manual: "activemq start"
 
   def plist
     <<~EOS

@@ -3,10 +3,13 @@ class Clipper < Formula
   homepage "https://wincent.com/products/clipper"
   url "https://github.com/wincent/clipper/archive/2.0.0.tar.gz"
   sha256 "9c9fa0b198d11513777d40c88e2529b2f2f84d7045a500be5946976a5cdcfe83"
+  license "BSD-2-Clause"
 
   bottle do
     cellar :any_skip_relocation
     rebuild 1
+    sha256 "3322412e9d0979650ad863bf42ba473c4eaabf06f48ef6d1053cf3fbc89dfc8a" => :big_sur
+    sha256 "a114dd1e41872b63ca5ced700ee503aa4eb87f0add568e3dc1ad9e10cca9459b" => :arm64_big_sur
     sha256 "6e16549f9930f652364f727cf42ea04608d92f172e7916c85900c3b6feb98df0" => :catalina
     sha256 "2216327dbb3a341f14db9d2da767749d00e460917bcf1098665948e24eeb2e8b" => :mojave
     sha256 "a2230d8cb54b244b82ea5f5c47cebabe2f63a6b9dc1b98d47cd4a0fcd4eb743f" => :high_sierra
@@ -18,7 +21,7 @@ class Clipper < Formula
     system "go", "build", "-ldflags", "-s -w", "-trimpath", "-o", bin/"clipper", "clipper.go"
   end
 
-  plist_options :manual => "clipper"
+  plist_options manual: "clipper"
 
   def plist
     <<~EOS
@@ -49,7 +52,7 @@ class Clipper < Formula
   end
 
   test do
-    TEST_DATA = "a simple string! to test clipper, with söme spéciål characters!! 🐎\n".freeze
+    test_data = "a simple string! to test clipper, with söme spéciål characters!! 🐎\n".freeze
 
     cmd = [opt_bin/"clipper", "-a", testpath/"clipper.sock", "-l", testpath/"clipper.log"].freeze
     ohai cmd.join " "
@@ -59,10 +62,10 @@ class Clipper < Formula
       sleep 0.5 # Give it a moment to launch and create its socket.
       begin
         sock = UNIXSocket.new testpath/"clipper.sock"
-        assert_equal TEST_DATA.bytesize, sock.sendmsg(TEST_DATA)
+        assert_equal test_data.bytesize, sock.sendmsg(test_data)
         sock.close
         sleep 0.5
-        assert_equal TEST_DATA, `LANG=en_US.UTF-8 pbpaste`
+        assert_equal test_data, `LANG=en_US.UTF-8 pbpaste`
       ensure
         Process.kill "TERM", clipper.pid
       end

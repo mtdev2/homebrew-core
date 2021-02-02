@@ -1,9 +1,14 @@
 class Alure < Formula
   desc "Manage common tasks with OpenAL applications"
-  homepage "https://kcat.strangesoft.net/alure.html"
-  url "https://kcat.strangesoft.net/alure-releases/alure-1.2.tar.bz2"
+  homepage "https://kcat.tomasu.net/alure.html"
+  url "https://kcat.tomasu.net/alure-releases/alure-1.2.tar.bz2"
   sha256 "465e6adae68927be3a023903764662d64404e40c4c152d160e3a8838b1d70f71"
   revision 1
+
+  livecheck do
+    url "https://kcat.tomasu.net/alure-releases/"
+    regex(/href=.*?alure[._-]v?(\d+(?:\.\d+)+)(?:[._-]src)?\.t/i)
+  end
 
   bottle do
     cellar :any
@@ -33,6 +38,7 @@ class Alure < Formula
   end
 
   test do
-    system bin/"alureplay", test_fixtures("test.wav")
+    output = shell_output("#{bin}/alureplay 2>&1", 1)
+    assert_match "Usage #{bin}/alureplay <soundfile>", output
   end
 end

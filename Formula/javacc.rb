@@ -1,15 +1,22 @@
 class Javacc < Formula
   desc "Parser generator for use with Java applications"
   homepage "https://javacc.org/"
-  url "https://github.com/javacc/javacc/archive/7.0.5.tar.gz"
-  sha256 "d1502f8a7ed607de17427a1f33e490a33b0c2d5612879e812126bf95e7ed11f4"
-  revision 1
+  url "https://github.com/javacc/javacc/archive/javacc-7.0.10.tar.gz"
+  sha256 "656cb9aaed498bcfa5faae40aa8d006760d5431c276fda5bb46cff4225d7c3cc"
+  license "BSD-3-Clause"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+    regex(%r{href=.*?/tag/javacc[._-]v?(\d+(?:\.\d+)+)["' >]}i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "9761db5815a3cad526876b7385e61c353a287620dbd160a4f8d880dea4ccc573" => :catalina
-    sha256 "7cdce912a379ca72671e0c8590adf35d97931943a7e75d7f15c08a3f2994d832" => :mojave
-    sha256 "f08bee3c211b72483fdb6666a71eff1f0c98f645e21f83c97a1cda78ad99fd9d" => :high_sierra
+    sha256 "81fa6c9cfa14578b76e7baa27ef7ac27ad0038558f4d372ecac6486f2eadc35a" => :big_sur
+    sha256 "8a3acf2460346b3e8fb8fccdff9098574002e3fd927633bf6135a0ab0dd400ce" => :arm64_big_sur
+    sha256 "54792663583f44565206d4728237a9452859c162cea1e9c7ff782bf33daf6d99" => :catalina
+    sha256 "f954f391fb286509601a18d87042c3f6d218a7b57414e719cd37786723d71106" => :mojave
   end
 
   depends_on "ant" => :build

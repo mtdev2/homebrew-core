@@ -1,8 +1,14 @@
 class Detekt < Formula
   desc "Static code analysis for Kotlin"
-  homepage "https://github.com/arturbosch/detekt"
-  url "https://jcenter.bintray.com/io/gitlab/arturbosch/detekt/detekt-cli/1.7.3/detekt-cli-1.7.3-all.jar"
-  sha256 "ae44c6192917d37d18867ba05837c9db2b0b376ac1384171e66b6d1b77497596"
+  homepage "https://github.com/detekt/detekt"
+  url "https://jcenter.bintray.com/io/gitlab/arturbosch/detekt/detekt-cli/1.15.0/detekt-cli-1.15.0-all.jar"
+  sha256 "69fd5aa24ed79ba9914eb5cbe162c5f367888b8aa1c044ce4f6dc5a07a879570"
+  license "Apache-2.0"
+
+  livecheck do
+    url :homepage
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle :unneeded
 
@@ -10,24 +16,20 @@ class Detekt < Formula
 
   def install
     libexec.install "detekt-cli-#{version}-all.jar"
-    (bin/"detekt").write <<~EOS
-      #!/bin/bash
-      exec "#{Formula["openjdk"].opt_bin}/java" -jar "#{libexec}/detekt-cli-#{version}-all.jar" "$@"
-    EOS
+    bin.write_jar_script libexec/"detekt-cli-#{version}-all.jar", "detekt"
   end
 
   test do
+    # generate default config for testing
+    system bin/"detekt", "--generate-config"
+    assert_match "empty-blocks:", File.read(testpath/"detekt.yml")
+
     (testpath/"input.kt").write <<~EOS
       fun main() {
 
       }
     EOS
-    (testpath/"detekt.yml").write <<~EOS
-      empty-blocks:
-        EmptyFunctionBlock:
-          active: true
-    EOS
-    system bin/"detekt", "--input", "input.kt", "--report", "txt:output.txt", "--config", "detekt.yml"
+    shell_output("#{bin}/detekt --input input.kt --report txt:output.txt --config #{testpath}/detekt.yml", 2)
     assert_equal "EmptyFunctionBlock", shell_output("cat output.txt").slice(/\w+/)
   end
 end

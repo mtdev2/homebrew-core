@@ -3,9 +3,12 @@ class Clens < Formula
   homepage "https://github.com/conformal/clens"
   url "https://github.com/conformal/clens/archive/CLENS_0_7_0.tar.gz"
   sha256 "0cc18155c2c98077cb90f07f6ad8334314606c4be0b6ffc13d6996171c7dc09d"
+  license "ISC"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "602ace92e6b121b004a43a851209b95b0769bc84d9ea0c7725f29f3d2531324f" => :big_sur
+    sha256 "6e62d3fb708d1585bda7aeef47488d5b765a7b3af5bba0e2d2544a12b08cb892" => :arm64_big_sur
     sha256 "fef1ad76413e8e15683a4066276ed7f37f821edcbda4e6d648bd60e09a33a30d" => :catalina
     sha256 "3550adf8f1e9eb8e62ac6c64f3b3c8cae0fba0d0f958f6e6da99e74f4e4d5e19" => :mojave
     sha256 "e9dfe6e9228a928f9cb1a4048d92ec576be5f89f48408401b7f3020c1482a7c6" => :high_sierra
@@ -16,8 +19,8 @@ class Clens < Formula
   end
 
   patch do
-    url "https://github.com/conformal/clens/commit/83648cc9027d9f76a1bc79ddddcbed1349b9d5cd.diff?full_index=1"
-    sha256 "efd43aa84f7ff1582c3716282ac1b3b650c16af9a0f55039d20bfd4b085188e2"
+    url "https://github.com/conformal/clens/commit/83648cc9027d9f76a1bc79ddddcbed1349b9d5cd.patch?full_index=1"
+    sha256 "c70833eff6f98eab6166e9c341bb444eae542617f4937a29514fe5c6bbd3d8b0"
   end
 
   def install

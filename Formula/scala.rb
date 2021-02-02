@@ -1,11 +1,16 @@
 class Scala < Formula
   desc "JVM-based programming language"
   homepage "https://www.scala-lang.org/"
-  url "https://downloads.lightbend.com/scala/2.13.1/scala-2.13.1.tgz"
-  mirror "https://www.scala-lang.org/files/archive/scala-2.13.1.tgz"
-  mirror "https://downloads.typesafe.com/scala/2.13.1/scala-2.13.1.tgz"
-  sha256 "6918ccc494e34810a7254ad2c4e6f0e1183784c22e7b4801b7dbc8d1994a04db"
-  revision 1
+  url "https://downloads.lightbend.com/scala/2.13.4/scala-2.13.4.tgz"
+  mirror "https://www.scala-lang.org/files/archive/scala-2.13.4.tgz"
+  mirror "https://downloads.typesafe.com/scala/2.13.4/scala-2.13.4.tgz"
+  sha256 "bc711cfba58fcad772de2719f13ac06415fe43f2d323ffb6b600a8d7ebb78caa"
+  license "Apache-2.0"
+
+  livecheck do
+    url "https://www.scala-lang.org/files/archive"
+    regex(/href=.*?scala[._-]v?(\d+(?:\.\d+)+)(?:.final)?\.t/i)
+  end
 
   bottle :unneeded
 
@@ -17,7 +22,7 @@ class Scala < Formula
     share.install "man"
     libexec.install "bin", "lib"
     bin.install Dir["#{libexec}/bin/*"]
-    bin.env_script_all_files libexec/"bin", :JAVA_HOME => "${JAVA_HOME:-#{Formula["openjdk"].opt_prefix}}"
+    bin.env_script_all_files libexec/"bin", Language::Java.overridable_java_home_env
 
     # Set up an IntelliJ compatible symlink farm in 'idea'
     idea = prefix/"idea"

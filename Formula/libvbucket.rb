@@ -3,6 +3,7 @@ class Libvbucket < Formula
   homepage "https://couchbase.com/develop/c/current"
   url "https://s3.amazonaws.com/packages.couchbase.com/clients/c/libvbucket-1.8.0.4.tar.gz"
   sha256 "398ba491d434fc109fd64f38678916e1aa19c522abc8c090dbe4e74a2a2ea38d"
+  license "Apache-2.0"
 
   bottle do
     cellar :any
@@ -15,6 +16,8 @@ class Libvbucket < Formula
     sha256 "dd69ae3261c461b15bd29e435ab95496441dfde4535cb7d6925527cdfa8c64dd" => :yosemite
     sha256 "920f0656e62f10e6fc6649b0edc4a6f46dc196f931b7c14833608d9e926a4d09" => :mavericks
   end
+
+  disable! date: "2020-12-08", because: :unmaintained
 
   def install
     system "./configure", "--disable-debug",

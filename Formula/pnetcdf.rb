@@ -1,13 +1,14 @@
 class Pnetcdf < Formula
   desc "Parallel netCDF library for scientific data using the OpenMPI library"
   homepage "https://parallel-netcdf.github.io/index.html"
-  url "https://parallel-netcdf.github.io/Release/pnetcdf-1.12.1.tar.gz"
-  sha256 "56f5afaa0ddc256791c405719b6436a83b92dcd5be37fe860dea103aee8250a2"
+  url "https://parallel-netcdf.github.io/Release/pnetcdf-1.12.2.tar.gz"
+  sha256 "3ef1411875b07955f519a5b03278c31e566976357ddfc74c2493a1076e7d7c74"
+  license "NetCDF"
 
   bottle do
-    sha256 "04ba040b61d2c7a5418b4af93746f42a52133d18879d9a07c770ffd3f8875b91" => :catalina
-    sha256 "29a1ad1b500424446970fab585e2340230b146e004cc1da214cb57af1eaebc0c" => :mojave
-    sha256 "882f998426ba7a0a8723043e3924f349ab1601b66a1f5e8e853816c5de8edb11" => :high_sierra
+    sha256 "85211030d47c598d6ff4de8af6c063194d82cfd030c3799ffe61d0ea775fee91" => :big_sur
+    sha256 "850305bbe69b1ada59f7cc8628d12471819e720dbd41f873d269ff12ff7a9f86" => :catalina
+    sha256 "7313cd18dde083b4cb5bee094a43e1138ab70f97f33e762c8d97d64d916143eb" => :mojave
   end
 
   depends_on "gcc"
@@ -19,6 +20,13 @@ class Pnetcdf < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--enable-shared"
+
+    cd "src/utils" do
+      # Avoid references to Homebrew shims
+      inreplace ["pnetcdf-config", "pnetcdf_version/Makefile"], "#{HOMEBREW_SHIMS_PATH}/mac/super/",
+                                                                "/usr/bin/"
+    end
+
     system "make", "install"
   end
 

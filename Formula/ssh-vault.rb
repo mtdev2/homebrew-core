@@ -2,12 +2,14 @@ class SshVault < Formula
   desc "Encrypt/decrypt using SSH keys"
   homepage "https://ssh-vault.com/"
   url "https://github.com/ssh-vault/ssh-vault.git",
-      :tag      => "0.12.6",
-      :revision => "7296095220586d5dc46554444b2e23aba164066c"
+      tag:      "0.12.6",
+      revision: "7296095220586d5dc46554444b2e23aba164066c"
+  license "BSD-3-Clause"
   head "https://github.com/ssh-vault/ssh-vault.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "ca3ab49ebbaa91eb10f8b176cd4bb12c6bedcfc83705b03182450daf7b667473" => :big_sur
     sha256 "d12a7148614bb8fbc97e0e7f72fe04e18da0cd7fb54ee1e5b9308757a2377e83" => :catalina
     sha256 "7b7874972e68f117d14f5027895b6259320abe8db5deda72da09875c507755b1" => :mojave
     sha256 "c6cf671474c67600ddac7bbcae909797c8ba26e16692533b5e82faa153ea9d77" => :high_sierra

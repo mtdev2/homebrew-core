@@ -7,8 +7,14 @@ class BashCompletion < Formula
   sha256 "8ebe30579f0f3e1a521013bcdd183193605dab353d7a244ff2582fb3a36f7bec"
   revision 3
 
+  livecheck do
+    skip "1.x versions are no longer developed"
+  end
+
   bottle do
     cellar :any_skip_relocation
+    sha256 "8fe573529e08174b26d4379d92a42a7c38138c712e4e998541e8892fc6a376e7" => :big_sur
+    sha256 "44be13e781914250b3c277ce3672b7a3c45974f80ae8a2b0c55ccf884faf5d6b" => :arm64_big_sur
     sha256 "bd0c84cc6df9d3ff06ac081d85fdcc052b9e63136f4e2aa5fd2f2a0b7f654c84" => :catalina
     sha256 "9219c2b46362677e9ae6e19b344b774c3e9f163ae6bf6cf2686da06419aaec89" => :mojave
     sha256 "b069be5574bdf6d12fd1fda17c3162467b68165541166d95d1a9474653a63abc" => :high_sierra
@@ -17,7 +23,8 @@ class BashCompletion < Formula
     sha256 "58be92ef01d5068f37b1c00af8e9b202bdb409c93121bb0e07dcbb5e55dc3be2" => :yosemite
   end
 
-  conflicts_with "bash-completion@2", :because => "Differing version of same formula"
+  conflicts_with "bash-completion@2",
+    because: "each are different versions of the same formula"
 
   # Backports the following upstream patch from 2.x:
   # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=740971

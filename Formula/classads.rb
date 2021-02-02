@@ -1,12 +1,13 @@
 class Classads < Formula
   desc "Classified Advertisements (used by HTCondor Central Manager)"
   homepage "https://research.cs.wisc.edu/htcondor/classad/"
-  url "http://ftp.cs.wisc.edu/condor/classad/c++/classads-1.0.10.tar.gz"
+  url "https://ftp.cs.wisc.edu/condor/classad/c++/classads-1.0.10.tar.gz"
   sha256 "cde2fe23962abb6bc99d8fc5a5cbf88f87e449b63c6bca991d783afb4691efb3"
 
   bottle do
     cellar :any
     rebuild 1
+    sha256 "dcc6e15e209b41868d0e328ca0d65aac6416c923b494f53f1259ed97b64f4b33" => :big_sur
     sha256 "9803231cebf936ef95bd86c820a7f3ba832c56109ad8a527ac5786d1d6150234" => :catalina
     sha256 "2c2987f20d62b7c0926071bfe5c2c9825b30b4c6dba4dd20e2d2f34c5369ef44" => :mojave
     sha256 "febef9dc12fdea8d1dbd1687f835ac8a58d8a7534ce2a0735d6102872058ec59" => :high_sierra

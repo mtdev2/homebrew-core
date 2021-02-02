@@ -5,21 +5,31 @@ class Gitfs < Formula
   homepage "https://www.presslabs.com/gitfs"
   url "https://github.com/presslabs/gitfs/archive/0.5.2.tar.gz"
   sha256 "921e24311e3b8ea3a5448d698a11a747618ee8dd62d5d43a85801de0b111cbf3"
-  revision 1
+  license "Apache-2.0"
+  revision 5
   head "https://github.com/presslabs/gitfs.git"
 
   bottle do
     cellar :any
-    sha256 "d385ea70db9456cc456048016a3cf256c9438d94a4b9f411eb6da649821695fb" => :catalina
-    sha256 "19881e949d2586d9f3678468455b599a0dba2cb6f65fec2c59fa9ff4edecb6d3" => :mojave
-    sha256 "1f2565c4d019650a0ab9cd8ccf5375aa8d163dbbfd571d890f53cfa4fb853fc6" => :high_sierra
+    sha256 "c8c83c94da3b5f1dc480eec0ede90bf678eee59a97bb54a64cf94555d9c57752" => :catalina
+    sha256 "189008579b9d28a9084536f62101051648b64a78cd6faf780b3f40041becc188" => :mojave
+    sha256 "218c5f19bcecb33e4f18c19cf0f56ce6d9628d4cfad9f095fbb1071af3cd79c2" => :high_sierra
   end
 
   depends_on "libgit2"
-  depends_on :osxfuse
-  depends_on "python"
+  depends_on "python@3.9"
 
   uses_from_macos "libffi"
+
+  on_macos do
+    deprecate! date: "2020-11-10", because: "requires FUSE"
+    depends_on :osxfuse
+  end
+
+  on_linux do
+    depends_on "pkg-config" => :build
+    depends_on "libfuse"
+  end
 
   resource "atomiclong" do
     url "https://files.pythonhosted.org/packages/86/8c/70aea8215c6ab990f2d91e7ec171787a41b7fbc83df32a067ba5d7f3324f/atomiclong-0.1.1.tar.gz"
@@ -76,7 +86,7 @@ class Gitfs < Formula
   end
 
   test do
-    xy = Language::Python.major_minor_version "python3"
+    xy = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{xy}/site-packages"
 
     (testpath/"test.py").write <<~EOS
@@ -85,10 +95,10 @@ class Gitfs < Formula
       pygit2.init_repository('testing/.git', True)
     EOS
 
-    system "python3", "test.py"
+    system Formula["python@3.9"].opt_bin/"python3", "test.py"
     assert_predicate testpath/"testing/.git/config", :exist?
     cd "testing" do
-      system "git", "remote", "add", "homebrew", "https://github.com/Homebrew/homebrew.git"
+      system "git", "remote", "add", "homebrew", "https://github.com/Homebrew/homebrew-core.git"
       assert_match "homebrew", shell_output("git remote")
     end
   end

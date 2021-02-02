@@ -1,41 +1,28 @@
 class Atomicparsley < Formula
   desc "MPEG-4 command-line tool"
-  homepage "https://bitbucket.org/wez/atomicparsley/overview/"
-  url "https://bitbucket.org/wez/atomicparsley/get/0.9.6.tar.bz2"
-  sha256 "e28d46728be86219e6ce48695ea637d831ca0170ca6bdac99810996a8291ee50"
-  revision 1
-  head "https://bitbucket.org/wez/atomicparsley", :using => :hg
+  homepage "https://github.com/wez/atomicparsley"
+  url "https://github.com/wez/atomicparsley/archive/20210114.184825.1dbe1be.tar.gz"
+  version "20210114.184825.1dbe1be"
+  sha256 "8877262c86d0ad231a5b0eaa8ab9c0c1d4e06fafea0b96a819d9a5e565a28b8c"
+  license "GPL-2.0-or-later"
+  version_scheme 1
+  head "https://github.com/wez/atomicparsley.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "632b3bc281a6f3bd5b9a913dff1e805c9fb9997f41b4a02db0a1aa34f6faced3" => :catalina
-    sha256 "d32a565f675bd0b2c5ebf1b5aee01fb79d9d42b072dedf724b7ee03b2cc242ee" => :mojave
-    sha256 "05c4cdc1dfc14fa6f06fdbbcadead5055a9fb53091d014458b86ecb4b22111fe" => :high_sierra
-    sha256 "d5f8672d420511ff76fd9ecc4d41c8aee5eecbf4382d7c4bd3fb04400c4617f4" => :sierra
-    sha256 "c0a7964ced998b2db7150f95b9329e138f28f0768be50d531fd4d82754e0ebde" => :el_capitan
+    sha256 "be1e8745667ef864650fff051ad1c14449401ecd407d16c737f58e38785ded95" => :big_sur
+    sha256 "a8e5692e8ef0283fd49d2f49c4496bfc89a083514da2334fa02eb6fc2f4e2989" => :arm64_big_sur
+    sha256 "49a797a44dce461bbd76fea51e4d4a855eec29bd6b83e592ff8acee2d44f8055" => :catalina
+    sha256 "a979f00c124189f4799f08b55b8554c5e36ddc17a1e682ac33e4d9615bdcc339" => :mojave
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
-
+  depends_on "cmake" => :build
   uses_from_macos "zlib"
 
-  # Fix Xcode 9 pointer warnings
-  # https://bitbucket.org/wez/atomicparsley/issues/52/xcode-9-build-failure
-  if DevelopmentTools.clang_build_version >= 900
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/ac8624c36e/atomicparsley/xcode9.patch"
-      sha256 "15b87be1800760920ac696a93131cab1c0f35ce4c400697bb8b0648765767e5f"
-    end
-  end
-
   def install
-    system "./autogen.sh"
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-universal"
-    system "make", "install"
+    system "cmake", ".", *std_cmake_args
+    system "cmake", "--build", ".", "--config", "Release"
+    bin.install "AtomicParsley"
   end
 
   test do

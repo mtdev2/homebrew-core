@@ -3,17 +3,25 @@ class Telnet < Formula
   homepage "https://opensource.apple.com/"
   url "https://opensource.apple.com/tarballs/remote_cmds/remote_cmds-63.tar.gz"
   sha256 "13858ef1018f41b93026302840e832c2b65289242225c5a19ce5e26f84607f15"
+  license all_of: ["BSD-4-Clause-UC", "APSL-1.0"]
+
+  livecheck do
+    url "https://opensource.apple.com/tarballs/remote_cmds/"
+    regex(/href=.*?remote_cmds[._-]v?(\d+(?:\.\d+)*)\.t/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "e6fb7de53e703755a72e227752f81023c2935567d935af638959e986da910b3e" => :big_sur
+    sha256 "563fcbef08590e48a07079f00877e14f22f54849db11ee02ba7c935499a7ccd1" => :arm64_big_sur
     sha256 "7435a9fd2515158762a85197a4ad7141e430383e185e002da169dbbb638c952f" => :catalina
     sha256 "d5009f496dc6cf0c13b936996f98b91b0f12733ea9462843b56a39fc53b20fe0" => :mojave
     sha256 "af38f3c6dd4ff5eda2248671958e66595b39e74cdeecca52af4efb495bc659a7" => :high_sierra
   end
 
-  depends_on :xcode => :build
+  depends_on xcode: :build
 
-  conflicts_with "inetutils", :because => "both install 'telnet' binaries"
+  conflicts_with "inetutils", because: "both install 'telnet' binaries"
 
   resource "libtelnet" do
     url "https://opensource.apple.com/tarballs/libtelnet/libtelnet-13.tar.gz"
@@ -25,8 +33,7 @@ class Telnet < Formula
       ENV["SDKROOT"] = MacOS.sdk_path
       ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
 
-      # Force 64 bit-only build, otherwise it fails on Mojave
-      xcodebuild "SYMROOT=build", "-arch", "x86_64"
+      xcodebuild "SYMROOT=build", "-arch", Hardware::CPU.arch
 
       libtelnet_dst = buildpath/"telnet.tproj/build/Products"
       libtelnet_dst.install "build/Release/libtelnet.a"
@@ -39,7 +46,7 @@ class Telnet < Formula
                    "DSTROOT=build/Archive",
                    "CFLAGS=$(CC_Flags) -isystembuild/Products/",
                    "LDFLAGS=$(LD_Flags) -Lbuild/Products/",
-                   "RC_ARCHS=x86_64", # Force 64-bit build for Mojave
+                   "RC_ARCHS=#{Hardware::CPU.arch}",
                    "install"
 
     bin.install "telnet.tproj/build/Archive/usr/local/bin/telnet"
@@ -47,7 +54,7 @@ class Telnet < Formula
   end
 
   test do
-    output = shell_output("#{bin}/telnet 94.142.241.111 666", 1)
-    assert_match "Connected to towel.blinkenlights.nl.", output
+    output = shell_output("#{bin}/telnet india.colorado.edu 13", 1)
+    assert_match "Connected to india.colorado.edu.", output
   end
 end

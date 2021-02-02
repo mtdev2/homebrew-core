@@ -3,9 +3,16 @@ class Pbzip2 < Formula
   homepage "https://web.archive.org/web/20180226093549/compression.ca/pbzip2/"
   url "https://launchpad.net/pbzip2/1.1/1.1.13/+download/pbzip2-1.1.13.tar.gz"
   sha256 "8fd13eaaa266f7ee91f85c1ea97c86d9c9cc985969db9059cdebcb1e1b7bdbe6"
+  license "bzip2-1.0.6"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "ea9f81b7830949f9e449c5277807f931e3041a63071bf0b66a9c254cbff2e965" => :big_sur
+    sha256 "8a42feae1d424ac132a520973b5bb9517bdf83bda8439263008b20c2208ed493" => :arm64_big_sur
     sha256 "57c1c1065cd29ee37187b87705adfb73b84d114fc46408d4690024f3a29ac837" => :catalina
     sha256 "5594212d69f619f7fa59cfec23ce2c6eefa0f8c69d5e77cdd84cf9e2478d0d51" => :mojave
     sha256 "d72e618d7301937ab6a392e1ef3d9ed1f8d5380cd6516ea17b4e4bde11eea9a7" => :high_sierra

@@ -5,15 +5,22 @@ class Flintrock < Formula
   homepage "https://github.com/nchammas/flintrock"
   url "https://files.pythonhosted.org/packages/e6/18/3b45899e69e6ee24928f8c975b6bf575918029a19fc097de5d4ccbf6e3e7/Flintrock-1.0.0.tar.gz"
   sha256 "29635ba045ee4b966094d40ddadb0b2298ab0e3495fddf05a9a8b1060f6e4776"
+  license "Apache-2.0"
+  revision 2
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any
-    sha256 "57c3fa611d0f0cf16ad4c8f0e6d7ecd402aa1b75ebd5a8b7e341da11dd7c5af8" => :catalina
-    sha256 "8bfdab935d6ba893502e690d1e176671e2a8ed947b8da2e7e232bddaf9767861" => :mojave
-    sha256 "348170a071d3f4852dd551774d5ebe17137384cd5c16d874a5f278baab7a41c8" => :high_sierra
+    sha256 "93d4f64dcc0f46a09df349b5a8d939a9ce6f16225e9e2f16734fc7d6ef0ddbd1" => :big_sur
+    sha256 "a91dd481b9714abbc598429e8dd3183e8f90d95d775188a91d6f9364d473799c" => :arm64_big_sur
+    sha256 "4ca8b205cc0998d1881d1b66b98a2c3e4fad37fa6c0eff62c59997da10b665f9" => :catalina
+    sha256 "d2cece693184089c70aae85671a5363cc2c9091755da2b8c50377472bf69cac9" => :mojave
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "asn1crypto" do
     url "https://files.pythonhosted.org/packages/9f/3d/8beae739ed8c1c8f00ceac0ab6b0e97299b42da869e24cf82851b27a9123/asn1crypto-1.3.0.tar.gz"
@@ -36,8 +43,8 @@ class Flintrock < Formula
   end
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/05/54/3324b0c46340c31b909fcec598696aaec7ddc8c18a63f2db352562d3354c/cffi-1.14.0.tar.gz"
-    sha256 "2d384f4a127a15ba701207f7639d94106693b6cd64173d6c8988e2c25f3ac2b6"
+    url "https://files.pythonhosted.org/packages/66/6a/98e023b3d11537a5521902ac6b50db470c826c682be6a8c661549cb7717a/cffi-1.14.4.tar.gz"
+    sha256 "1a465cbe98a7fd391d47dce4b8f7e5b921e6cd805ef421d04f5f66ba8f06086c"
   end
 
   resource "click" do

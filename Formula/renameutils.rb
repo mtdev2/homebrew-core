@@ -5,8 +5,14 @@ class Renameutils < Formula
   sha256 "cbd2f002027ccf5a923135c3f529c6d17fabbca7d85506a394ca37694a9eb4a3"
   revision 3
 
+  livecheck do
+    url "https://download.savannah.gnu.org/releases/renameutils/"
+    regex(/href=.*?renameutils[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
     cellar :any
+    sha256 "503b84eed8791b4a924e61fdfb0ea53cb6d349fe8a55c43ab7582c1e2a0985ba" => :big_sur
     sha256 "2ec48c66fea9f53acf2b2ba3b726e6f7a9ff35778a3fb574fc59e7c6d01f681a" => :catalina
     sha256 "4f360267cba9842ef85e9cfbb1baaf73e9576dccfb924aade7f0ad6bbf0bf605" => :mojave
     sha256 "d25dc64bcc5d30e7695c65a93f7285849b57fdbdb18bf7d5e7bc22f0786cb14c" => :high_sierra
@@ -15,7 +21,7 @@ class Renameutils < Formula
   depends_on "coreutils"
   depends_on "readline" # Use instead of system libedit
 
-  conflicts_with "ipmiutil", :because => "both install `icmd` binaries"
+  conflicts_with "ipmiutil", because: "both install `icmd` binaries"
 
   # Use the GNU versions of certain system utilities. See:
   # https://trac.macports.org/ticket/24525

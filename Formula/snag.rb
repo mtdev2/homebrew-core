@@ -3,10 +3,12 @@ class Snag < Formula
   homepage "https://github.com/Tonkpils/snag"
   url "https://github.com/Tonkpils/snag/archive/v1.2.0.tar.gz"
   sha256 "37bf661436edf4526adf5428ac5ff948871c613ff4f9b61fbbdfe1fb95f58b37"
+  license "MIT"
   head "https://github.com/Tonkpils/snag.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "5b7076d11282b0ec9d25cf2f03e529dfc1d6d417dda5b80d44332a12767e68d1" => :big_sur
     sha256 "008cc64d1a65693bf1773affb86ed185d5c91382f80f252877a5a6334986527a" => :catalina
     sha256 "3821de3f4b916afd116f9f55c549f1bdec7b2c448994e784baf23eef96d65520" => :mojave
     sha256 "ae031acea4e10639f15a1598bf99e45eb8bed08222e31db9e1152a4a1de0dc14" => :high_sierra

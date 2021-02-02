@@ -1,35 +1,32 @@
 class Instead < Formula
   desc "Interpreter of simple text adventures"
   homepage "https://instead.syscall.ru/"
-  url "https://github.com/instead-hub/instead/archive/3.3.1.tar.gz"
-  sha256 "3b5e4cb7ce965e89a3906787791919d475834001438d10c46b77085f2e8767ea"
+  url "https://github.com/instead-hub/instead/archive/3.3.2.tar.gz"
+  sha256 "bdb827f36e693dc7b443e69d4678d24f1ccc20dc093c22f58b8d78192da15f2e"
+  license "MIT"
+  revision 3
 
   bottle do
-    sha256 "e020cbe4c016591b3c017d0df239b0704ca7b4076c2f61d47ffbb44b67f151b0" => :catalina
-    sha256 "64eda82eb27e394732b69b0811515f9ac5cb4549bfe6014b21ed0a80507e0f83" => :mojave
-    sha256 "176bc087885f093320ee60548e0f5162f07531a6e2d4e4f360dbd31d6f670091" => :high_sierra
+    sha256 "40e256b5936267f917823861c18d88c18416623791ed4be21c2a7c0314e64b7e" => :big_sur
+    sha256 "eb951c76454e1555ab7aa01910a03ddfcec6c73ebede17f642646b8dc317d7c2" => :arm64_big_sur
+    sha256 "9b7fda751518f7f2035b040e3e28d7f4fc603fe3741dea1040be82952856e4af" => :catalina
+    sha256 "b0127d13891f56fd1eb9cc44c0abd5503451ad12adc1ada98a15dbd53f067f28" => :mojave
   end
 
   depends_on "cmake" => :build
-  depends_on "lua"
+  depends_on "luajit-openresty"
   depends_on "sdl2"
   depends_on "sdl2_image"
   depends_on "sdl2_mixer"
   depends_on "sdl2_ttf"
 
-  # Remove for > 3.2.1
-  # Fix undefined symbols errors for _CFBundleCopyResourcesDirectoryURL etc.
-  # Upstream commit from 22 Apr 2018 "CMake: link AppKit framework on macOS"
-  patch do
-    url "https://github.com/instead-hub/instead/commit/e00be1e2.patch?full_index=1"
-    sha256 "63213ebeb0136f5388edfc8d7f240282a225ce73ea50ff89b319282556551d74"
-  end
-
   def install
+    luajit = Formula["luajit-openresty"]
     mkdir "build" do
       system "cmake", "..", "-DWITH_GTK2=OFF",
-                            "-DLUA_INCLUDE_DIR=#{Formula["lua"].opt_include}/lua",
-                            "-DLUA_LIBRARY=#{Formula["lua"].opt_lib}/liblua.dylib",
+                            "-DWITH_LUAJIT=ON",
+                            "-DLUA_INCLUDE_DIR=#{luajit.opt_include}/luajit-2.1",
+                            "-DLUA_LIBRARY=#{luajit.opt_lib}/libluajit.dylib",
                             *std_cmake_args
       system "make", "install"
     end

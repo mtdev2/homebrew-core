@@ -3,10 +3,13 @@ class TerminalNotifier < Formula
   homepage "https://github.com/julienXX/terminal-notifier"
   url "https://github.com/julienXX/terminal-notifier/archive/2.0.0.tar.gz"
   sha256 "6f22a7626e4e68e88df2005a5f256f7d3b432dbf4c0f8a0c15c968d9e38bf84c"
+  license "MIT"
   head "https://github.com/julienXX/terminal-notifier.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "91f14694ebce08887492aa75138753cd9ff74977868927b15b52559728280055" => :big_sur
+    sha256 "d1268e236f13f5bb4cd5fead9cf54cfb54ceefb98e34861bd39cf3c7e6ef34cf" => :arm64_big_sur
     sha256 "78eff95b7436480521ee68a8581ff2df0c615adefccd279486f2491f1b1c0a4b" => :catalina
     sha256 "9671c602326357b7397248bfb0cf062bc47f19add15b615e512f58545c387c31" => :mojave
     sha256 "f112656234f4100d23cc1a41b96f92a09974360a822c2ec0fb6f9970862c1a22" => :high_sierra
@@ -14,7 +17,7 @@ class TerminalNotifier < Formula
     sha256 "75ce68fd95fb502e20ccb25be72f7db12112ac1a4bdf5a70c140cd174ecbacf5" => :el_capitan
   end
 
-  depends_on :xcode => :build
+  depends_on xcode: :build
 
   def install
     xcodebuild "-project", "Terminal Notifier.xcodeproj",

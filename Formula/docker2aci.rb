@@ -3,6 +3,7 @@ class Docker2aci < Formula
   homepage "https://github.com/appc/docker2aci"
   url "https://github.com/appc/docker2aci/archive/v0.17.2.tar.gz"
   sha256 "43cb18a3647ca8bae48a283fa3359e9555ab7a366c7ee9ef8a561797cebe2593"
+  license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
@@ -12,6 +13,9 @@ class Docker2aci < Formula
     sha256 "6cfeb751ff7db4e703938e2bfc4e28d4ec9a30e59261e75aa5adf690d0f33061" => :sierra
     sha256 "b1a61fc4d329ef1e3ad97ea701e2c0be392f29e8d4a8bd2f1934bf7bac620121" => :el_capitan
   end
+
+  # See https://github.com/rkt/rkt/issues/4024
+  deprecate! date: "2020-02-24", because: :repo_archived
 
   depends_on "go" => :build
 

@@ -1,14 +1,15 @@
 class Openlibm < Formula
   desc "High quality, portable, open source libm implementation"
   homepage "https://openlibm.org"
-  url "https://github.com/JuliaMath/openlibm/archive/v0.7.0.tar.gz"
-  sha256 "1699f773198018b55b12631db9c1801fe3ed191e618a1ee1be743f4570ae06a3"
+  url "https://github.com/JuliaMath/openlibm/archive/v0.7.3.tar.gz"
+  sha256 "d3bcc4ef21c033a0cc408a30186bb3dbe21219e0c52d328ca70eb688cf867354"
 
   bottle do
     cellar :any
-    sha256 "a7d18405ee96e1409a3de89904263280b364ae5e0d046be6a1391031f6ec5bb9" => :catalina
-    sha256 "d7f73575a6b6b7efb4307165f578e172a1563955ed476683b27bbaca6c0cafb6" => :mojave
-    sha256 "4f769ffeda11f2bc17a5cd52a4bcd59723586b9258b789adcdb628fb700cca86" => :high_sierra
+    sha256 "325d0ffd1c5d9ea2fa7c024718fdedbb422cb0413a3d2af4a049721259123605" => :big_sur
+    sha256 "892a6ecb5cd33f2c315331158c9d91138f46fd6bc75f7c85d30ae9da90580eaf" => :arm64_big_sur
+    sha256 "7ba4146b71d0ec4a4357bb04a000651b8acf7c4d788c754609cfe3ecb2edf907" => :catalina
+    sha256 "440a34d2b12672d844a12b1b9dee61e41920a60d1a743c5ea65f864a592bf046" => :mojave
   end
 
   keg_only :provided_by_macos

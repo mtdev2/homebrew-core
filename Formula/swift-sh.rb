@@ -1,18 +1,20 @@
 class SwiftSh < Formula
   desc "Scripting with easy zero-conf dependency imports"
   homepage "https://github.com/mxcl/swift-sh"
-  url "https://github.com/mxcl/swift-sh/archive/1.17.0.tar.gz"
-  sha256 "6e48fc5697bb19826ecd29ae01167299a5ab1fcece0453fba9318e51020f936d"
+  url "https://github.com/mxcl/swift-sh/archive/2.2.0.tar.gz"
+  sha256 "e3204b3bf727ca27c951080c5eb90b1e193fa8fef0703f60ea068bdb57f39df4"
+  license "Unlicense"
   head "https://github.com/mxcl/swift-sh.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "68c8b7cb7f45913c9f88eb0efe967de0d8cfe07031cf74b81034acce58ab2057" => :catalina
-    sha256 "7fe23e7ff8ce08c82d6a70f9dc7c1d4acbf5434368b6fbe0fcfcca1b7f10b928" => :mojave
-    sha256 "fe8094429de496751358f55f961908072256d586783026ac653395df90b17f5c" => :high_sierra
+    sha256 "9a5f73b88dc332198e97b18c539c0298fbb60690ff61f01735f28c490b12f364" => :big_sur
+    sha256 "368220eaccf4e5d1f52f2bb53c6029ba600dd321de54fef4fdfbe6c965c2716b" => :arm64_big_sur
+    sha256 "999595646476e2704d01011e10440281c24c638d46bb61eeffad6c9f3d5b4619" => :catalina
+    sha256 "3e0f348e5ccb6c22e41e3dc819eb5f8c2228b4874bac5cd24a61a823c97fabad" => :mojave
   end
 
-  depends_on :xcode => ["10.0", :build]
+  depends_on xcode: ["11.0", :build]
 
   def install
     system "swift", "build", "--disable-sandbox", "-c", "release"

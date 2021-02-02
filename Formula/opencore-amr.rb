@@ -1,11 +1,19 @@
 class OpencoreAmr < Formula
   desc "Audio codecs extracted from Android open source project"
   homepage "https://opencore-amr.sourceforge.io/"
-  url "https://downloads.sourceforge.net/opencore-amr/opencore-amr-0.1.5.tar.gz"
+  url "https://downloads.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-0.1.5.tar.gz"
   sha256 "2c006cb9d5f651bfb5e60156dbff6af3c9d35c7bbcc9015308c0aff1e14cd341"
+  license "Apache-2.0"
+
+  livecheck do
+    url :stable
+    regex(%r{url=.*?/opencore-amr[._-]v?([\d.]+)\.t}i)
+  end
 
   bottle do
     cellar :any
+    sha256 "cdde538ce64ce7ed1aa7fc0d5c023978307738a831d6fb8eb717d073b6b085ce" => :big_sur
+    sha256 "0bba66cb88f85fa1bd81905d59e807d0329af2e1c0e2c9ccca6177116c7c1d58" => :arm64_big_sur
     sha256 "424d294d95aa7539842f1c2402a0be6ba558fa22680a0f5681998b12cf45a152" => :catalina
     sha256 "816d5463797b6412fd8944b98ab79d766dcf886b9eb37d83778fb7648d995603" => :mojave
     sha256 "5f5f7853d97b957abb8671af372bd3a4a13191ccd135799cbad44aa3c66034ec" => :high_sierra

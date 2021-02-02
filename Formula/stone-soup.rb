@@ -1,28 +1,36 @@
 class StoneSoup < Formula
   desc "Dungeon Crawl Stone Soup: a roguelike game"
   homepage "https://crawl.develz.org/"
-  url "https://crawl.develz.org/release/0.24/stone_soup-0.24.0.tar.xz"
-  sha256 "eb069ae421d4246a3332d9081fb6e08b4bfaa71c407ffc17c194c5f9170d7561"
+  url "https://github.com/crawl/crawl/archive/0.26.0.tar.gz"
+  sha256 "6306c835246057bf91b6690fde14c2c3433ebe1d526876f96c46fab6dc109d45"
+  license "GPL-2.0"
+
+  livecheck do
+    url "https://crawl.develz.org/download.htm"
+    regex(/Stable.*?>v?(\d+(?:\.\d+)+)</i)
+  end
 
   bottle do
-    sha256 "4a1647599ab29da11bc0bcb6f57f9554b3d1315e044637bfffe7a1518cab0e92" => :catalina
-    sha256 "0f8c131437b46bf836a852386ee2155f759ddee3ab5d672c68a3416fce409248" => :mojave
-    sha256 "ebdc756c9a25432d009c259e2e47b3c7e78b0ba579f29c4c67d475b10486bf76" => :high_sierra
+    sha256 "0023d33f5c5205df2d97ed298dc40155d90db29f986bf58825e1f8c33a4f5375" => :big_sur
+    sha256 "0985f51f3dec4da7085b6b8c4c28ad650f0abfcca0ff93b2f30b15b8bb408cba" => :arm64_big_sur
+    sha256 "b1f22b829dd8fd185559988b5f77519b388b9bb928ee4c8ab43b904898d3e07c" => :catalina
+    sha256 "73e93b52661b35d99cde73d7b9ce3ed655cd4da4389b2bed582f2c791745b9ed" => :mojave
   end
 
   depends_on "pkg-config" => :build
-  depends_on "python" => :build
+  depends_on "python@3.9" => :build
   depends_on "lua@5.1"
   depends_on "pcre"
+  depends_on "sqlite"
 
   resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/e3/e8/b3212641ee2718d556df0f23f78de8303f068fe29cdaa7a91018849582fe/PyYAML-5.1.2.tar.gz"
-    sha256 "01adf0b6c6f61bd11af6e10ca52b7d4057dd0be0343eb9283c878cf3af56aee4"
+    url "https://files.pythonhosted.org/packages/64/c2/b80047c7ac2478f9501676c988a5411ed5572f35d1beff9cae07d321512c/PyYAML-5.3.1.tar.gz"
+    sha256 "b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d"
   end
 
   def install
     ENV.cxx11
-    ENV.prepend_path "PATH", Formula["python"].opt_libexec/"bin"
+    ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"
     xy = Language::Python.major_minor_version "python3"
     ENV.prepend_create_path "PYTHONPATH", buildpath/"vendor/lib/python#{xy}/site-packages"
 
@@ -30,16 +38,17 @@ class StoneSoup < Formula
       system "python3", *Language::Python.setup_install_args(buildpath/"vendor")
     end
 
-    cd "source" do
+    cd "crawl-ref/source" do
+      File.write("util/release_ver", version.to_s)
       args = %W[
         prefix=#{prefix}
         DATADIR=data
         NO_PKGCONFIG=
         BUILD_ZLIB=
-        BUILD_SQLITE=yes
+        BUILD_SQLITE=
         BUILD_FREETYPE=
         BUILD_LIBPNG=
-        BUILD_LUA=y
+        BUILD_LUA=
         BUILD_SDL2=
         BUILD_SDL2MIXER=
         BUILD_SDL2IMAGE=
@@ -61,10 +70,7 @@ class StoneSoup < Formula
 
       system "make", "install",
         "DEVELOPER_DIR=#{devdir}", "SDKROOT=#{MacOS.sdk_path}",
-        # stone-soup tries to use `uname -m` to determine build -arch,
-        # which is frequently wrong on OS X
-        "SDK_VER=#{MacOS.version}", "MARCH=#{MacOS.preferred_arch}",
-        *args
+        "SDK_VER=#{MacOS.version}", *args
     end
   end
 

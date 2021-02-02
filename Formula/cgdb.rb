@@ -3,8 +3,16 @@ class Cgdb < Formula
   homepage "https://cgdb.github.io/"
   url "https://cgdb.me/files/cgdb-0.7.1.tar.gz"
   sha256 "bb723be58ec68cb59a598b8e24a31d10ef31e0e9c277a4de07b2f457fe7de198"
+  license "GPL-2.0"
+
+  livecheck do
+    url "https://cgdb.me/files/"
+    regex(/href=.*?cgdb[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
+    sha256 "dd7a9696d58a5d22b71f0fe2f749f89e6b0d660f0378829de3959a694a0bb007" => :big_sur
+    sha256 "c5eb8b69bec6303b69525db54266cf5f8125eb5b6d97d7f5c2bf41cdab082748" => :arm64_big_sur
     sha256 "50abc3a292d69a3a121f3ed7d54d72f4528eb1285faa7f842bb96588a463dc88" => :catalina
     sha256 "8f361fcad59ddf4825f4d42b516a099ba75bfffc0b885d42aeb875dbd1b2a1d4" => :mojave
     sha256 "9ab4c0a880cb71903094929b04eada3c279a48ddb00b651a8a93d55cd523d380" => :high_sierra

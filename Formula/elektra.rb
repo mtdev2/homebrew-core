@@ -1,14 +1,21 @@
 class Elektra < Formula
   desc "Framework to access config settings in a global key database"
   homepage "https://libelektra.org/"
-  url "https://www.libelektra.org/ftp/elektra/releases/elektra-0.9.1.tar.gz"
-  sha256 "df1d2ec1b4db9c89c216772f0998581a1cbb665e295ff9a418549360bb42f758"
+  url "https://www.libelektra.org/ftp/elektra/releases/elektra-0.9.3.tar.gz"
+  sha256 "5022a6ebf004d892ded03fcf6eb3d223942a7fadd2d68f14d847d1f7f243e1d7"
+  license "BSD-3-Clause"
   head "https://github.com/ElektraInitiative/libelektra.git"
 
+  livecheck do
+    url "https://www.libelektra.org/ftp/elektra/releases/"
+    regex(/href=.*?elektra[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
-    sha256 "a365f031dffd695ded3f1b1aa64320791caf134002f8d7ee89beea4469a5de00" => :catalina
-    sha256 "c2964e938a38c91b3d0322af3eef8ffc397f92b9d2de5365133f50f8142ed532" => :mojave
-    sha256 "6db5a9e59b9db54069636ed12fd73d405447703512717847e4839875c30fe586" => :high_sierra
+    sha256 "262acb6c0f4ecbfb8622f06d7e9f754a076991f2fef9cde53fc76fb8c0f30518" => :big_sur
+    sha256 "686d067559aa7e9f57b419a92c703d382abdf75b413b6d67854dec5ebf15873c" => :catalina
+    sha256 "25e5bc4305fcde829a674d3734b9b18204d64acaf47027b322919703d9065b1f" => :mojave
+    sha256 "218f8e1b129c4796301062e43a842b2d39f7996c204f69d9f15857304a8230d0" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -21,6 +28,10 @@ class Elektra < Formula
       system "make", "install"
     end
 
+    # Avoid references to the Homebrew shims directory
+    inreplace Dir[prefix/"share/elektra/test_data/gen/gen/highlevel/*.check.sh"],
+              HOMEBREW_SHIMS_PATH/"mac/super/", ""
+
     bash_completion.install "scripts/completion/kdb-bash-completion" => "kdb"
     fish_completion.install "scripts/completion/kdb.fish"
     zsh_completion.install "scripts/completion/kdb_zsh_completion" => "_kdb"
@@ -29,7 +40,7 @@ class Elektra < Formula
   test do
     output = shell_output("#{bin}/kdb get system/elektra/version/infos/licence")
     assert_match "BSD", output
-    Utils.popen_read("#{bin}/kdb", "plugin-list").split.each do |plugin|
+    shell_output("#{bin}/kdb plugin-list").split.each do |plugin|
       system "#{bin}/kdb", "plugin-check", plugin
     end
   end

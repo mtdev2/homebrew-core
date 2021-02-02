@@ -1,27 +1,34 @@
 class Eureka < Formula
   desc "CLI tool to input and store your ideas without leaving the terminal"
   homepage "https://github.com/simeg/eureka"
-  url "https://github.com/simeg/eureka/archive/v1.6.2.tar.gz"
-  sha256 "a8fb41cdf0c8c5a00e5c17fd2cdde71ce8fa1babb2b5d69d68cee7a0df5d1b4b"
+  url "https://github.com/simeg/eureka/archive/v1.8.1.tar.gz"
+  sha256 "d10d412c71dea51b4973c3ded5de1503a4c5de8751be5050de989ac08eb0455e"
+  license "MIT"
   head "https://github.com/simeg/eureka.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "ac22c59bd6c9359388c17ca6e4f342ef2c9b114539bc6a8547434fe95f2f430f" => :catalina
-    sha256 "c4e6550eaba8cbfe179fe58f2a0ed621bbc43bf53c28f56f417dc13020405bd5" => :mojave
-    sha256 "2cce6fe9de241d1d78fb1ef7cdc4d1d94e22973da6d0e59bca252d7f039bffd4" => :high_sierra
+    cellar :any
+    sha256 "1aee228a339009bb98020df8f499f27353dc1bd4d301d357b86e130d0d17d906" => :big_sur
+    sha256 "90360b05ad3ef835c82c534e68ec79ad930eb2b0c6dafa635340f994851ce72b" => :arm64_big_sur
+    sha256 "b8fa76b3d16fb92968402f2057693af133270c72292307461f351b8950b9b329" => :catalina
+    sha256 "2d31715b3b5aa38ed008b58e83d9ce6c9afdbe58f9f6d4bb3bf9195f3dc139ed" => :mojave
+    sha256 "060f76e2626e9b30184f1cfe0a61f8b4ddf545c8f8a5d59c6a8d1b54f9548c4a" => :high_sierra
   end
 
   depends_on "rust" => :build
+  depends_on "openssl@1.1"
 
   def install
-    system "cargo", "install", "--locked", "--root", prefix, "--path", "."
+    system "cargo", "install", *std_cargo_args
   end
 
   test do
     assert_match "eureka [FLAGS]", shell_output("#{bin}/eureka --help 2>&1")
 
-    assert_match "Could not remove editor config file", shell_output("#{bin}/eureka --clear-editor 2>&1", 101)
-    assert_match "No path to repository found", shell_output("#{bin}/eureka --view 2>&1", 101)
+    (testpath/".eureka/repo_path").write <<~EOS
+      homebrew
+    EOS
+
+    assert_match "homebrew/README.md: No such file or directory", shell_output("#{bin}/eureka --view 2>&1")
   end
 end

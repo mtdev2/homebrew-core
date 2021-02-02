@@ -3,22 +3,25 @@ class Awscli < Formula
 
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://github.com/aws/aws-cli/archive/2.0.6.tar.gz"
-  sha256 "f7fc0cd494ed9cf14f3845b5b36b41d7a7469e2baf484331f68cc45ac0d66bd4"
-  head "https://github.com/aws/aws-cli.git", :branch => "v2"
+  url "https://github.com/aws/aws-cli/archive/2.1.22.tar.gz"
+  sha256 "cef6672d4d13ae4008891468edfe4be15e907a23c44acf71571b202b4888452d"
+  license "Apache-2.0"
+  head "https://github.com/aws/aws-cli.git", branch: "v2"
 
   bottle do
-    sha256 "6f118d818eb7d0b07cbe8bb9245c5ab33d2e2db09b1292c1fb5a0cc8a5329287" => :catalina
-    sha256 "33ea1167f7df3d920e4562abada36ed309289ebddcca718ef35867dd21bcf30a" => :mojave
-    sha256 "027b7946e7e61818eac9a81e80e7fd717908d3b1b90d04dc5306c2396b85f583" => :high_sierra
+    sha256 big_sur: "cb2cb92999ff78e4f3ecfb57fca6782c481f6fe9abd5947e3f24569c3066c94b"
+    sha256 cellar: :any, arm64_big_sur: "5970413cf75bce3e0908c0bc02fafe96d83559eec80e618e264638b007673efd"
+    sha256 catalina: "dbdbf05a94e97c5acec62d09272dc407f42244a0d2546ac6f273843484142183"
+    sha256 mojave: "99139c8d3d78914799034b4ce56aeefa106be643eff5ab2952b06eeff98231db"
   end
 
-  # Some AWS APIs require TLS1.2, which system Python doesn't have before High
-  # Sierra
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   uses_from_macos "groff"
-  uses_from_macos "libyaml"
+
+  on_linux do
+    depends_on "libyaml"
+  end
 
   def install
     venv = virtualenv_create(libexec, "python3")
@@ -26,6 +29,7 @@ class Awscli < Formula
                               "--ignore-installed", buildpath
     system libexec/"bin/pip", "uninstall", "-y", "awscli"
     venv.pip_install_and_link buildpath
+    system libexec/"bin/pip", "uninstall", "-y", "pyinstaller"
     pkgshare.install "awscli/examples"
 
     rm Dir["#{bin}/{aws.cmd,aws_bash_completer,aws_zsh_completer.sh}"]
@@ -39,6 +43,8 @@ class Awscli < Formula
         if [[ -f $e ]]; then source $e; fi
       }
     EOS
+
+    system libexec/"bin/python3", "scripts/gen-ac-index", "--include-builtin-index"
   end
 
   def caveats
@@ -50,5 +56,7 @@ class Awscli < Formula
 
   test do
     assert_match "topics", shell_output("#{bin}/aws help")
+    assert_include Dir["#{libexec}/lib/python3.9/site-packages/awscli/data/*"],
+                   "#{libexec}/lib/python3.9/site-packages/awscli/data/ac.index"
   end
 end

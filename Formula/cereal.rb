@@ -3,10 +3,13 @@ class Cereal < Formula
   homepage "https://uscilab.github.io/cereal/"
   url "https://github.com/USCiLab/cereal/archive/v1.3.0.tar.gz"
   sha256 "329ea3e3130b026c03a4acc50e168e7daff4e6e661bc6a7dfec0d77b570851d5"
-  head "https://github.com/USCiLab/cereal.git", :branch => "develop"
+  license "BSD-3-Clause"
+  head "https://github.com/USCiLab/cereal.git", branch: "develop"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "a91e1e24d8bad693211e5854f9270bc54167c261c8b7d5434d5a8983af06a792" => :big_sur
+    sha256 "62497644813556eff7bc7da0aad2d13e8d21ef98d21ee12b090bcfbcd909e0e8" => :arm64_big_sur
     sha256 "a8320898b751c2df4777d1fd77f9982a812972b46630fa060b21e412c545a14d" => :catalina
     sha256 "a8320898b751c2df4777d1fd77f9982a812972b46630fa060b21e412c545a14d" => :mojave
     sha256 "a8320898b751c2df4777d1fd77f9982a812972b46630fa060b21e412c545a14d" => :high_sierra

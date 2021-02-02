@@ -5,8 +5,15 @@ class Spandsp < Formula
   sha256 "cc053ac67e8ac4bb992f258fd94f275a7872df959f6a87763965feabfdcc9465"
   revision 1
 
+  livecheck do
+    url "https://www.soft-switch.org/downloads/spandsp/?C=M&O=D"
+    regex(/href=.*?spandsp[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
     cellar :any
+    sha256 "05ff257a953dbb0d88f955fc2f467c7dcf47784a55c53e7b9f9d564767225bf8" => :big_sur
+    sha256 "79f15cdc3b76b6348f828252f94d0f6f1408a9c68d11b139e9da930015c4ca12" => :arm64_big_sur
     sha256 "8a34a25e8108c8a5343d00a031d52c1003422a5ad84186ded83fbed819a834e5" => :catalina
     sha256 "d38722be71b9d6b3311ee51cb85bc406b2bc34eaf5741851c3b4ed432aecacf2" => :mojave
     sha256 "0b4bb6795c931452181252754da3db80189e6557c344e743296de823cb711efa" => :high_sierra

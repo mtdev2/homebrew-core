@@ -4,10 +4,17 @@ class Bc < Formula
   url "https://ftp.gnu.org/gnu/bc/bc-1.07.1.tar.gz"
   mirror "https://ftpmirror.gnu.org/bc/bc-1.07.1.tar.gz"
   sha256 "62adfca89b0a1c0164c2cdca59ca210c1d44c3ffc46daf9931cf4942664cb02a"
+  license "GPL-3.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
     rebuild 1
+    sha256 "f58adf16d7319035728503b47da1a9fddf3fce78e7f2efa69e6650cc0a8346a8" => :big_sur
+    sha256 "3e0fa32e2d65a4c0e0eca3d555e4c5dfa80b0a620610deae294c80a50131f514" => :arm64_big_sur
     sha256 "9fdbf6f45737082f911073b3c291399487bc3a3cfd1285e0da389436064c438f" => :catalina
     sha256 "78372f9830096b6d63fa7278e141924869a9aaee250b2ac1135594e67ba76c09" => :mojave
     sha256 "0baf2e31191d80258636186bf9adcdf6b3f554f213d36cb3054213f736e52bf1" => :high_sierra
@@ -18,6 +25,7 @@ class Bc < Formula
   keg_only :provided_by_macos
 
   uses_from_macos "bison" => :build
+  uses_from_macos "ed" => :build
   uses_from_macos "flex"
 
   def install

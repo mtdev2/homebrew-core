@@ -3,10 +3,12 @@ class GitAppraise < Formula
   homepage "https://github.com/google/git-appraise"
   url "https://github.com/google/git-appraise/archive/v0.6.tar.gz"
   sha256 "5c674ee7f022cbc36c5889053382dde80b8e80f76f6fac0ba0445ed5313a36f1"
+  license "Apache-2.0"
   head "https://github.com/google/git-appraise.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "0a69bb7443445c01a0c50b331ced29ab21a24b15053b1b3b6619b87508c33a5b" => :big_sur
     sha256 "2d36acb4d28daabb41a0629e79a11aed722a988bdde30643cd24bc366f69754c" => :catalina
     sha256 "f5f69cc84ebca243907d1e735b8f80807f48de36b3d6eea42a8ab99edbd48eb0" => :mojave
     sha256 "e515979b703cef062e19829399ddb441c91d835e25814614c938af36764fc0d4" => :high_sierra

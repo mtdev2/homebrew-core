@@ -3,29 +3,35 @@ class Gom < Formula
   homepage "https://wiki.gnome.org/Projects/Gom"
   url "https://download.gnome.org/sources/gom/0.4/gom-0.4.tar.xz"
   sha256 "68d08006aaa3b58169ce7cf1839498f45686fba8115f09acecb89d77e1018a9d"
+  revision 2
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any
-    sha256 "1f88c8df8a310b7b51f71f299b845239e713f8d80bcc65ef092cfb0ffcd827df" => :catalina
-    sha256 "7f8af3c459f54e9ccbe6cadcdddcc949786639eef6ea186f476bc64ea5d50ff7" => :mojave
-    sha256 "eafb8a7c6fcc581ba8fc2f00a45940f0af3b7d28f2f856d961918951a3b9b346" => :high_sierra
+    sha256 "b8c298e1d442d15dd630bfe6b1edfeb11b77326b730237ffc4c6b3c607c48192" => :big_sur
+    sha256 "ff2ac0dfef03bd08c7f03f13595af2e1476c396163e57066726c92e06cbe4fba" => :arm64_big_sur
+    sha256 "c86f525462ffd97cb6bd469b5a26d1db56281d725916d5eb524f31a4750b1892" => :catalina
+    sha256 "afda0dc772004cee3b8148719a078f6ac2871480260f310a5d06e367dcd68412" => :mojave
+    sha256 "cccd9551ffced0a1648ff2f420eb3e5666ff102b4c81d96806cd7d25068ef7d7" => :high_sierra
   end
 
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "python" => :build
+  depends_on "python@3.9" => :build
   depends_on "gdk-pixbuf"
   depends_on "gettext"
   depends_on "glib"
 
   def install
-    pyver = Language::Python.major_minor_version "python3"
+    pyver = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
 
     mkdir "build" do
-      system "meson", "--prefix=#{prefix}",
-        "-Dpygobject-override-dir=#{lib}/python#{pyver}/site-packages", ".."
+      system "meson", *std_meson_args, "-Dpygobject-override-dir=#{lib}/python#{pyver}/site-packages", ".."
       system "ninja"
       system "ninja", "install"
     end
@@ -53,8 +59,10 @@ class Gom < Formula
       -lglib-2.0
       -lgobject-2.0
       -lgom-1.0
-      -lintl
     ]
+    on_macos do
+      flags << "-lintl"
+    end
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

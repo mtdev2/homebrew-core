@@ -3,9 +3,15 @@ class Mailcheck < Formula
   homepage "https://mailcheck.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/mailcheck/mailcheck/1.91.2/mailcheck_1.91.2.tar.gz"
   sha256 "6ca6da5c9f8cc2361d4b64226c7d9486ff0962602c321fc85b724babbbfa0a5c"
+  license "GPL-2.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "59d3c8716efff8670b81cec68c47b0663ffa079938ee6aae55078770564fa481" => :big_sur
     sha256 "66fa586c21ec0cd9a842fcb99e8bbf822681c8858b864b14aa7d57ea89c47a99" => :catalina
     sha256 "7ea23945f9750c34d71ff05c5f41c0f5352e3eecaf1c7cf485d4f51096b9dd4e" => :mojave
     sha256 "c630704fee3dea86402e7486295a13601077bd991e45f23d3ac841c95a9c4474" => :high_sierra

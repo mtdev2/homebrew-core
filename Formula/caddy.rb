@@ -1,32 +1,34 @@
 class Caddy < Formula
-  desc "Alternative general-purpose HTTP/2 web server"
+  desc "Powerful, enterprise-ready, open source web server with automatic HTTPS"
   homepage "https://caddyserver.com/"
-  url "https://github.com/caddyserver/caddy/archive/v1.0.5.tar.gz"
-  sha256 "0e7dc07e4f61f9a00a4c962755098e19ebf8c8a8e0d72e311597ce021b7a2a5e"
+  url "https://github.com/caddyserver/caddy/archive/v2.3.0.tar.gz"
+  sha256 "4688b122ac05be39622aa81324d1635f1642e4a66d731e82d210aef78cf2766a"
+  license "Apache-2.0"
   head "https://github.com/caddyserver/caddy.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "56b98f2f38c4e1d3b1a2edfc1b972479e28196c44041d0680941f4a02049ba4f" => :catalina
-    sha256 "a3a8216f2695e8a1e48bfda1b45958bb6cc0837f36366d8613175223c4811214" => :mojave
-    sha256 "601e85a5ca5ca6194330d6e8818114bc8f46e11ab15590bc033ff068203b704b" => :high_sierra
+    sha256 "c59083c1a788a18a56a3207fde52c833d68dd00312a870bf8c00c73b634f4844" => :big_sur
+    sha256 "21f0b6e91e1868b077f3d729db7e9b7ca399407304dae108b4f347ee4b77bae0" => :catalina
+    sha256 "3012750280d5bee8b42e7b40d0ecf96956f709ee1dd648ef86702f0436524200" => :mojave
   end
 
   depends_on "go" => :build
 
-  def install
-    ENV["GOOS"] = "darwin"
-    ENV["GOARCH"] = "amd64"
-
-    (buildpath/"src/github.com/caddyserver").mkpath
-    ln_s buildpath, "src/github.com/caddyserver/caddy"
-
-    system "go", "build", "-ldflags",
-           "-X github.com/caddyserver/caddy/caddy/caddymain.gitTag=#{version}",
-           "-o", bin/"caddy", "github.com/caddyserver/caddy/caddy"
+  resource "xcaddy" do
+    url "https://github.com/caddyserver/xcaddy/archive/v0.1.7.tar.gz"
+    sha256 "9915970e69c07324f4d032741741516523147b6250e1426b16e6b794d4a56f05"
   end
 
-  plist_options :manual => "caddy -conf #{HOMEBREW_PREFIX}/etc/Caddyfile"
+  def install
+    revision = build.head? ? version.commit : "v#{version}"
+
+    resource("xcaddy").stage do
+      system "go", "run", "cmd/xcaddy/main.go", "build", revision, "--output", bin/"caddy"
+    end
+  end
+
+  plist_options manual: "caddy run --config #{HOMEBREW_PREFIX}/etc/Caddyfile"
 
   def plist
     <<~EOS
@@ -41,25 +43,44 @@ class Caddy < Formula
           <key>ProgramArguments</key>
           <array>
             <string>#{opt_bin}/caddy</string>
-            <string>-conf</string>
+            <string>run</string>
+            <string>--config</string>
             <string>#{etc}/Caddyfile</string>
           </array>
           <key>RunAtLoad</key>
           <true/>
+          <key>StandardOutPath</key>
+          <string>#{var}/log/caddy.log</string>
+          <key>StandardErrorPath</key>
+          <string>#{var}/log/caddy.log</string>
         </dict>
       </plist>
     EOS
   end
 
   test do
-    begin
-      io = IO.popen("#{bin}/caddy")
-      sleep 2
-    ensure
-      Process.kill("SIGINT", io.pid)
-      Process.wait(io.pid)
-    end
+    port1 = free_port
+    port2 = free_port
 
-    io.read =~ /0\.0\.0\.0:2015/
+    (testpath/"Caddyfile").write <<~EOS
+      {
+        admin 127.0.0.1:#{port1}
+      }
+
+      http://127.0.0.1:#{port2} {
+        respond "Hello, Caddy!"
+      }
+    EOS
+
+    fork do
+      exec bin/"caddy", "run", "--config", testpath/"Caddyfile"
+    end
+    sleep 2
+
+    assert_match "\":#{port2}\"",
+      shell_output("curl -s http://127.0.0.1:#{port1}/config/apps/http/servers/srv0/listen/0")
+    assert_match "Hello, Caddy!", shell_output("curl -s http://127.0.0.1:#{port2}")
+
+    assert_match version.to_s, shell_output("#{bin}/caddy version")
   end
 end

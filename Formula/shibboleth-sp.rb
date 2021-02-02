@@ -1,15 +1,21 @@
 class ShibbolethSp < Formula
   desc "Shibboleth 2 Service Provider daemon"
   homepage "https://wiki.shibboleth.net/confluence/display/SHIB2"
-  url "https://shibboleth.net/downloads/service-provider/3.0.4/shibboleth-sp-3.0.4.tar.bz2"
-  sha256 "f5dc0fd028b74db4aaae76b59ec98e8a719c38cfe0f1d722feb2d5e0b9880cff"
+  url "https://shibboleth.net/downloads/service-provider/3.2.0/shibboleth-sp-3.2.0.tar.bz2"
+  sha256 "639939ee8a7bfc3790e10be92695b35465cd9c89e83a1005c4667ca3d7d66fea"
+  license "Apache-2.0"
   revision 1
 
+  livecheck do
+    url "https://shibboleth.net/downloads/service-provider/latest/"
+    regex(/href=.*?shibboleth-sp[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
-    rebuild 1
-    sha256 "8a09632277ead38ae04cb9fd0bf036cc3511d06e6a7a85745847dffee849927b" => :catalina
-    sha256 "0955fcb426b32fcbe3875c106681d69bcc6ecdddf25f19c1ef585b1168aeeaae" => :mojave
-    sha256 "09bec26e3cdfd3dbcb15c851589a223b5b7907771eca4ad96b9ed6b51587e37d" => :high_sierra
+    sha256 "781bbb7e15b8bd627faebbbba9d0ab953f16b404bc5f038b3922ef9758a93a54" => :big_sur
+    sha256 "8692a9b1f2628e3d4f8357eec50025a3a77f719a3f7dc689447805792461e0e6" => :arm64_big_sur
+    sha256 "a1ef4ff3fee2e58592efa0c5ae94e3db23989ca840a4ea5243cba20443b0e756" => :catalina
+    sha256 "3b38d18397b68c481e8872fbd45a3771a45e5278c6f1c2e2540111c18404a865" => :mojave
   end
 
   depends_on "apr" => :build
@@ -18,7 +24,6 @@ class ShibbolethSp < Formula
   depends_on "boost"
   depends_on "httpd" if MacOS.version >= :high_sierra
   depends_on "log4shib"
-  depends_on :macos => :yosemite
   depends_on "opensaml"
   depends_on "openssl@1.1"
   depends_on "unixodbc"
@@ -52,7 +57,7 @@ class ShibbolethSp < Formula
     (var/"cache/shibboleth").mkpath
   end
 
-  plist_options :startup => true, :manual => "shibd"
+  plist_options startup: true, manual: "shibd"
 
   def plist
     <<~EOS

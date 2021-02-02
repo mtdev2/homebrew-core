@@ -3,10 +3,17 @@ class Cfv < Formula
   homepage "https://cfv.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/cfv/cfv/1.18.3/cfv-1.18.3.tar.gz"
   sha256 "ff28a8aa679932b83eb3b248ed2557c6da5860d5f8456ffe24686253a354cff6"
+  license "GPL-2.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
     rebuild 1
+    sha256 "8ce1654aa4805deb6a80b9ec470306b879b79d5e25e151df1e4c78e498c0e214" => :big_sur
+    sha256 "09dd4b6432d6cac583e1ac82d2d65c10f2d3549f4d7a1017dbcce07ae6123238" => :arm64_big_sur
     sha256 "cd4fac08aac6490ade28d8b370e006c720bab5df939caadb92b25af278a4384a" => :catalina
     sha256 "251348813c0a811e6ac298432967d19e42bfa73bbc3217eaa0b63bec4b78d98d" => :mojave
     sha256 "7452ead7901f4f4ab2683cd391af82f856eba1a57c11d07c038ca18507535dac" => :high_sierra

@@ -1,15 +1,17 @@
 class ShadowsocksLibev < Formula
   desc "Libev port of shadowsocks"
   homepage "https://github.com/shadowsocks/shadowsocks-libev"
-  url "https://github.com/shadowsocks/shadowsocks-libev/releases/download/v3.3.4/shadowsocks-libev-3.3.4.tar.gz"
-  sha256 "fce47a956fad0c30def9c71821bcec450a40d3f881548e31e66cedf262b89eb1"
+  url "https://github.com/shadowsocks/shadowsocks-libev/releases/download/v3.3.5/shadowsocks-libev-3.3.5.tar.gz"
+  sha256 "cfc8eded35360f4b67e18dc447b0c00cddb29cc57a3cec48b135e5fb87433488"
+  license "GPL-3.0"
+  revision 1
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "db9d4bd66d39b269b41325581a94bcbe8507d806af3fbf99f793a8e02963b090" => :catalina
-    sha256 "02469b1937cf8739d142ffa8c7d56d5ba3e1e9d64505fe48c8c81edfb51be088" => :mojave
-    sha256 "ac2d53fb71b30a8cf8da51487b48806d8897f9cdc0ab0d1e8a75b7514ff804df" => :high_sierra
+    sha256 "1a2381a03550ecdef8c098747e96707aa99317bbcc7b8595f1b26a27a9267fb8" => :big_sur
+    sha256 "4fb1d6c97502780f2d6462e630f8bbfa0b56e3974954353ea9a14dad3ac783a6" => :arm64_big_sur
+    sha256 "7e2e484607287b95e8572fd902da733cb9ec93b3f6ebe7de365d5b729e133fa0" => :catalina
+    sha256 "711ae7d8be8df5607abcf7e04090d272184dae68e3771db15973e92cc1712382" => :mojave
   end
 
   head do
@@ -25,10 +27,9 @@ class ShadowsocksLibev < Formula
   depends_on "c-ares"
   depends_on "libev"
   depends_on "libsodium"
+  depends_on :macos # Due to Python 2
   depends_on "mbedtls"
   depends_on "pcre"
-
-  uses_from_macos "python@2"
 
   def install
     ENV["XML_CATALOG_FILES"] = etc/"xml/catalog"
@@ -52,7 +53,7 @@ class ShadowsocksLibev < Formula
     system "make", "install"
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/shadowsocks-libev/bin/ss-local -c #{HOMEBREW_PREFIX}/etc/shadowsocks-libev.json"
+  plist_options manual: "#{HOMEBREW_PREFIX}/opt/shadowsocks-libev/bin/ss-local -c #{HOMEBREW_PREFIX}/etc/shadowsocks-libev.json"
 
   def plist
     <<~EOS
@@ -78,12 +79,15 @@ class ShadowsocksLibev < Formula
   end
 
   test do
+    server_port = free_port
+    local_port = free_port
+
     (testpath/"shadowsocks-libev.json").write <<~EOS
       {
           "server":"127.0.0.1",
-          "server_port":9998,
+          "server_port":#{server_port},
           "local":"127.0.0.1",
-          "local_port":9999,
+          "local_port":#{local_port},
           "password":"test",
           "timeout":600,
           "method":null
@@ -93,7 +97,7 @@ class ShadowsocksLibev < Formula
     client = fork { exec bin/"ss-local", "-c", testpath/"shadowsocks-libev.json" }
     sleep 3
     begin
-      system "curl", "--socks5", "127.0.0.1:9999", "github.com"
+      system "curl", "--socks5", "127.0.0.1:#{local_port}", "github.com"
     ensure
       Process.kill 9, server
       Process.wait server

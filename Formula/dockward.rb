@@ -5,11 +5,13 @@ class Dockward < Formula
   homepage "https://github.com/abiosoft/dockward"
   url "https://github.com/abiosoft/dockward/archive/0.0.4.tar.gz"
   sha256 "b96244386ae58aefb16177837d7d6adf3a9e6d93b75eea3308a45eb8eb9f4116"
+  license "Apache-2.0"
   head "https://github.com/abiosoft/dockward.git"
 
   bottle do
     cellar :any_skip_relocation
     rebuild 1
+    sha256 "5287a1a8f985e8ecaba4a98eac278828e515bf4a8ba789ea68fd72a4243e8424" => :big_sur
     sha256 "8abcf72ec26b59bab1b489e3233a137ebcc4a6d4bf3ccae10b7b062784d10e98" => :catalina
     sha256 "9c4eb789740a0b589faa9ccedcf3df90b6f68f1ab561806fe9aa750b91722800" => :mojave
     sha256 "50c2b838bbd89349e40050810a833cfea2803ac699cd006d47e796075be975b2" => :high_sierra
@@ -21,32 +23,32 @@ class Dockward < Formula
 
   go_resource "github.com/Sirupsen/logrus" do
     url "https://github.com/Sirupsen/logrus.git",
-        :revision => "61e43dc76f7ee59a82bdf3d71033dc12bea4c77d"
+        revision: "61e43dc76f7ee59a82bdf3d71033dc12bea4c77d"
   end
 
   go_resource "github.com/docker/distribution" do
     url "https://github.com/docker/distribution.git",
-        :revision => "7a0972304e201e2a5336a69d00e112c27823f554"
+        revision: "7a0972304e201e2a5336a69d00e112c27823f554"
   end
 
   go_resource "github.com/docker/engine-api" do
     url "https://github.com/docker/engine-api.git",
-        :revision => "4290f40c056686fcaa5c9caf02eac1dde9315adf"
+        revision: "4290f40c056686fcaa5c9caf02eac1dde9315adf"
   end
 
   go_resource "github.com/docker/go-connections" do
     url "https://github.com/docker/go-connections.git",
-        :revision => "eb315e36415380e7c2fdee175262560ff42359da"
+        revision: "eb315e36415380e7c2fdee175262560ff42359da"
   end
 
   go_resource "github.com/docker/go-units" do
     url "https://github.com/docker/go-units.git",
-        :revision => "e30f1e79f3cd72542f2026ceec18d3bd67ab859c"
+        revision: "e30f1e79f3cd72542f2026ceec18d3bd67ab859c"
   end
 
   go_resource "golang.org/x/net" do
     url "https://go.googlesource.com/net.git",
-        :revision => "f2499483f923065a842d38eb4c7f1927e6fc6e6d"
+        revision: "f2499483f923065a842d38eb4c7f1927e6fc6e6d"
   end
 
   def install

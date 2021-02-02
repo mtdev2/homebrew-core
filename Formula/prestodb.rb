@@ -1,19 +1,30 @@
 class Prestodb < Formula
   desc "Distributed SQL query engine for big data"
   homepage "https://prestodb.io"
-  url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-server/0.230/presto-server-0.230.tar.gz"
-  sha256 "dfa98c7d709e2c2c81e400f746cfec28665ba2005faaa8d87ed38d82b5550503"
-  revision 1
+  url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-server/0.246/presto-server-0.246.tar.gz"
+  sha256 "b8e336ca7894ee74932d02569738a68e7a5840d0fd0eb1f3b8af75f49052f522"
+  license "Apache-2.0"
+
+  # The source of the Presto download page at https://prestodb.io/download.html
+  # contains old version information. The current version information is loaded
+  # from the JavaScript file below, so we check that instead. We don't check
+  # Maven because sometimes the directory listing page contains a newer version
+  # that hasn't been released yet and we probably don't want to upgrade until
+  # it's official on the first-party website, etc.
+  livecheck do
+    url "https://prestodb.io/static/js/version.js"
+    regex(/latest_presto_version.*?(\d+(?:\.\d+)+)/i)
+  end
 
   bottle :unneeded
 
   depends_on "openjdk"
 
-  conflicts_with "prestosql", :because => "both install `presto` and `presto-server` binaries"
+  conflicts_with "prestosql", because: "both install `presto` and `presto-server` binaries"
 
   resource "presto-cli" do
-    url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-cli/0.230/presto-cli-0.230-executable.jar"
-    sha256 "b37cff444f79f5a11998ea51cc5b2ae082c51c5ebd9fff26ded5f6550412ce88"
+    url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-cli/0.246/presto-cli-0.246-executable.jar"
+    sha256 "a6c6c655a1eeeb83a880b72a9c3450e25424072b02bb83dfe7886a3ebe540c5c"
   end
 
   def install
@@ -34,6 +45,7 @@ class Prestodb < Formula
       -XX:+ExplicitGCInvokesConcurrent
       -XX:+HeapDumpOnOutOfMemoryError
       -XX:+ExitOnOutOfMemoryError
+      -Djdk.attach.allowAttachSelf=true
     EOS
 
     (libexec/"etc/config.properties").write <<~EOS
@@ -50,18 +62,11 @@ class Prestodb < Formula
 
     (libexec/"etc/catalog/jmx.properties").write "connector.name=jmx"
 
-    (bin/"presto-server").write <<~EOS
-      #!/bin/bash
-      export JAVA_HOME="#{Formula["openjdk"].opt_prefix}"
-      exec "#{libexec}/bin/launcher" "$@"
-    EOS
+    (bin/"presto-server").write_env_script libexec/"bin/launcher", Language::Java.overridable_java_home_env
 
     resource("presto-cli").stage do
       libexec.install "presto-cli-#{version}-executable.jar"
-      (bin/"presto").write <<~EOS
-        #!/bin/bash
-        exec "#{Formula["openjdk"].opt_bin}/java" -jar "#{libexec}/presto-cli-#{version}-executable.jar" "$@"
-      EOS
+      bin.write_jar_script libexec/"presto-cli-#{version}-executable.jar", "presto"
     end
   end
 
@@ -76,7 +81,7 @@ class Prestodb < Formula
     EOS
   end
 
-  plist_options :manual => "presto-server run"
+  plist_options manual: "presto-server run"
 
   def plist
     <<~EOS

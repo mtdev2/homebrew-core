@@ -1,6 +1,7 @@
 class Bitlbee < Formula
   desc "IRC to other chat networks gateway"
   homepage "https://www.bitlbee.org/"
+  license "GPL-2.0"
   head "https://github.com/bitlbee/bitlbee.git"
 
   stable do
@@ -8,7 +9,14 @@ class Bitlbee < Formula
     sha256 "9f15de46f29b46bf1e39fc50bdf4515e71b17f551f3955094c5da792d962107e"
   end
 
+  livecheck do
+    url "https://get.bitlbee.org/src/"
+    regex(/href=.*?bitlbee[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
+    sha256 "dad6720fdc5a098cedbff433883ce7e1098c3e16dc0870b810929ca371b0fdd2" => :big_sur
+    sha256 "1b14221525a9329fbf1e28d4c0893e130717ddede1935df4af9dbcab044c199b" => :arm64_big_sur
     sha256 "52da03d26df7e96ae71125343859b754e24146c8ad5e6c58bc33eb634862ef40" => :catalina
     sha256 "d6f39cdbf633e779a47d625e8c62393d75fe1656d4d1d8cbe342940fb65cba53" => :mojave
     sha256 "cefcf70546bf4746913b64ee8c282deb9ca15ffb61a0e564f3f1dc8da09fb447" => :high_sierra
@@ -48,7 +56,7 @@ class Bitlbee < Formula
     (var/"bitlbee/lib").mkpath
   end
 
-  plist_options :manual => "bitlbee -D"
+  plist_options manual: "bitlbee -D"
 
   def plist
     <<~EOS

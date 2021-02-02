@@ -1,13 +1,21 @@
 class MidnightCommander < Formula
   desc "Terminal-based visual file manager"
   homepage "https://www.midnight-commander.org/"
-  url "https://www.midnight-commander.org/downloads/mc-4.8.24.tar.xz"
-  sha256 "859f1cc070450bf6eb4d319ffcb6a5ac29deb0ac0d81559fb2e71242b1176d46"
+  url "https://www.midnight-commander.org/downloads/mc-4.8.26.tar.xz"
+  mirror "https://ftp.osuosl.org/pub/midnightcommander/mc-4.8.26.tar.xz"
+  sha256 "c6deadc50595f2d9a22dc6c299a9f28b393e358346ebf6ca444a8469dc166c27"
+  license "GPL-3.0-or-later"
+
+  livecheck do
+    url "https://ftp.osuosl.org/pub/midnightcommander/"
+    regex(/href=.*?mc[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
-    sha256 "c6adcb70e949c89ba12ba91fffb89ad00c55e8c3a063ae6d01954a02a84512f2" => :catalina
-    sha256 "2e3e95bd852f0edd7069b09ff24e897e94bb495f3b852230f7cc3400acfc2d9a" => :mojave
-    sha256 "2e888d8d8cec7a0c881d0df09f5662080494f89e1871fbcccf30e9a0cc18aa1b" => :high_sierra
+    sha256 "2035ff99bbb38fe1f12f4cf5c311b453c89d295a988ff570a5c4cab2834a4232" => :big_sur
+    sha256 "e0dcbb747b0ed2e44c42ac024a42ac657da5b8d3898d1caa6d1bc029cbca13cb" => :arm64_big_sur
+    sha256 "9de49345aabc060d430d444b0b94b7e00593253ac1f21a3718c483303621abdf" => :catalina
+    sha256 "959dfb0d8538524172c68cb394046fb4c3be78803e8307a759bdc564ff86b783" => :mojave
   end
 
   head do
@@ -24,7 +32,7 @@ class MidnightCommander < Formula
   depends_on "openssl@1.1"
   depends_on "s-lang"
 
-  conflicts_with "minio-mc", :because => "Both install a `mc` binary"
+  conflicts_with "minio-mc", because: "both install an `mc` binary"
 
   def install
     args = %W[

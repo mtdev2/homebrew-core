@@ -1,10 +1,18 @@
 class Joe < Formula
-  desc "Joe's Own Editor (JOE)"
+  desc "Full featured terminal-based screen editor"
   homepage "https://joe-editor.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/joe-editor/JOE%20sources/joe-4.6/joe-4.6.tar.gz"
   sha256 "495a0a61f26404070fe8a719d80406dc7f337623788e445b92a9f6de512ab9de"
+  license "GPL-2.0"
+
+  livecheck do
+    url :stable
+    regex(%r{url=.*?/joe[._-]v?(\d+(?:\.\d+)+)\.t}i)
+  end
 
   bottle do
+    sha256 "b9f6d2b449738072a5b9daae73af1dfddfa307d41ca78aaf3c7486d0c5253bfc" => :big_sur
+    sha256 "16c9ea41f6aa7626b8d3f86a22a48c77106cc498254c27e5c1650671237270f8" => :arm64_big_sur
     sha256 "71f2361108e6227cffff406825e8b96e6ce85a4e1a688ecf397eb00ca3d25357" => :catalina
     sha256 "aa448106d8769cf8d1b9adc8154dc420c94dbdc434be45b27e6a8a3268d2740b" => :mojave
     sha256 "02c1d1372565747bc21abe3b28ea7b3f2461068041e2d67037a9c1cbce12779d" => :high_sierra

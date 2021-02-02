@@ -3,10 +3,18 @@ class NagiosPlugins < Formula
   homepage "https://www.nagios-plugins.org/"
   url "https://www.nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz"
   sha256 "07859071632ded58c5135d613438137022232da75f8bdc1687f3f75da2fe597f"
+  license "GPL-3.0"
   head "https://github.com/nagios-plugins/nagios-plugins.git"
+
+  livecheck do
+    url "https://nagios-plugins.org/download/"
+    regex(/href=.*?nagios-plugins[._-]v?([\d.]+)\.t/i)
+  end
 
   bottle do
     cellar :any
+    sha256 "af8499231b3f5728465e53f3f3dc8b7dd02172afa118b5c7607a11d69994566d" => :big_sur
+    sha256 "c1668e45b54d3654123117a0a7c365cb8f456fd5c9128e571c1553abbefb5b1f" => :arm64_big_sur
     sha256 "b90c6f268ed5a5310a797855d87730f016c5d5077fa7b131c929aee042a1ee6c" => :catalina
     sha256 "9dc95d628b0ca0e63df426e933f2be374442fa6ea3c6db0ea24ffb5967d098b1" => :mojave
     sha256 "873811a29453153cd0ace61f92be73ae33b4a5bec1a4ece13baf128b32250e6e" => :high_sierra
@@ -16,7 +24,7 @@ class NagiosPlugins < Formula
   depends_on "automake" => :build
   depends_on "openssl@1.1"
 
-  conflicts_with "monitoring-plugins", :because => "monitoring-plugins ships their plugins to the same folder."
+  conflicts_with "monitoring-plugins", because: "both install their plugins to the same folder"
 
   def install
     args = %W[

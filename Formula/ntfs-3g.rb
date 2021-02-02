@@ -1,7 +1,7 @@
 class Ntfs3g < Formula
   desc "Read-write NTFS driver for FUSE"
   homepage "https://www.tuxera.com/community/open-source-ntfs-3g/"
-  revision 2
+  revision 3
   stable do
     url "https://tuxera.com/opensource/ntfs-3g_ntfsprogs-2017.3.23.tgz"
     sha256 "3e5a021d7b761261836dcb305370af299793eedbded731df3d6943802e1262d5"
@@ -15,14 +15,14 @@ class Ntfs3g < Formula
 
   bottle do
     cellar :any
-    sha256 "d336f9c7dbdcba28ed416704db13091db3494769f598b38b027022846aa77cdd" => :catalina
-    sha256 "67179cbc357c2d28304851f0abe3f42a0c6171200e79888a20ba732309ec84c9" => :mojave
-    sha256 "f26c2db849a54951a5daddbdecc779ca9a2ef4b066a1fe2dda134ea34436d32b" => :high_sierra
+    rebuild 1
+    sha256 "512daef6a2d9d74416ebb67c08d1c750cae0ba717b6338bd188b3434ad5725db" => :catalina
+    sha256 "58304b5065b3ec2e32f2e455c9cc2bcd7f60b6f177c57c60dd0a3eb607d6d4a1" => :mojave
+    sha256 "0c52a06810814dafc2837fa631a08e607a49da99e3be000ee61cd763f24ca7fc" => :high_sierra
   end
 
   head do
-    url "https://git.code.sf.net/p/ntfs-3g/ntfs-3g.git",
-        :branch => "edge"
+    url "https://git.code.sf.net/p/ntfs-3g/ntfs-3g.git", branch: "edge"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -33,7 +33,15 @@ class Ntfs3g < Formula
   depends_on "pkg-config" => :build
   depends_on "coreutils" => :test
   depends_on "gettext"
-  depends_on :osxfuse
+
+  on_macos do
+    deprecate! date: "2020-11-10", because: "requires FUSE"
+    depends_on :osxfuse
+  end
+
+  on_linux do
+    depends_on "libfuse"
+  end
 
   def install
     ENV.append "LDFLAGS", "-lintl"
@@ -45,6 +53,7 @@ class Ntfs3g < Formula
       --exec-prefix=#{prefix}
       --mandir=#{man}
       --with-fuse=external
+      --enable-extras
     ]
 
     system "./autogen.sh" if build.head?
@@ -64,9 +73,9 @@ class Ntfs3g < Formula
         USER_ID=#{Process.uid}
         GROUP_ID=#{Process.gid}
 
-        if [ `/usr/bin/stat -f %u /dev/console` -ne 0 ]; then
-          USER_ID=`/usr/bin/stat -f %u /dev/console`
-          GROUP_ID=`/usr/bin/stat -f %g /dev/console`
+        if [ "$(/usr/bin/stat -f %u /dev/console)" -ne 0 ]; then
+          USER_ID=$(/usr/bin/stat -f %u /dev/console)
+          GROUP_ID=$(/usr/bin/stat -f %g /dev/console)
         fi
 
         #{opt_bin}/ntfs-3g \\
@@ -77,10 +86,10 @@ class Ntfs3g < Formula
           -o auto_cache \\
           -o noatime \\
           -o windows_names \\
-          -o user_xattr \\
+          -o streams_interface=openxattr \\
           -o inherit \\
-          -o uid=$USER_ID \\
-          -o gid=$GROUP_ID \\
+          -o uid="$USER_ID" \\
+          -o gid="$GROUP_ID" \\
           -o allow_other \\
           -o big_writes \\
           "$@" >> /var/log/mount-ntfs-3g.log 2>&1

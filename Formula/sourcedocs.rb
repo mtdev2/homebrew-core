@@ -1,16 +1,19 @@
 class Sourcedocs < Formula
   desc "Generate Markdown files from inline source code documentation"
   homepage "https://github.com/eneko/SourceDocs"
-  url "https://github.com/eneko/sourcedocs/archive/0.6.1.tar.gz"
-  sha256 "335f49a0488c8bd792ec4e459663b4fb878065430eed92b37ea3498d1f9165cd"
+  url "https://github.com/eneko/sourcedocs/archive/1.2.1.tar.gz"
+  sha256 "b37029b986055164297bc870e65e40672de05dc281f9e039f988e49a0bc00482"
+  license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0e575e754c18c1c30b80e7fff12753a46f4b1cad6ec4d02b17c0e72472e131a1" => :catalina
-    sha256 "562b939250467fcfdf38d07a0e830d66a49e2e583d9b701bbaf7d23415d44b58" => :mojave
+    sha256 "a1f7e8ecf73fd06ca1b1f79814f5d4bbac116060cd0abf58039af3d0c8e10d73" => :big_sur
+    sha256 "06b1e8ad009967c2c97ce74d7df61a17797f5aa8a15b23f2cfd9041158219d77" => :arm64_big_sur
+    sha256 "9bdc9f8b2d42d2f66251a5f201ff4d978dd96030d726dc924e3c1928b70bf91a" => :catalina
+    sha256 "d0f79030518567fa2fee422afa683015191440dfca26b4e3a5718b79502a9d49" => :mojave
   end
 
-  depends_on :xcode => ["10.3", :build, :test]
+  depends_on xcode: ["10.3", :build, :test]
 
   def install
     system "swift", "build", "--disable-sandbox", "-c", "release"

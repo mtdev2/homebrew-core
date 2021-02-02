@@ -1,23 +1,39 @@
 class Starship < Formula
-  desc "The cross-shell prompt for astronauts"
+  desc "Cross-shell prompt for astronauts"
   homepage "https://starship.rs"
-  url "https://github.com/starship/starship/archive/v0.38.1.tar.gz"
-  sha256 "3eb01abfa038994ed24d520bfabbb30273ed90909ee87b58a854d92ad5a6db9a"
+  url "https://github.com/starship/starship/archive/v0.49.0.tar.gz"
+  sha256 "07e69e69ff09f0e15656da9258fdf14f54c97567d47e6e9e1218c9fec89b1ddf"
+  license "ISC"
   head "https://github.com/starship/starship.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "bb42b5ac227280bb6dafe0f7c1f70851cde6273a375461d201f94c96777c87ca" => :catalina
-    sha256 "d9a07177b9b2af743fb294cc391a79df0327e11c9848874e3b170b7ab7a5458c" => :mojave
-    sha256 "14ac37580fb454c23e8d2c6d1a916dc7ea43b60c880012a51c7b0bc8a22549f7" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur: "fc5a31682addd09df1113aedc72b0cb7b3403871296e224192af2d69f7e37662"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "8837a13ce7325538308d5acbcd5754a9d8c41eaa83fbccfdc4fbb411f7aa3844"
+    sha256 cellar: :any_skip_relocation, catalina: "b34251daa655a23c7508a5dbd12dcbe82d1eab9cef829480e90f0584c01b6f90"
+    sha256 cellar: :any_skip_relocation, mojave: "2f26c9a5de36e7d023f993e7be082eb2bcf2e52ee2bd0361e66abf4f917c9164"
   end
 
   depends_on "rust" => :build
+  depends_on "openssl@1.1"
 
   uses_from_macos "zlib"
 
+  on_linux do
+    depends_on "pkg-config" => :build
+    depends_on "dbus"
+  end
+
   def install
-    system "cargo", "install", "--locked", "--root", prefix, "--path", "."
+    system "cargo", "install", "--features", "notify-rust", *std_cargo_args
+
+    bash_output = Utils.safe_popen_read("#{bin}/starship", "completions", "bash")
+    (bash_completion/"starship").write bash_output
+
+    zsh_output = Utils.safe_popen_read("#{bin}/starship", "completions", "zsh")
+    (zsh_completion/"_starship").write zsh_output
+
+    fish_output = Utils.safe_popen_read("#{bin}/starship", "completions", "fish")
+    (fish_completion/"starship.fish").write fish_output
   end
 
   test do

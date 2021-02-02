@@ -3,6 +3,11 @@ class Winexe < Formula
   homepage "https://sourceforge.net/projects/winexe/"
   url "https://downloads.sourceforge.net/project/winexe/winexe-1.00.tar.gz"
   sha256 "99238bd3e1c0637041c737c86a05bd73a9375abc9794dca71d2765e22d87537e"
+  license "GPL-3.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
@@ -17,6 +22,8 @@ class Winexe < Formula
 
   depends_on "autoconf" => :build
   depends_on "pkg-config" => :build
+
+  uses_from_macos "perl"
 
   # This Winexe uses "getopts.pl" that is no longer supplied with newer
   # versions of Perl

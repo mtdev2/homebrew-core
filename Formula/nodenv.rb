@@ -1,8 +1,9 @@
 class Nodenv < Formula
   desc "Manage multiple NodeJS versions"
   homepage "https://github.com/nodenv/nodenv"
-  url "https://github.com/nodenv/nodenv/archive/v1.3.2.tar.gz"
-  sha256 "db2b777c3e2de8c9b0f27aefd84bc9eb523b328b61ea910adb030185dea7a238"
+  url "https://github.com/nodenv/nodenv/archive/v1.4.0.tar.gz"
+  sha256 "33e2f3e467219695ba114f75a7c769f3ee4e29b29c1c97a852aa001327ca9713"
+  license "MIT"
   head "https://github.com/nodenv/nodenv.git"
 
   bottle :unneeded
@@ -25,9 +26,8 @@ class Nodenv < Formula
 
     if build.head?
       # Record exact git revision for `nodenv --version` output
-      git_revision = `git rev-parse --short HEAD`.chomp
       inreplace "libexec/nodenv---version", /^(version=.+)/,
-                                           "\\1--g#{git_revision}"
+                                           "\\1--g#{Utils.git_short_head}"
     end
 
     prefix.install "bin", "completions", "libexec"

@@ -1,15 +1,18 @@
 class Raylib < Formula
   desc "Simple and easy-to-use library to learn videogames programming"
   homepage "https://www.raylib.com/"
-  url "https://github.com/raysan5/raylib/archive/2.6.0.tar.gz"
-  sha256 "494e95eaf8daf3f086116dfd6a5fd2e9a2166fc744eabf4f3067bf887d4fb5ef"
-  head "https://github.com/raysan5/raylib.git", :branch => "master"
+  url "https://github.com/raysan5/raylib/archive/3.5.0.tar.gz"
+  sha256 "761985876092fa98a99cbf1fef7ca80c3ee0365fb6a107ab901a272178ba69f5"
+  license "Zlib"
+  head "https://github.com/raysan5/raylib.git", branch: "master"
 
   bottle do
     cellar :any
-    sha256 "53a1022229679e1443739700eb6f40f64b2df756e152935f269ee1c021a9a6fe" => :catalina
-    sha256 "059cfacd3913512a6bfa3009d12be48820a751d1b6580125e6e4d04518a5d2c0" => :mojave
-    sha256 "1c762c4ee3aedf56a7d1b6dc20aca351af276aeec2fb90fc0b17b5f5ab87a639" => :high_sierra
+    rebuild 1
+    sha256 "079378b95371d4212b9603a41d3d44a838ad7fd07943cc902064251c644d2ef5" => :big_sur
+    sha256 "2411fb0870c9cec11f2f27f4d6f217fd7cff9351b65569970dcc3e27bee00964" => :arm64_big_sur
+    sha256 "78ef0455f7b3602829bf81c13dfeb81ca7867cde572bae477e6c2b9355289035" => :catalina
+    sha256 "ef45020d299bcb5c03f12f05b1a51791e155dce76073a54572ae5da04142fa7e" => :mojave
   end
 
   depends_on "cmake" => :build

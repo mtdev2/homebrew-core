@@ -2,26 +2,41 @@ class Pssh < Formula
   include Language::Python::Virtualenv
   desc "Parallel versions of OpenSSH and related tools"
   homepage "https://code.google.com/archive/p/parallel-ssh/"
-  url "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/parallel-ssh/pssh-2.3.1.tar.gz"
+  url "https://files.pythonhosted.org/packages/60/9a/8035af3a7d3d1617ae2c7c174efa4f154e5bf9c24b36b623413b38be8e4a/pssh-2.3.1.tar.gz"
   sha256 "539f8d8363b722712310f3296f189d1ae8c690898eca93627fc89a9cb311f6b4"
-  revision 2
+  license "BSD-3-Clause"
+  revision 3
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "62460d1e1e69472684b09842c05d80e9b6da5f9510815b6d40b527a452067c3c" => :catalina
-    sha256 "5b456c61d419a842c5c979a41494c5e2d7c4beb71190a621635a89c9c603c772" => :mojave
-    sha256 "c06b726eead0f61a02e2c0a8f6fcdf8cf78f437deb841112b08447829b828e90" => :high_sierra
+    rebuild 1
+    sha256 "6840ae494e87f8913579af27d25d7324608df3b52769041ca608a22851271688" => :big_sur
+    sha256 "f7e13419d61916a39cc1dfdca7d41e75b83ad569e752e706660a61bf5d27116d" => :arm64_big_sur
+    sha256 "97b41f49d31808abac8379f9d5891be7cecff34bc183a42b0f6fd5ae1d9fe835" => :catalina
+    sha256 "2755e4052daf1641f2db79119443ea4552da5db3c578ed9dd779c86f96b35a78" => :mojave
+    sha256 "3eab96d7837cfab4b2c28ad5458e1c68ceb0d75c480e87613ca1872e58b2bf55" => :high_sierra
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
-  conflicts_with "putty", :because => "both install `pscp` binaries"
+  conflicts_with "putty", because: "both install `pscp` binaries"
 
   # Fix for Python 3 compatibility
   # https://bugs.archlinux.org/task/46571
   patch do
-    url "https://github.com/nplanel/parallel-ssh/commit/ee379dc5.diff?full_index=1"
-    sha256 "467df6024d180ea41a7e453b2d4485ef2be2a911410d8845df1b9e6b6dc301ae"
+    url "https://github.com/nplanel/parallel-ssh/commit/ee379dc5.patch?full_index=1"
+    sha256 "79c133072396e5d3d370ec254b7f7ed52abe1d09b5d398880f0e1cfaf988defa"
+  end
+
+  # Fix for Python 3 compatibility
+  # https://bugs.archlinux.org/task/51533
+  patch do
+    url "https://bugs.archlinux.org/task/51533?getfile=14659"
+    sha256 "47c1af738d4ba252e9f35c5633da91bae2a2919a7b6b2bf425ee1f090d61c7fe"
   end
 
   def install

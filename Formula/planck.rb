@@ -3,23 +3,26 @@ class Planck < Formula
   homepage "https://planck-repl.org/"
   url "https://github.com/planck-repl/planck/archive/2.25.0.tar.gz"
   sha256 "58a3f9b0e3d776bc4e28f1e78a8ce6ab1d98149bebeb5c5328cc14345b925a1f"
+  license "EPL-1.0"
+  revision 2
   head "https://github.com/planck-repl/planck.git"
 
   bottle do
-    cellar :any
-    sha256 "63e3d9501671560c3e5c00020f0c9b4f2c1d8b8a23982684a1c8c7cba2118b92" => :catalina
-    sha256 "293709653ba184a8aacfbe28ad6dd59d5343f126bc9ff20661ae310e689ec350" => :mojave
-    sha256 "1b1b15662a1a5f49c5b721d560778bb79831b7cbe9d249fae20dbc0cd8aa152c" => :high_sierra
+    rebuild 1
+    sha256 cellar: :any, big_sur: "436bb7f0481e0a6a0edeaa1abd2687c349e6314bf6139a2b8ae4e9a73978ed8e"
+    sha256 cellar: :any, catalina: "2528a360ad99d9d5031ae53138523c691e5a5ccb93da15cc44d214a9ad0d2e3b"
+    sha256 cellar: :any, mojave: "b0d1fe14b9ab71a5a18601e8e21fe3b16dc96247b877ce6842bbc7c7cae93784"
   end
 
   depends_on "clojure" => :build
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on :xcode => :build
+  depends_on xcode: :build
   depends_on "icu4c"
   depends_on "libzip"
 
   def install
+    ENV["JAVA_HOME"] = Formula["openjdk"].opt_prefix
     system "./script/build-sandbox"
     bin.install "planck-c/build/planck"
     bin.install "planck-sh/plk"

@@ -1,15 +1,22 @@
 class Openttd < Formula
   desc "Simulation game based upon Transport Tycoon Deluxe"
   homepage "https://www.openttd.org/"
-  url "https://cdn.openttd.org/openttd-releases/1.10.0/openttd-1.10.0-source.tar.xz"
-  sha256 "1ba21aac9a1de98b23f80fee952b4b9c5e2d3cc4ac187f5203730826b3f0e253"
+  url "https://cdn.openttd.org/openttd-releases/1.10.3/openttd-1.10.3-source.tar.xz"
+  sha256 "c11601ef547eb1f6d4f9a035bd19e0a760b47872ce7d9b4117aaa45ac377b53b"
+  license "GPL-2.0"
   head "https://github.com/OpenTTD/OpenTTD.git"
+
+  livecheck do
+    url :homepage
+    regex(/Download stable \((\d+(\.\d+)+)\)/i)
+  end
 
   bottle do
     cellar :any
-    sha256 "5f3aa0fb700f08ec4b85e849f00802a11cc44e51b1ce5ddcdf92a3eea874ed07" => :catalina
-    sha256 "c98cef289313ce1e34b44e34d7dab842094574f39ab86ac0ccf70a9fe668f035" => :mojave
-    sha256 "dd6c81a1bf197eb445ceb9acbbade734409f39f16d8b3ff6b3f445aaf1daa166" => :high_sierra
+    sha256 "406f8ff7bf25785ecb8dc062ceabc1ddf33ff8e24b745adb6c7886b17fb74e43" => :big_sur
+    sha256 "7958e9cf2b4ee62147a364893c4e2388f7a8e9ab95b2cd54fed6715da60c5be6" => :catalina
+    sha256 "e8a6fba720e5ec6ef08f5255fe47a86b271b7f3f45ea8e2a13fd3b277f6eb754" => :mojave
+    sha256 "853c329ff51f9ef5403b581911790ba6179bea0cb274b58fb08ac8af0b5aa361" => :high_sierra
   end
 
   depends_on "pkg-config" => :build
@@ -32,8 +39,6 @@ class Openttd < Formula
   end
 
   def install
-    ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
-
     system "./configure", "--prefix-dir=#{prefix}"
     system "make", "bundle"
 
@@ -54,6 +59,6 @@ class Openttd < Formula
   end
 
   test do
-    assert_match /OpenTTD #{version}\n/, shell_output("#{bin}/openttd -h")
+    assert_match "OpenTTD #{version}\n", shell_output("#{bin}/openttd -h")
   end
 end

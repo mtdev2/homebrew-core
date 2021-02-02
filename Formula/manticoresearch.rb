@@ -1,32 +1,35 @@
 class Manticoresearch < Formula
   desc "Open source text search engine"
   homepage "https://www.manticoresearch.com"
-  url "https://github.com/manticoresoftware/manticoresearch/releases/download/3.4.0/manticore-3.4.0-200326-0686d9f-release.tar.gz"
-  version "3.4.0"
-  sha256 "d1e7a8568b5af05cc0a0c7e50b5a180972608f6f063900179c595e39ba03daae"
+  url "https://repo.manticoresearch.com/repository/manticoresearch_source/release/manticore-3.5.4-201211-13f8d08-release-source.tar.gz"
+  version "3.5.4"
+  sha256 "efe4b92650d31c89fe892750402e6343c5ee580e723ed6ac1235ca62b1e04b7d"
+  license "GPL-2.0"
   version_scheme 1
   head "https://github.com/manticoresoftware/manticoresearch.git"
 
   bottle do
-    sha256 "81caa9e99d521b09413ec8eacb87002bb8fe2aa9c23501fb9b0147febb8a4a70" => :catalina
-    sha256 "dbb618ba4468d7054609964e0323f7796996f0d90614fafd969b4acec5df8d72" => :mojave
-    sha256 "59f3a80dc395813ad3fb74d2a3bcd128ed17353ec35fe28afa3c3ac7e43b8f55" => :high_sierra
+    sha256 "f3f8e3a121f510b81c022c7fcda9563944f9e13c2655ee8b81d50cfc15bdb5bb" => :big_sur
+    sha256 "837c96d0e6944fed2f02ed99672d7e372a2cbba25141e3de7acd096939c6ba35" => :arm64_big_sur
+    sha256 "296234167dd9f798c39b8168dba02ac3dff381ad4e61e7f0d4e0558385759af9" => :catalina
+    sha256 "939b0798a3ca5be80832bf1e1e3ebe9dd8b2febe8cf0e84765dfa7caa25f8d89" => :mojave
   end
 
+  depends_on "boost" => :build
   depends_on "cmake" => :build
   depends_on "icu4c" => :build
   depends_on "libpq" => :build
   depends_on "mysql" => :build
-  depends_on "unixodbc" => :build
   depends_on "openssl@1.1"
 
-  conflicts_with "sphinx",
-   :because => "manticore, sphinx install the same binaries."
+  conflicts_with "sphinx", because: "manticoresearch is a fork of sphinx"
 
   def install
     args = %W[
       -DCMAKE_INSTALL_LOCALSTATEDIR=#{var}
       -DDISTR_BUILD=macosbrew
+      -DBoost_NO_BOOST_CMAKE=ON
+      -DWITH_ODBC=OFF
     ]
     mkdir "build" do
       system "cmake", "..", *std_cmake_args, *args
@@ -40,7 +43,7 @@ class Manticoresearch < Formula
     (var/"manticore/data").mkpath
   end
 
-  plist_options :manual => "searchd --config #{HOMEBREW_PREFIX}/etc/manticore/manticore.conf"
+  plist_options manual: "searchd --config #{HOMEBREW_PREFIX}/etc/manticore/manticore.conf"
 
   def plist
     <<~EOS

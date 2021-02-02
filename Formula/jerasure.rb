@@ -1,6 +1,6 @@
 class Jerasure < Formula
   desc "Library in C that supports erasure coding in storage applications"
-  homepage "http://jerasure.org/"
+  homepage "https://web.archive.org/web/20191024182742/jerasure.org/"
   url "https://bitbucket.org/tsg-/jerasure/get/v2.0.0.tar.bz2"
   sha256 "f736646c1844c4e50dfe41ebd63c7d7b30c6e66a4aa7d3beea244871b0e43b9d"
   revision 1
@@ -13,6 +13,8 @@ class Jerasure < Formula
     sha256 "603646521f0255877f611df53e30ccbc071b07cba6e0f33025404332e9677ffa" => :sierra
     sha256 "1db6ef4631512bf3b155d614588689b2bacc911178cedf828db8f810d9e18d43" => :el_capitan
   end
+
+  disable! date: "2020-12-08", because: "Depends on gf-complete which has been disabled"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

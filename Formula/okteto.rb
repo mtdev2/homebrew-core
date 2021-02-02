@@ -1,14 +1,17 @@
 class Okteto < Formula
   desc "Build better apps by developing and testing code directly in Kubernetes"
   homepage "https://okteto.com"
-  url "https://github.com/okteto/okteto/archive/1.8.1.tar.gz"
-  sha256 "fc4627584e4139d37bc8d8ee3113be98a9cce07b582724e24c2f00f1ec32ece6"
+  url "https://github.com/okteto/okteto/archive/1.10.5.tar.gz"
+  sha256 "9baf554dd0dab354fde9c7e346ed1f0dbad26cc75108200d038cc57e535e6e32"
+  license "Apache-2.0"
+  head "https://github.com/okteto/okteto.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5d731216c3415e8ff53d37341ea7069af6d3c8da6b5a0282ba8bc263b0874af5" => :catalina
-    sha256 "02963b8232aa27d8b0f5ec3c46f1d797848eaafa89c0819947626f6fcf4df0da" => :mojave
-    sha256 "1c78daccb9ec064317b8f6c162f5998a8beaa3d50a262c2eabddd950c76f1f92" => :high_sierra
+    sha256 "c7686dbbb1300c3e13570bb2b11b1e3733c92a9b3d2a5ea33cc35f6fcd304aa6" => :big_sur
+    sha256 "88b428a1355ddb7974b92532002f0b1e42e5ad1265dba0fc21fb76832ae2223a" => :arm64_big_sur
+    sha256 "604ce895dfd67e25a04f812566cd9da2ffa196690d57cd9a10a7033cef469017" => :catalina
+    sha256 "beed1d37aadf102104b0a33adb465c7c0efd4a5c99af893b59aed551dfa63a1f" => :mojave
   end
 
   depends_on "go" => :build
@@ -16,7 +19,7 @@ class Okteto < Formula
   def install
     ldflags = "-s -w -X github.com/okteto/okteto/pkg/config.VersionString=#{version}"
     tags = "osusergo netgo static_build"
-    system "go", "build", "-o", "#{bin}/#{name}", "-trimpath", "-ldflags", ldflags, "-tags", tags
+    system "go", "build", *std_go_args, "-ldflags", ldflags, "-tags", tags
   end
 
   test do
@@ -25,9 +28,13 @@ class Okteto < Formula
     expected = <<~EOS
       name: #{Pathname.getwd.basename}
       image: okteto/ruby:2
-      command:
-      - bash
-      workdir: /usr/src/app
+      command: bash
+      sync:
+      - .:/usr/src/app
+      forward:
+      - 1234:1234
+      - 8080:8080
+      persistentVolume: {}
     EOS
     got = File.read("test.yml")
     assert_equal expected, got

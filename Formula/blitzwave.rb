@@ -3,9 +3,11 @@ class Blitzwave < Formula
   homepage "https://oschulz.github.io/blitzwave"
   url "https://github.com/oschulz/blitzwave/archive/v0.8.0.tar.gz"
   sha256 "edb0b708a0587e77b8e0aa3387b44f4e838855c17e896a8277bb80fbe79b9a63"
+  license "GPL-2.0"
 
   bottle do
     cellar :any
+    sha256 "1e65e0e917a0454346801ea361b5186676150edc50f296abcb5f682456375589" => :big_sur
     sha256 "c048a4c11493ddfd5222bbfd25934fe4e7981fb7d689eddaef38ac06fa0d5b2d" => :catalina
     sha256 "7bd4d442c43a1f5c2a6fbfbf77faa3d90096873a65d90317fa0dad223908b498" => :mojave
     sha256 "5ad4f6c2447b6efdad752ffc05c2d31be8ad1abbe0c6654f77f33141edaf300e" => :high_sierra

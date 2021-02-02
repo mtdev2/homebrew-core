@@ -1,34 +1,39 @@
 class Kibana < Formula
   desc "Analytics and search dashboard for Elasticsearch"
   homepage "https://www.elastic.co/products/kibana"
+  # NOTE: Do not bump version to one with a non-open-source license
   url "https://github.com/elastic/kibana.git",
-      :tag      => "v6.8.7",
-      :revision => "64089136f7faf8a9ec40a65279a512ffd92b427e"
+      tag:      "v7.10.2",
+      revision: "a0b793698735eb1d0ab1038f8e5d7a951524e929"
+  license "Apache-2.0"
   head "https://github.com/elastic/kibana.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "2eddac2302247eaae7b5aa97cc752836750c87bee31fa94c2bf639fa06a20ae1" => :catalina
-    sha256 "32fef553a46b67acee00ca5660d1e6da971d876cd7df5487dc1a4c5c99c01653" => :mojave
-    sha256 "f71b40f6dd6215d107bc5893c9953737f8c149ac617338e2859327fd31808b24" => :high_sierra
+    sha256 "c218ab10fca2ebdddd11ab27326d0a6d0530a7f26bc2adc26d1751e4326b0198" => :big_sur
+    sha256 "c1ee01e41c34677dba144152142808d469db2855658fdd3e4fcafbae77a10774" => :catalina
+    sha256 "fb818924d852b07ab0417e8ff52899400b98f25bd24714f77a8c472224269690" => :mojave
   end
 
+  # elasticsearch will be relicensed before v7.11.
+  # https://www.elastic.co/blog/licensing-change
+  deprecate! date: "2021-01-14", because: "is switching to an incompatible license"
+
+  depends_on "python@3.9" => :build
   depends_on "yarn" => :build
   depends_on "node@10"
 
   def install
+    inreplace "package.json", /"node": "10\.\d+\.\d+"/, %Q("node": "#{Formula["node@10"].version}")
+
+    # prepare project after checkout
+    system "yarn", "kbn", "bootstrap"
+
+    # build open source only
+    system "node", "scripts/build", "--oss", "--release", "--skip-os-packages", "--skip-archives"
+
     # remove non open source files
     rm_rf "x-pack"
-    inreplace "package.json", /"x-pack":.*/, ""
-
-    # patch build to not try to read tsconfig.json's from the removed x-pack folder
-    inreplace "src/dev/typescript/projects.ts" do |s|
-      s.gsub! "new Project(resolve(REPO_ROOT, 'x-pack/tsconfig.json')),", ""
-      s.gsub! "new Project(resolve(REPO_ROOT, 'x-pack/test/tsconfig.json'), 'x-pack/test'),", ""
-    end
-
-    system "yarn", "kbn", "bootstrap"
-    system "yarn", "build", "--oss", "--release", "--skip-os-packages", "--skip-archives"
 
     prefix.install Dir
       .glob("build/oss/kibana-#{version}-darwin-x86_64/**")
@@ -57,7 +62,7 @@ class Kibana < Formula
     EOS
   end
 
-  plist_options :manual => "kibana"
+  plist_options manual: "kibana"
 
   def plist
     <<~EOS
@@ -79,6 +84,19 @@ class Kibana < Formula
 
   test do
     ENV["BABEL_CACHE_PATH"] = testpath/".babelcache.json"
-    assert_match /#{version}/, shell_output("#{bin}/kibana -V")
+
+    (testpath/"data").mkdir
+    (testpath/"config.yml").write <<~EOS
+      path.data: #{testpath}/data
+    EOS
+
+    port = free_port
+    fork do
+      exec bin/"kibana", "-p", port.to_s, "-c", testpath/"config.yml"
+    end
+    sleep 15
+    output = shell_output("curl -s 127.0.0.1:#{port}")
+    # Kibana returns this message until it connects to Elasticsearch
+    assert_equal "Kibana server is not ready yet", output
   end
 end

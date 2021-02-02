@@ -3,10 +3,13 @@ class GitMultipush < Formula
   homepage "https://github.com/gavinbeatty/git-multipush"
   url "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/git-multipush/git-multipush-2.3.tar.bz2"
   sha256 "1f3b51e84310673045c3240048b44dd415a8a70568f365b6b48e7970afdafb67"
+  license "GPL-3.0"
   head "https://github.com/gavinbeatty/git-multipush.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "981bdfe608288a854656563e178db2cdb9e9a9db30381203e0f67bfd38d29e16" => :big_sur
+    sha256 "7f02c0c3d5c5fd2e7ecb84b057ab23bf5452839b479a5ec47e1e374589efdb38" => :arm64_big_sur
     sha256 "b9de9b128791d8c416076ed738016ffe534ce85bacddf297ab9ce13954dcaff6" => :catalina
     sha256 "8f4c2e7a1aee0db75154c4b21aee1a4bd398a9b889f119e7b86a06b1533b9304" => :mojave
     sha256 "edd99d5ec177bccf061f7424aa595a5515fa5728aec649594f42964cec1f371e" => :high_sierra

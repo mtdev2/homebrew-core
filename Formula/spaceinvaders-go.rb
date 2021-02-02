@@ -5,9 +5,11 @@ class SpaceinvadersGo < Formula
   homepage "https://github.com/asib/spaceinvaders"
   url "https://github.com/asib/spaceinvaders/archive/v1.2.tar.gz"
   sha256 "e5298c4c13ff42f5cb3bf3913818c5155cf6918fd757124920045485d7ab5b9e"
+  license "MIT"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "20ecc3ccc4d2c28cc9251f14fccc66fbd88abe6edc64708a73ed5aaa7941e39c" => :big_sur
     sha256 "221c4d6f495ed8b4c1db5c737b4ff08be55a65b2bd15fc1c3e43ae96e29726ba" => :catalina
     sha256 "3f6f5106ba62445e33e2181facd9644dde99bb0f527455e4b49cecdb56cb56aa" => :mojave
     sha256 "5a512f039b4a9698eb5ce766798f462b134e98944e07ab3eccf712ee35c811d1" => :high_sierra
@@ -20,17 +22,17 @@ class SpaceinvadersGo < Formula
 
   go_resource "github.com/mattn/go-runewidth" do
     url "https://github.com/mattn/go-runewidth.git",
-        :revision => "12e0ff74603c9a3209d8bf84f8ab349fe1ad9477"
+        revision: "12e0ff74603c9a3209d8bf84f8ab349fe1ad9477"
   end
 
   go_resource "github.com/nsf/termbox-go" do
     url "https://github.com/nsf/termbox-go.git",
-        :revision => "347ab0bc907040257edaf8b580f729e12c93ab6b"
+        revision: "347ab0bc907040257edaf8b580f729e12c93ab6b"
   end
 
   go_resource "github.com/simulatedsimian/joystick" do
     url "https://github.com/simulatedsimian/joystick.git",
-        :revision => "6aa8abe045a796cf36b720d0484809e3f70dc5bd"
+        revision: "6aa8abe045a796cf36b720d0484809e3f70dc5bd"
   end
 
   def install

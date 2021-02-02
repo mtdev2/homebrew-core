@@ -3,10 +3,17 @@ class Svg2png < Formula
   homepage "https://cairographics.org/"
   url "https://cairographics.org/snapshots/svg2png-0.1.3.tar.gz"
   sha256 "e658fde141eb7ce981ad63d319339be5fa6d15e495d1315ee310079cbacae52b"
+  license "LGPL-2.1"
   revision 1
+
+  livecheck do
+    url "https://cairographics.org/snapshots/"
+    regex(/href=.*?svg2png[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
     cellar :any
+    sha256 "91ea80e51edffa9ff0f1b75637eb2eb89ebda2ab9b8fcfd94242d113dd6fff99" => :big_sur
     sha256 "9669d135c08480905ca33b97507af5cbca2315243358f022ffa3bbe5731bfca8" => :catalina
     sha256 "fd2d0727b1ae83f458c17625894d0bf824dd9c58605a81528efb4332c17051c0" => :mojave
     sha256 "c0495d355b1ca05b777814eb2bed14fbae20075a9aa1dd72bfdcdd2efd117587" => :high_sierra

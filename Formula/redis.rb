@@ -1,22 +1,28 @@
 class Redis < Formula
   desc "Persistent key-value database, with built-in net interface"
   homepage "https://redis.io/"
-  url "http://download.redis.io/releases/redis-5.0.8.tar.gz"
-  sha256 "f3c7eac42f433326a8d981b50dba0169fdfaf46abb23fcda2f933a7552ee4ed7"
-  head "https://github.com/antirez/redis.git", :branch => "unstable"
+  url "https://download.redis.io/releases/redis-6.0.10.tar.gz"
+  sha256 "79bbb894f9dceb33ca699ee3ca4a4e1228be7fb5547aeb2f99d921e86c1285bd"
+  license "BSD-3-Clause"
+  head "https://github.com/redis/redis.git", branch: "unstable"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "6dd79cce0a271a736f17a9c0e72fd8e5288b135426f5746d25496ab5048e0059" => :catalina
-    sha256 "c72def1c78f6c24c02d47de80a0b5ae5ef67640a42a38d040c503429eb02d3b1" => :mojave
-    sha256 "819c9292b32c8bdc90f51a7301cb44ffba8fa97fa8cf0db0e64e6ab5b0e41b9f" => :high_sierra
+  livecheck do
+    url "https://download.redis.io/releases/"
+    regex(/href=.*?redis[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
-  def install
-    # Architecture isn't detected correctly on 32bit Snow Leopard without help
-    ENV["OBJARCH"] = "-arch #{MacOS.preferred_arch}"
+  bottle do
+    cellar :any
+    sha256 "ecd20074b450f501345d7533abc51e8f47f28f27a5c8b7c698fe4d80aeb8126c" => :big_sur
+    sha256 "0ae80e0e8a0a13d663a1d9e1c74bb17df56deb4b2edd5397b363ec4f6a32e43c" => :arm64_big_sur
+    sha256 "92bc496f208cdbcbf5b9251d0e32bca775d19e800b5d19948c54c3f8d03f0c9b" => :catalina
+    sha256 "2c577a2692701929cc90f0bd2fd050e47705d8693086e1050b4b69ec95315ed1" => :mojave
+  end
 
-    system "make", "install", "PREFIX=#{prefix}", "CC=#{ENV.cc}"
+  depends_on "openssl@1.1"
+
+  def install
+    system "make", "install", "PREFIX=#{prefix}", "CC=#{ENV.cc}", "BUILD_TLS=yes"
 
     %w[run db/redis log].each { |p| (var/p).mkpath }
 
@@ -31,7 +37,7 @@ class Redis < Formula
     etc.install "sentinel.conf" => "redis-sentinel.conf"
   end
 
-  plist_options :manual => "redis-server #{HOMEBREW_PREFIX}/etc/redis.conf"
+  plist_options manual: "redis-server #{HOMEBREW_PREFIX}/etc/redis.conf"
 
   def plist
     <<~EOS

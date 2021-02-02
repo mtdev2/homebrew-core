@@ -3,12 +3,16 @@ class Gitg < Formula
   homepage "https://wiki.gnome.org/Apps/Gitg"
   url "https://download.gnome.org/sources/gitg/3.32/gitg-3.32.1.tar.xz"
   sha256 "24a4aabf8a42aa2e783e1fb5996ebb3c2a82a01b9689269f1329517ef124ef5a"
-  revision 2
+  revision 6
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
-    sha256 "03566477e752917295c51f2b109455c15bc9c090e13ff98cbefd9f2d6901e6b8" => :catalina
-    sha256 "99ce9d4df908d9afe709a71e79e854133d1ffc5685d3d47465cef8acd885f67e" => :mojave
-    sha256 "262a05ca24a2c607ee23c44f9334372501b665794581aed88978309be9ab817a" => :high_sierra
+    sha256 "b2451ec4e4ef9126af4cb262d58d03beda0a06fcad12c9200f206af46b277bd2" => :big_sur
+    sha256 "6f9af292508a1a80622bc544f2aa182a46b63345ed8c9dc89e3034a9e2a2178d" => :catalina
+    sha256 "c771ecd10a224156e0810d46d3834421c548a75080d6d239d30b714875a21065" => :mojave
   end
 
   depends_on "intltool" => :build
@@ -30,18 +34,18 @@ class Gitg < Formula
   depends_on "libsecret"
   depends_on "libsoup"
 
-  # Fix libgitg compile on macOS
+  # Fix libgitg compile on macOS from https://gitlab.gnome.org/GNOME/gitg/-/merge_requests/142
   # Remove for next version
   patch do
-    url "https://gitlab.gnome.org/GNOME/gitg/-/merge_requests/142.patch"
-    sha256 "220314200274e675031b7a5053637f91ff850f0e5a22c1bc442ba12a91b5d6f7"
+    url "https://gitlab.gnome.org/GNOME/gitg/-/commit/67f5cd6925e8bf1e4c7e5b65fe9370c2cdd1d273.patch"
+    sha256 "e81c59f77aceb8c1ae3914ffebf24f5a0287bd2cf9511996eb8a3f4282e8542d"
   end
 
   def install
     ENV["DESTDIR"] = "/"
 
     mkdir "build" do
-      system "meson", "--prefix=#{prefix}", "-Dpython=false", ".."
+      system "meson", *std_meson_args, "-Dpython=false", ".."
       system "ninja"
       system "ninja", "install"
     end

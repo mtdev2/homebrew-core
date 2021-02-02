@@ -3,10 +3,18 @@ class Libssh2 < Formula
   homepage "https://libssh2.org/"
   url "https://libssh2.org/download/libssh2-1.9.0.tar.gz"
   sha256 "d5fb8bd563305fd1074dda90bd053fb2d29fc4bce048d182f96eaa466dfadafd"
+  license "BSD-3-Clause"
   revision 1
+
+  livecheck do
+    url "https://libssh2.org/download/"
+    regex(/href=.*?libssh2[._-]v?(\d+(?:\.\d+)+)\./i)
+  end
 
   bottle do
     cellar :any
+    sha256 "f9a31faed068d80fff508f2a08d1c8b7213a626d9c38dde22db9a8173a85c6ee" => :big_sur
+    sha256 "2840147f112db1ef9e353e104e8aff64fc6572a9194b3ded9cc006deaa46560c" => :arm64_big_sur
     sha256 "2c4dcf8149663f9a133deac5bc42ce308d1ced90227cac391ca30b0ab2d381f9" => :catalina
     sha256 "327c56ad6a54894e5ef9aa3019d2444d32f1d0fba80925940100e517dd3109c9" => :mojave
     sha256 "ee29f44ef6fb59242fc7ee1747f02df2287722af4a45319289c9ee224367ba06" => :high_sierra

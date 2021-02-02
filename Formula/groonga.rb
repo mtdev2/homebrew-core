@@ -1,13 +1,20 @@
 class Groonga < Formula
   desc "Fulltext search engine and column store"
   homepage "https://groonga.org/"
-  url "https://packages.groonga.org/source/groonga/groonga-9.1.2.tar.gz"
-  sha256 "efcc4da99c5d37e6b2e33e28b60a01af5f6922a1fc96130c339dbcb962fe497e"
+  url "https://packages.groonga.org/source/groonga/groonga-10.1.1.tar.gz"
+  sha256 "f4d2b263ea2588620941a3477473acfb51807dd674b32fa66d016b44d5e98cb3"
+  license "LGPL-2.1-or-later"
+
+  livecheck do
+    url :homepage
+    regex(%r{>v?(\d+(?:\.\d+)+)</a> is the latest release}i)
+  end
 
   bottle do
-    sha256 "17e2e6407f06f290c184b26adb72a0eddccec95da99ca60e4706edf25cad38ac" => :catalina
-    sha256 "42ea775611a44e237c71b746b51b0bea4d66a54f04e91902e9cfce7932f5f838" => :mojave
-    sha256 "fbc42125cf805368d6de3f6e8ea8504811703f5ac6376529fa982d173774afea" => :high_sierra
+    sha256 "bba20e760e7fdc81c6ccddb6cccce20e656549b89af62ccafa8197b7972ee281" => :big_sur
+    sha256 "52a59769463063e753cff0f91d695ba76cf5d5e49a3ba86b0bd85fbd8287e03a" => :arm64_big_sur
+    sha256 "29752b33e85e1b9de937d35f1852ccb179ac0de5cbbc8bff9db27153d111c6d9" => :catalina
+    sha256 "6d39d5dffe57c6f16e855f035f2df15b9a1295318e50986d237a4574937a58b0" => :mojave
   end
 
   head do
@@ -23,6 +30,10 @@ class Groonga < Formula
   depends_on "msgpack"
   depends_on "openssl@1.1"
   depends_on "pcre"
+
+  on_linux do
+    depends_on "glib"
+  end
 
   link_overwrite "lib/groonga/plugins/normalizers/"
   link_overwrite "share/doc/groonga-normalizer-mysql/"

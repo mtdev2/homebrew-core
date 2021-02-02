@@ -2,27 +2,26 @@ class AwsIamAuthenticator < Formula
   desc "Use AWS IAM credentials to authenticate to Kubernetes"
   homepage "https://github.com/kubernetes-sigs/aws-iam-authenticator"
   url "https://github.com/kubernetes-sigs/aws-iam-authenticator.git",
-    :tag      => "v0.5.0",
-    :revision => "1cfe2a90f68381eacd7b6dcfa2bf689e76eb8b4b"
-  sha256 "d077ce973e5917fab7cbad46bc2d19264e8d0ae23321afd97b1bc481075a31fa"
+      tag:      "v0.5.2",
+      revision: "292b9b82df69b87af962b92485b254d9f4b10f00"
+  license "Apache-2.0"
+  revision 1
   head "https://github.com/kubernetes-sigs/aws-iam-authenticator.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "9009147f0817116c801357d6d8bc082d1f320971a81b7c00051e0d43c8066a60" => :catalina
-    sha256 "c475da0533c8bc809525e65a99410bcd39a8a4331216537e55a5c55a8599ebfe" => :mojave
-    sha256 "152fe875fe64835efb1e13d088b7e2ca6cf2aa826333465047e8c90bb91e0dc7" => :high_sierra
+    sha256 "50e376c205f257a76486f4ca4da86e6eaaf48231970f13be2039727a9c7e3e31" => :big_sur
+    sha256 "0374175f7d0a1965de553e0a4d990d92690d5984c9f1fd0275384f58cd1ec921" => :arm64_big_sur
+    sha256 "99c0b3d4f1987306f04553d0d8f234d1d105131c844d14c2197b8aa21602f6a1" => :catalina
+    sha256 "5c722bc544bfaa0d51c903aabe81e1beb4c4f607c5559340fc6a3b2aecc8d5f2" => :mojave
   end
 
   depends_on "go" => :build
 
   def install
-    # project = "github.com/kubernetes-sigs/aws-iam-authenticator"
-    revision = Utils.popen_read("git", "rev-parse", "HEAD").strip
-    version = Utils.popen_read("git describe --tags").strip
     ldflags = ["-s", "-w",
                "-X main.version=#{version}",
-               "-X main.commit=#{revision}"]
+               "-X main.commit=#{Utils.git_head}"]
     system "go", "build", "-ldflags", ldflags.join(" "), "-trimpath",
            "-o", bin/"aws-iam-authenticator", "./cmd/aws-iam-authenticator"
     prefix.install_metafiles
@@ -30,7 +29,7 @@ class AwsIamAuthenticator < Formula
 
   test do
     output = shell_output("#{bin}/aws-iam-authenticator version")
-    assert_match "\"Version\":\"v#{version}\"", output
+    assert_match %Q("Version":"#{version}"), output
 
     system "#{bin}/aws-iam-authenticator", "init", "-i", "test"
     contents = Dir.entries(".")

@@ -2,8 +2,9 @@ class DockerMachineDriverXhyve < Formula
   desc "Docker Machine driver for xhyve"
   homepage "https://github.com/machine-drivers/docker-machine-driver-xhyve"
   url "https://github.com/machine-drivers/docker-machine-driver-xhyve.git",
-      :tag      => "v0.4.0",
-      :revision => "829c0968dac18547636f3ad6aa5ef83677f48267"
+      tag:      "v0.4.0",
+      revision: "829c0968dac18547636f3ad6aa5ef83677f48267"
+  license "BSD-3-Clause"
   head "https://github.com/machine-drivers/docker-machine-driver-xhyve.git"
 
   bottle do
@@ -14,9 +15,11 @@ class DockerMachineDriverXhyve < Formula
     sha256 "282868271a1e504ca8643bb6507eb2f99f8f8703d64050886e00175182b35668" => :high_sierra
   end
 
+  # xhyve is no longer used by Docker, replaced by hyperkit
+  deprecate! date: "2020-12-18", because: :does_not_build
+
   depends_on "go" => :build
   depends_on "docker-machine"
-  depends_on :macos => :yosemite
 
   def install
     (buildpath/"gopath/src/github.com/zchee/docker-machine-driver-xhyve").install \
@@ -27,7 +30,7 @@ class DockerMachineDriverXhyve < Formula
     build_tags = "lib9p"
 
     cd build_root do
-      git_hash = `git rev-parse --short HEAD --quiet`.chomp
+      git_hash = Utils.git_short_head
       git_hash = "HEAD-#{git_hash}" if build.head?
 
       go_ldflags = "-w -s -X 'github.com/zchee/docker-machine-driver-xhyve/xhyve.GitCommit=Homebrew#{git_hash}'"

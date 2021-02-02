@@ -4,8 +4,15 @@ class Diction < Formula
   url "https://ftp.gnu.org/gnu/diction/diction-1.11.tar.gz"
   mirror "https://ftpmirror.gnu.org/diction/diction-1.11.tar.gz"
   sha256 "35c2f1bf8ddf0d5fa9f737ffc8e55230736e5d850ff40b57fdf5ef1d7aa024f6"
+  license "GPL-3.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
+    sha256 "cf3b827429c5513b3289ab9c0df46de743cf84c773102a2f01058c982721e4cc" => :big_sur
+    sha256 "88a87488f8e893dc86f30e8736cf9cbdc2459976da13d899cb91daf8abdfe23e" => :arm64_big_sur
     sha256 "ff26ae017482eaef3a07b4c6522e65a84b2ec03b6afaffa20e0138a244edd5e2" => :catalina
     sha256 "74ffc9abed7808557c799d089d4336da01d68c484e7b90dac797015d9656c8de" => :mojave
     sha256 "194a52459b3bfd3e4f38f8e19ea9f4d371d2bf3b005d3e36b8aa5519c5afaf2d" => :high_sierra

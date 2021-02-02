@@ -3,6 +3,7 @@ class Balance < Formula
   homepage "https://www.inlab.net/balance/"
   url "https://www.inlab.net/wp-content/uploads/2018/05/balance-3.57.tar.gz"
   sha256 "b355f98932a9f4c9786cb61012e8bdf913c79044434b7d9621e2fa08370afbe1"
+  license "GPL-2.0"
 
   bottle do
     cellar :any_skip_relocation
@@ -14,6 +15,8 @@ class Balance < Formula
     sha256 "07f517fc19b99e5d52f6a90576ccd718650bd6a291d7c808f0d8b8193bce7779" => :yosemite
     sha256 "ee916620a28cde87c90824125bf418b61eea80bc99e3aa32936e39af8acf0432" => :mavericks
   end
+
+  disable! date: "2020-12-08", because: :unmaintained
 
   def install
     system "make"

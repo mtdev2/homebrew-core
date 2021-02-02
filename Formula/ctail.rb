@@ -3,10 +3,12 @@ class Ctail < Formula
   homepage "https://github.com/pquerna/ctail"
   url "https://github.com/pquerna/ctail/archive/ctail-0.1.0.tar.gz"
   sha256 "864efb235a5d076167277c9f7812ad5678b477ff9a2e927549ffc19ed95fa911"
+  license "Apache-2.0"
 
   bottle do
     cellar :any
     rebuild 1
+    sha256 "31c851cee6019ade6def5da7a50b2d901d04e1038d9d01d6985ac57a700a810f" => :big_sur
     sha256 "0821eb3a9bf969519149b7cb3038db2dc25836bc335c057e0ff263aa5fc2f7b2" => :catalina
     sha256 "d81e805d4a80fd83b36fa579dff3c71a364b7bbc50ff6addf74a0d3790a92643" => :mojave
     sha256 "de6e121995f86ec3dbfddf8bee861d9389c548648316f4901cbde691ca26a8d5" => :high_sierra
@@ -21,7 +23,7 @@ class Ctail < Formula
   depends_on "apr"
   depends_on "apr-util"
 
-  conflicts_with "byobu", :because => "both install `ctail` binaries"
+  conflicts_with "byobu", because: "both install `ctail` binaries"
 
   def install
     system "./configure",

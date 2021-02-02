@@ -3,10 +3,13 @@ class Sl < Formula
   homepage "https://github.com/mtoyoda/sl"
   url "https://github.com/mtoyoda/sl/archive/5.02.tar.gz"
   sha256 "1e5996757f879c81f202a18ad8e982195cf51c41727d3fea4af01fdcbbb5563a"
+  license "MIT"
   head "https://github.com/mtoyoda/sl.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "0300afadf35bb67efe622add3f7a928bf123dd855e37376e278052b4787e65d4" => :big_sur
+    sha256 "d8ab2f34483a0a595350f949b1a0a4386b3836ce624245365c7bce6664bb283a" => :arm64_big_sur
     sha256 "31b8e67d984635b74aec3a5b47b6145789ed9c09d065751cac862eec1386502d" => :catalina
     sha256 "e489648bcc7eff8f065855dcc891eb55f3793a5ff464d96726e313a1bc74d00f" => :mojave
     sha256 "627b0b5f8027f876466d03038da7dd0d75804cccc3bbcf45f0fe9c91199be3c3" => :high_sierra

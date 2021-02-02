@@ -1,37 +1,26 @@
 class Miniserve < Formula
   desc "High performance static file server"
   homepage "https://github.com/svenstaro/miniserve"
-  url "https://github.com/svenstaro/miniserve/archive/v0.6.0.tar.gz"
-  sha256 "cad2608ff5459e5497b73b6b8635b76b0c38ce0bcee24bf4f2192984f386de93"
+  url "https://github.com/svenstaro/miniserve/archive/v0.10.4.tar.gz"
+  sha256 "03b8549258deb17759d69ad73047429f8420e3eab7588af086caf14e47c96332"
+  license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "534cd0d7b79d8c06a5246a3d11dfb0fbbaac5aad634922883ebfd5fe958b2711" => :catalina
-    sha256 "b150191be231782aec0a73ed3a83245de22eedf9682ace58532d67857c042f47" => :mojave
-    sha256 "ccae720adeff3ef96f858a1709657c9a1608fd7a86689f9947174824cf9a4081" => :high_sierra
+    sha256 "b2f273329cfbbdee52d5846095079228e9a467928e05a43e2c15dffb9b46b0db" => :big_sur
+    sha256 "b28e6374c318343d0118d62c780e3bfb51bc48044792f6ab85642deeba031b41" => :arm64_big_sur
+    sha256 "379b4a5bbe9bf62605f5b34b4373e523136316caa6df0879ba27bbc30a512ce6" => :catalina
+    sha256 "0b3ea752c7a77684ec37b9b30f2000e52b0e978ed8a0b2aaacc4ad927a614eef" => :mojave
   end
 
-  # Miniserve requires a known-good Rust nightly release to use.
-  resource "rust-nightly" do
-    url "https://static.rust-lang.org/dist/2020-03-14/rust-nightly-x86_64-apple-darwin.tar.xz"
-    sha256 "6cfe5b598502d4bc6afb1bec3b1e87306d3b4057ce1ffcd8a306817c2ff5fc87"
-  end
+  depends_on "rust" => :build
 
   def install
-    resource("rust-nightly").stage do
-      system "./install.sh", "--prefix=#{buildpath}/rust-nightly"
-      ENV.prepend_path "PATH", "#{buildpath}/rust-nightly/bin"
-    end
-    system "cargo", "install", "--locked", "--root", prefix, "--path", "."
+    system "cargo", "install", *std_cargo_args
   end
 
   test do
-    require "socket"
-
-    server = TCPServer.new(0)
-    port = server.addr[1]
-    server.close
-
+    port = free_port
     pid = fork do
       exec "#{bin}/miniserve", "#{bin}/miniserve", "-i", "127.0.0.1", "--port", port.to_s
     end

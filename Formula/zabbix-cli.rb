@@ -5,16 +5,25 @@ class ZabbixCli < Formula
   homepage "https://github.com/unioslo/zabbix-cli/"
   url "https://github.com/unioslo/zabbix-cli/archive/2.2.1.tar.gz"
   sha256 "884ecd2a4a4c7f68a080bb7e0936dd208c813284ec3ed60b948ce90a1be7c828"
+  license "GPL-3.0"
+  revision 1
   head "https://github.com/unioslo/zabbix-cli.git"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3ce4d420b9ddaf208d8cdc5c1b22358ac39f1cd4e6473bb2765bbedb5eb82c9d" => :catalina
-    sha256 "b663824f576794bc31d1d55ebcce1d2352cc1c3675d0c75f957d7f410e8ca766" => :mojave
-    sha256 "6158e91d1699b5117714310bdf8850e185eb9b358c70d3a89a6d0fefd7856482" => :high_sierra
+    sha256 "2b4d595e2cc721f242912d2440f563edf5d2356489c1729a241477c2a8895e11" => :big_sur
+    sha256 "bdc442411e61215ac4d7a7a28af65dc7fc08414502cc2299850b39586c5cd091" => :arm64_big_sur
+    sha256 "279c0d15eb9b0d3318511c235652627498179b6b37664b47e65e47dd37848586" => :catalina
+    sha256 "2021e4b3ca3cc30b290c7a999dd36fd9cd0d9a61bb0498f35537ee52907ad838" => :mojave
+    sha256 "834aaba4a28b53861bd3bf58155131dd50d1b2ea6ccf33177d366365c707fb74" => :high_sierra
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   ## direct dependencies
 

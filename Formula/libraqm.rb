@@ -1,14 +1,16 @@
 class Libraqm < Formula
   desc "Library for complex text layout"
   homepage "https://github.com/HOST-Oman/libraqm"
-  url "https://github.com/HOST-Oman/libraqm/archive//v0.7.0.tar.gz"
-  sha256 "21ed67b8d0d2217f3801878f2ceef9b2da24495eeff830552051cef21f95938e"
+  url "https://github.com/HOST-Oman/libraqm/archive/v0.7.1.tar.gz"
+  sha256 "3a80118fde37b8c07d35b0d40465e68190bdbd6e984ca6fe5c8192c521bb076d"
+  license "MIT"
 
   bottle do
     cellar :any
-    sha256 "61857a8c4e5ffada95438c4b98d042c129ebf485b5141fc8cc1bbbb13052d2fc" => :catalina
-    sha256 "b46d537983abc24546765d3d37f7a77330f82371a2c8899ada29e96324fee760" => :mojave
-    sha256 "5599586ba85c892e36cfb5da6eb0bae54d8632b0c569bdcaa71b38b3ecab947f" => :high_sierra
+    sha256 "433cfa09f493996f697e288318dddb9f887caaa505e89f54e6258efca30c31c5" => :big_sur
+    sha256 "9f76c8377e47263458e8e09ed5e616687b25dc51821296dcefe386eb63f4eb05" => :arm64_big_sur
+    sha256 "4c45ed51cac6ceb29ea7d7c6c7461b54b5e7f5ecc708e6fbba4396a26489c743" => :catalina
+    sha256 "d104c74c838f567086230184854a18444c570437434a001adc6ada04ce9a68a9" => :mojave
   end
 
   depends_on "autoconf" => :build
@@ -23,9 +25,6 @@ class Libraqm < Formula
   def install
     ENV["LIBTOOL"] = Formula["libtool"].bin
     ENV["PKG_CONFIG"] = Formula["pkg-config"].bin/"pkg-config"
-
-    ENV["HARFBUZZ_CFLAGS"] = "-I#{Formula["harfbuzz"].include/"harfbuzz"}"
-    ENV["HARFBUZZ_LIBS"] = Formula["harfbuzz"].lib
 
     # for the docs
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"

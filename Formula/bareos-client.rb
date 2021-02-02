@@ -1,13 +1,19 @@
 class BareosClient < Formula
   desc "Client for Bareos (Backup Archiving REcovery Open Sourced)"
   homepage "https://www.bareos.org/"
-  url "https://github.com/bareos/bareos/archive/Release/19.2.6.tar.gz"
-  sha256 "688505f8bc45b919dfd1c8bdcd448b4bdbe1ea2d1755358a94d702e9aff8482b"
+  url "https://github.com/bareos/bareos/archive/Release/19.2.9.tar.gz"
+  sha256 "ea203d4bdacc8dcc86164a74f628888ce31cc90858398498137bd25900b8f723"
+  license "AGPL-3.0-only"
+
+  livecheck do
+    url "https://github.com/bareos/bareos.git"
+    regex(%r{^Release/(\d+(?:\.\d+)+)$}i)
+  end
 
   bottle do
-    sha256 "afd57cdc34b88e67673ca416ca95bd10490a51ed4158ac503e41d42130eb4964" => :catalina
-    sha256 "da9c6752912285c42f35ef5cc75fc51cf51326dd80fe8eafb454fda5a522e585" => :mojave
-    sha256 "a3cc09799454c9387eef89150a48d6dabfa6f095f2b72b59094f0e5a0a4da4f1" => :high_sierra
+    sha256 "bff8a75230cdc455bacd679e173d373d7ff11f10c57ed54ede298b7e7cb96816" => :big_sur
+    sha256 "40e1558c583639b7788c4a5fb30a984abaa00a3a552f00b30466ac0bf8ce4e73" => :catalina
+    sha256 "c1f6aa579b9a1923592818b041a165bc029d66bc88745895f6662ce2a3c83f8e" => :mojave
   end
 
   depends_on "cmake" => :build
@@ -16,7 +22,7 @@ class BareosClient < Formula
   depends_on "readline"
 
   conflicts_with "bacula-fd",
-    :because => "Both install a `bconsole` executable."
+    because: "both install a `bconsole` executable"
 
   def install
     mkdir "build" do
@@ -48,7 +54,7 @@ class BareosClient < Formula
     end
   end
 
-  plist_options :startup => true
+  plist_options startup: true
 
   def plist
     <<~EOS

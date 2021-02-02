@@ -3,14 +3,15 @@ class Circleci < Formula
   homepage "https://circleci.com/docs/2.0/local-cli/"
   # Updates should be pushed no more frequently than once per week.
   url "https://github.com/CircleCI-Public/circleci-cli.git",
-      :tag      => "v0.1.6949",
-      :revision => "d951526a5e43199a99eb395bb2ef9794a4027f2f"
+      tag:      "v0.1.12119",
+      revision: "ee76c04d6f87afd576649de5edd2990944d4b495"
+  license "MIT"
+  head "https://github.com/CircleCI-Public/circleci-cli.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "f29d12f1868f7f822fc55f8ce31fa5012dc8c1702eba00436fac86dc5d01087e" => :catalina
-    sha256 "ceac4374ee3ba0f99589edbdcd50c0ec9ec4cc82e3742838fbb7ee8d8c4d6866" => :mojave
-    sha256 "0fabd88140d84afce21d1affd827d8ef50aeb94ca2cc9f08dcf8ff31d1a1fe40" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur: "232442df4ac3d7f641ae32ec4131df4ee6f6664a8a074d87e0bb6de53a50892f"
+    sha256 cellar: :any_skip_relocation, catalina: "2c8efc61c6aad5416c11f29f219489594dcd471087f499febea10c3d901e26e3"
+    sha256 cellar: :any_skip_relocation, mojave: "3c03c9afde8cc89ab3d570f2f1ed6aee1d4b95793a9c41ed9b7ec72264caaa34"
   end
 
   depends_on "go" => :build
@@ -22,12 +23,11 @@ class Circleci < Formula
     dir.install buildpath.children
 
     cd dir do
-      commit = Utils.popen_read("git rev-parse --short HEAD").chomp
       ldflags = %W[
         -s -w
-        -X github.com/CircleCI-Public/circleci-cli/cmd.PackageManager=homebrew
+        -X github.com/CircleCI-Public/circleci-cli/version.packageManager=homebrew
         -X github.com/CircleCI-Public/circleci-cli/version.Version=#{version}
-        -X github.com/CircleCI-Public/circleci-cli/version.Commit=#{commit}
+        -X github.com/CircleCI-Public/circleci-cli/version.Commit=#{Utils.git_short_head}
       ]
       system "make", "pack"
       system "go", "build", "-ldflags", ldflags.join(" "),

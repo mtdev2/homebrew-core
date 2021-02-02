@@ -1,14 +1,21 @@
 class Perl < Formula
   desc "Highly capable, feature-rich programming language"
   homepage "https://www.perl.org/"
-  url "https://www.cpan.org/src/5.0/perl-5.30.1.tar.gz"
-  sha256 "bf3d25571ff1ee94186177c2cdef87867fd6a14aa5a84f0b1fb7bf798f42f964"
-  head "https://github.com/perl/perl5.git", :branch => "blead"
+  url "https://www.cpan.org/src/5.0/perl-5.32.1.tar.xz"
+  sha256 "57cc47c735c8300a8ce2fa0643507b44c4ae59012bfdad0121313db639e02309"
+  license any_of: ["Artistic-1.0-Perl", "GPL-1.0-or-later"]
+  head "https://github.com/perl/perl5.git", branch: "blead"
+
+  livecheck do
+    url "https://www.cpan.org/src/"
+    regex(/href=.*?perl[._-]v?(\d+\.\d*[02468](?:\.\d+)*)\.t/i)
+  end
 
   bottle do
-    sha256 "c67104091d5328aadb95532ceb7aa4b25544c2505acd11522b5615b67953d38f" => :catalina
-    sha256 "38e242ca4adaad6c0ef271e8e7d77030998f5809daf1b90c208d81b8b75fb5c9" => :mojave
-    sha256 "73e7650fd86f600e3342cd14491e632c0bae0c541476ab5c30b4409deedf7664" => :high_sierra
+    sha256 "846c28c0b3ae4d63fb82feef77832b37f198a5669f4fb58a9a4cd081aa9c1e27" => :big_sur
+    sha256 "94989cfa38487dfbea5d430da2e4e85734d79b6125020992a5009624628899f1" => :arm64_big_sur
+    sha256 "dce1838f66ce3929a58c1a68f351c98f7f2176b41d624e3cfc7bd8ec72d8cf90" => :catalina
+    sha256 "45de452aa689c422e320ea35fa040a9cc0c6640c2a3b1dff9cabff3f4f17b490" => :mojave
   end
 
   uses_from_macos "expat"
@@ -30,6 +37,7 @@ class Perl < Formula
       -Duseshrplib
       -Duselargefiles
       -Dusethreads
+      -Dsed=/usr/bin/sed
     ]
 
     args << "-Dusedevel" if build.head?
@@ -37,7 +45,6 @@ class Perl < Formula
     system "./Configure", *args
 
     system "make"
-    system "make", "test"
 
     system "make", "install"
   end

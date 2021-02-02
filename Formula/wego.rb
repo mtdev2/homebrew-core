@@ -5,10 +5,12 @@ class Wego < Formula
   homepage "https://github.com/schachmat/wego"
   url "https://github.com/schachmat/wego/archive/2.0.tar.gz"
   sha256 "d63d79520b385c4ed921c7decc37a0b85c40af66600f8a5733514e04d3048075"
+  license "ISC"
   head "https://github.com/schachmat/wego.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "ff772c99d0aebc8e471aa4785b7a429fda2c0af8ede5d43fb2ee1ba8c7617246" => :big_sur
     sha256 "5ac6a153a25c0d68564d000f52642d0891fc85de2183732b9d7b171b5e629146" => :catalina
     sha256 "436dbf3a2dd0f517635078c987d95985941be4aaae3efc65b5fb2e3562af87cd" => :mojave
     sha256 "dc3714d72fde13770cec00100aa1ee843b944512c454e00ad131c822e868cedb" => :high_sierra
@@ -22,17 +24,17 @@ class Wego < Formula
 
   go_resource "github.com/mattn/go-colorable" do
     url "https://github.com/mattn/go-colorable.git",
-        :revision => "ed8eb9e318d7a84ce5915b495b7d35e0cfe7b5a8"
+        revision: "ed8eb9e318d7a84ce5915b495b7d35e0cfe7b5a8"
   end
 
   go_resource "github.com/mattn/go-runewidth" do
     url "https://github.com/mattn/go-runewidth.git",
-        :revision => "d6bea18f789704b5f83375793155289da36a3c7f"
+        revision: "d6bea18f789704b5f83375793155289da36a3c7f"
   end
 
   go_resource "github.com/schachmat/ingo" do
     url "https://github.com/schachmat/ingo.git",
-        :revision => "b1887f863beaeb31b3924e839dfed3cf3a981ea8"
+        revision: "b1887f863beaeb31b3924e839dfed3cf3a981ea8"
   end
 
   def install

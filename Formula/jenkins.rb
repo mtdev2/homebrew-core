@@ -1,8 +1,14 @@
 class Jenkins < Formula
   desc "Extendable open source continuous integration server"
   homepage "https://jenkins.io/"
-  url "http://mirrors.jenkins.io/war/2.229/jenkins.war"
-  sha256 "1ae740759ed91cf6d68c5442c2186f42702b3bc5803af2398613f5960b5a0e37"
+  url "http://mirrors.jenkins.io/war/2.277/jenkins.war"
+  sha256 "bc5ca0002d7db14cfc5a728e5fc2a32ef943795cbed194e702fded87cc04d255"
+  license "MIT"
+
+  livecheck do
+    url :head
+    regex(/^jenkins[._-]v?(\d+(?:\.\d+)+)$/i)
+  end
 
   head do
     url "https://github.com/jenkinsci/jenkins.git"
@@ -11,17 +17,17 @@ class Jenkins < Formula
 
   bottle :unneeded
 
-  depends_on :java => "1.8"
+  depends_on "openjdk@11"
 
   def install
     if build.head?
       system "mvn", "clean", "install", "-pl", "war", "-am", "-DskipTests"
     else
-      system "jar", "xvf", "jenkins.war"
+      system "#{Formula["openjdk@11"].opt_bin}/jar", "xvf", "jenkins.war"
     end
-    libexec.install Dir["**/jenkins.war", "**/jenkins-cli.jar"]
-    bin.write_jar_script libexec/"jenkins.war", "jenkins", :java_version => "1.8"
-    bin.write_jar_script libexec/"jenkins-cli.jar", "jenkins-cli", :java_version => "1.8"
+    libexec.install Dir["**/jenkins.war", "**/cli-#{version}.jar"]
+    bin.write_jar_script libexec/"jenkins.war", "jenkins", java_version: "11"
+    bin.write_jar_script libexec/"cli-#{version}.jar", "jenkins-cli", java_version: "11"
   end
 
   def caveats
@@ -30,7 +36,7 @@ class Jenkins < Formula
     EOS
   end
 
-  plist_options :manual => "jenkins"
+  plist_options manual: "jenkins"
 
   def plist
     <<~EOS
@@ -42,11 +48,7 @@ class Jenkins < Formula
           <string>#{plist_name}</string>
           <key>ProgramArguments</key>
           <array>
-            <string>/usr/libexec/java_home</string>
-            <string>-v</string>
-            <string>1.8</string>
-            <string>--exec</string>
-            <string>java</string>
+            <string>#{Formula["openjdk@11"].opt_bin}/java</string>
             <string>-Dmail.smtp.starttls.enable=true</string>
             <string>-jar</string>
             <string>#{opt_libexec}/jenkins.war</string>
@@ -63,16 +65,14 @@ class Jenkins < Formula
   test do
     ENV["JENKINS_HOME"] = testpath
     ENV.prepend "_JAVA_OPTIONS", "-Djava.io.tmpdir=#{testpath}"
-    pid = fork do
-      exec "#{bin}/jenkins"
+
+    port = free_port
+    fork do
+      exec "#{bin}/jenkins --httpPort=#{port}"
     end
     sleep 60
 
-    begin
-      assert_match /Welcome to Jenkins!|Unlock Jenkins|Authentication required/, shell_output("curl localhost:8080/")
-    ensure
-      Process.kill("SIGINT", pid)
-      Process.wait(pid)
-    end
+    output = shell_output("curl localhost:#{port}/")
+    assert_match /Welcome to Jenkins!|Unlock Jenkins|Authentication required/, output
   end
 end

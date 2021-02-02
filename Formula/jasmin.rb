@@ -3,7 +3,12 @@ class Jasmin < Formula
   homepage "https://jasmin.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/jasmin/jasmin/jasmin-2.4/jasmin-2.4.zip"
   sha256 "eaa10c68cec68206fd102e9ec7113739eccd790108a1b95a6e8c3e93f20e449d"
-  revision 1
+  license "BSD-4-Clause"
+  revision 2
+
+  livecheck do
+    url :stable
+  end
 
   bottle :unneeded
 
@@ -15,11 +20,7 @@ class Jasmin < Formula
 
     libexec.install Dir["*.jar"]
     prefix.install %w[Readme.txt license-ant.txt license-jasmin.txt]
-    (bin/"jasmin").write <<~EOS
-      #!/bin/bash
-      export JAVA_HOME="${JAVA_HOME:-#{Formula["openjdk"].opt_prefix}}"
-      exec "${JAVA_HOME}/bin/java" -jar "#{libexec}/jasmin.jar" "$@"
-    EOS
+    bin.write_jar_script libexec/"jasmin.jar", "jasmin"
   end
 
   test do
@@ -40,6 +41,6 @@ class Jasmin < Formula
       .end method
     EOS
     system "#{bin}/jasmin", "#{testpath}/test.j"
-    assert_equal "Hello Homebrew\n", shell_output("java HomebrewTest")
+    assert_equal "Hello Homebrew\n", shell_output("#{Formula["openjdk"].bin}/java HomebrewTest")
   end
 end

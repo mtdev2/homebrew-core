@@ -1,22 +1,29 @@
 class I386ElfGdb < Formula
   desc "GNU debugger for i386-elf cross development"
   homepage "https://www.gnu.org/software/gdb/"
-  url "https://ftp.gnu.org/gnu/gdb/gdb-9.1.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gdb/gdb-9.1.tar.xz"
-  sha256 "699e0ec832fdd2f21c8266171ea5bf44024bd05164fdf064e4d10cc4cf0d1737"
+  url "https://ftp.gnu.org/gnu/gdb/gdb-10.1.tar.xz"
+  mirror "https://ftpmirror.gnu.org/gdb/gdb-10.1.tar.xz"
+  sha256 "f82f1eceeec14a3afa2de8d9b0d3c91d5a3820e23e0a01bbb70ef9f0276b62c0"
+  license "GPL-3.0-or-later"
   head "https://sourceware.org/git/binutils-gdb.git"
 
-  bottle do
-    rebuild 1
-    sha256 "43be10af58f9520fcac979bcab1895caa4db95b6421e3446a0384dd1993ebb6f" => :catalina
-    sha256 "1e0f6eadbf426a5d1806745d19a09dfb1afdcdcb9c8979b4812b147287e43ebb" => :mojave
-    sha256 "320e9a47b260f302a8cf44fa012595e9a5404327d8371ab7d2b3b4797d4dbf09" => :high_sierra
+  livecheck do
+    url :stable
   end
 
-  depends_on "python@3.8"
+  bottle do
+    sha256 "133541f91ae660943bc8790002c35032a0cb30b1480f806c65c3b66ec782f52e" => :big_sur
+    sha256 "9e8043b364dbe987a46ad35437e986321c9d5999c62b853f1d474637521f09a9" => :arm64_big_sur
+    sha256 "4b529407dbdbb4a4686bf0c8e88511f6ec77cc24cd808704f457443d774ea7b7" => :catalina
+    sha256 "7ffb645794a491ccc52fea225c511647ab3f39771e65c3a2912d0e77f7f4e181" => :mojave
+    sha256 "f97095dfc0fc75cfdfa67f9cc8ef4402c7b8d4f24a0a522281f1d5c93c3ee4b3" => :high_sierra
+  end
+
+  depends_on "python@3.9"
   depends_on "xz" # required for lzma support
 
-  conflicts_with "gdb", :because => "both install include/gdb, share/gdb and share/info"
+  conflicts_with "gdb", because: "both install include/gdb, share/gdb and share/info"
+  conflicts_with "x86_64-elf-gdb", because: "both install include/gdb, share/gdb and share/info"
 
   def install
     args = %W[
@@ -25,7 +32,7 @@ class I386ElfGdb < Formula
       --disable-debug
       --disable-dependency-tracking
       --with-lzma
-      --with-python=#{Formula["python@3.8"].opt_bin}/python3
+      --with-python=#{Formula["python@3.9"].opt_bin}/python3
       --disable-binutils
     ]
 

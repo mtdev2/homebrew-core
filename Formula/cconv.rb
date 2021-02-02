@@ -3,9 +3,12 @@ class Cconv < Formula
   homepage "https://github.com/xiaoyjy/cconv"
   url "https://github.com/xiaoyjy/cconv/archive/v0.6.3.tar.gz"
   sha256 "82f46a94829f5a8157d6f686e302ff5710108931973e133d6e19593061b81d84"
+  license "MIT"
 
   bottle do
     cellar :any
+    sha256 "f39720a1d032edbcdbf6ccfd6a5f8c9dc46faaf95e479904cfde25ec5c7622d6" => :big_sur
+    sha256 "58c753e4b4b6887b81202d33c63ac6ef153d7166c6542661ab3dcbb322f173bf" => :arm64_big_sur
     sha256 "06b6bafaadcaa16329ba0cdeee7d11a13e94f126a4011b54253e31a1ea82108e" => :catalina
     sha256 "ffaf8b5cab0618e52cfedff14a5084cfe54e0b1b6480433e2ffb4beee8e47ec9" => :mojave
     sha256 "c4d197f979340a89d5a87e05eae6a39db38863f89b6ddda42f924472d87a5b0d" => :high_sierra

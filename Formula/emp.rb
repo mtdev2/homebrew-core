@@ -3,9 +3,11 @@ class Emp < Formula
   homepage "https://github.com/remind101/empire"
   url "https://github.com/remind101/empire/archive/v0.13.0.tar.gz"
   sha256 "1294de5b02eaec211549199c5595ab0dbbcfdeb99f670b66e7890c8ba11db22b"
+  license "BSD-2-Clause"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "fc362d246942141f91da093183c54a8ff679bf263f0a4326d5bed7f94cbc8f59" => :big_sur
     sha256 "8c4bca6eca037bbef2b1a65d1974b43b36c81274e20597a76e87703ec477ee1a" => :catalina
     sha256 "33eafe903efc393c0964ac05ab684508b98e72a4ee2f26272ee16eee159cd514" => :mojave
     sha256 "d96c6b3f2ee49480ddc0dac10484284e7620dce5499482bdaf12c26f42f93a13" => :high_sierra
@@ -27,7 +29,7 @@ class Emp < Formula
   test do
     require "webrick"
 
-    server = WEBrick::HTTPServer.new :Port => 8035
+    server = WEBrick::HTTPServer.new Port: 8035
     server.mount_proc "/apps/foo/releases" do |_req, res|
       resp = {
         "created_at"  => "2015-10-12T0:00:00.00000000-00:00",

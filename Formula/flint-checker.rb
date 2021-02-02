@@ -3,9 +3,11 @@ class FlintChecker < Formula
   homepage "https://github.com/pengwynn/flint"
   url "https://github.com/pengwynn/flint/archive/v0.1.0.tar.gz"
   sha256 "ec865ec5cad191c7fc9c7c6d5007754372696a708825627383913367f3ef8b7f"
+  license "MIT"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "167b3ab36ec6ddb5b07b4524d090596b18fd9267cf9da5161e78d11b1f988397" => :big_sur
     sha256 "48211955f96e66b5254338d9f6ba56e6e35f6680fb0379190f5b4a3d8f6fe6f4" => :catalina
     sha256 "8cd18ca30e932554d379b710cd9d1adc9b14c073d2c7bf7f993c4e98c2349947" => :mojave
     sha256 "b1d4e65bc48b267d9d05b31ad5321d534717a5b0122d80a8bf5d483bd4c00662" => :high_sierra
@@ -24,7 +26,7 @@ class FlintChecker < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/flint --version", 0)
+    assert_match version.to_s, shell_output("#{bin}/flint --version")
 
     shell_output("#{bin}/flint", 2)
     (testpath/"README.md").write("# Readme")
@@ -35,6 +37,6 @@ class FlintChecker < Formula
     (testpath/"script").mkpath
     (testpath/"script/bootstrap").write("Bootstrap Script")
     (testpath/"script/test").write("Test Script")
-    shell_output("#{bin}/flint", 0)
+    shell_output("#{bin}/flint")
   end
 end

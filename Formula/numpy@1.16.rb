@@ -3,19 +3,21 @@ class NumpyAT116 < Formula
   homepage "https://www.numpy.org/"
   url "https://github.com/numpy/numpy/releases/download/v1.16.6/numpy-1.16.6.zip"
   sha256 "e5cf3fdf13401885e8eea8170624ec96225e2174eb0c611c6f26dd33b489e3ff"
+  license "BSD-3-Clause"
   revision 1
 
   bottle do
     cellar :any
+    sha256 "0b95667bfd54232190975066a1e70a0770b84d37129c3fcda418bbba34926c88" => :big_sur
+    sha256 "b2d618920646238a8711dba0c021600ea1153a50490ba3e379107fb3f96d0e77" => :arm64_big_sur
     sha256 "fff9f604e35a06cc3197cc818a851d037f6d8f30df04fc7640144966bfb15c91" => :catalina
     sha256 "0d6a4439397cf4c684b6e01fb7038ed9b9943582d5ef15f080503755330ca615" => :mojave
     sha256 "ed8d4fa6634bea85689ae4d5e316e9a3546469e44358aba6a9f73183fdcb4272" => :high_sierra
   end
 
   depends_on "gcc" => :build # for gfortran
+  depends_on :macos # Due to Python 2
   depends_on "openblas"
-
-  uses_from_macos "python@2"
 
   resource "Cython" do
     url "https://files.pythonhosted.org/packages/d9/82/d01e767abb9c4a5c07a6a1e6f4d5a8dfce7369318d31f48a52374094372e/Cython-0.29.15.tar.gz"

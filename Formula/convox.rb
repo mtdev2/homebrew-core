@@ -1,38 +1,32 @@
 class Convox < Formula
   desc "Command-line interface for the Convox PaaS"
   homepage "https://convox.com/"
-  url "https://github.com/convox/convox/archive/3.0.14.tar.gz"
-  sha256 "3721f11628d43e7277bbefe64c91e7aa79b8e97c01c2ce338cf5f99028413562"
+  url "https://github.com/convox/convox/archive/3.0.45.tar.gz"
+  sha256 "3647585b31b092aa3c3c7243d3eefb2e83c4593a782a8904dec165f454e24f6a"
+  license "Apache-2.0"
   version_scheme 1
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "05b43d58d6e7e156417534b573a765108daf33dfc2670afbc9e1e3d97abd4a97" => :catalina
-    sha256 "90571c23e8167648c7b35dfc0a5af6db81b715a0890d9a77d2b78d8fe5400f7b" => :mojave
-    sha256 "728bb6354c3c43bff8de2fcc5d297a959cbcb25214ad5fba0bdf746918176efc" => :high_sierra
+    sha256 "46c750d57369ba9176f837d83674253af263658acf216880e1038b98f4303504" => :big_sur
+    sha256 "b5c5484e46e8ba32c0babe936c951fecab00171b55d8dca49ff920b853529960" => :arm64_big_sur
+    sha256 "606a7cc3e37e5007e37eae7e6d2f10add0cbf1f272f6158560e01796b1fd2c18" => :catalina
+    sha256 "2b0e40402da441ecc00a803aa71c8bac1ee05ef2ca101b4fc9f60cd4e763c847" => :mojave
   end
 
   depends_on "go" => :build
 
-  resource "packr" do
-    url "https://github.com/gobuffalo/packr/archive/v2.0.1.tar.gz"
-    sha256 "cc0488e99faeda4cf56631666175335e1cce021746972ce84b8a3083aa88622f"
-  end
-
   def install
-    ENV["GOPATH"] = buildpath/"go"
+    ldflags = %W[
+      -X main.version=#{version}
+    ].join(" ")
 
-    (buildpath/"src").install Dir["*"]
-
-    resource("packr").stage { system "go", "install", "./packr" }
-
-    cd buildpath/"src" do
-      system "../go/bin/packr"
-      system "go", "build", "-mod=vendor", "-ldflags=-X main.version=#{version}",
-             "-o", bin/"convox", "-v", "./cmd/convox"
-    end
-
-    prefix.install_metafiles
+    system "go", "build", *std_go_args, "-mod=vendor", "-ldflags", ldflags, "./cmd/convox"
   end
 
   test do

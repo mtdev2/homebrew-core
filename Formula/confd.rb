@@ -3,10 +3,12 @@ class Confd < Formula
   homepage "https://github.com/kelseyhightower/confd"
   url "https://github.com/kelseyhightower/confd/archive/v0.16.0.tar.gz"
   sha256 "4a6c4d87fab77aa9827370541024a365aa6b4c8c25a3a9cab52f95ba6b9a97ea"
+  license "MIT"
   head "https://github.com/kelseyhightower/confd.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "8c337c7afdcf9d7bf7662f94d24fa326990e69344f6c23700ba2a5c0c540592e" => :big_sur
     sha256 "34d59b3c47493cd00685c62997ac0385f52f90a5d99adb9ed5c98576c6c02452" => :catalina
     sha256 "6c83fe2e7e744917d241e8fd51d76b83838ac08dcab31c2663c7b2c7703140cc" => :mojave
     sha256 "8605d52c611da0530d31178fbb9805592113d70b3d496d21a34696ff499aac70" => :high_sierra

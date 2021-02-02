@@ -3,17 +3,18 @@ class ScmManager < Formula
   homepage "https://www.scm-manager.org"
   url "https://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.59/scm-server-1.59-app.tar.gz"
   sha256 "8628e82f3bfd452412260dd2d82c2e76ee57013223171f2908d75cbc6258f261"
+  license "BSD-3-Clause"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "521d84a5445594de2d018af2a9f0291ab0a8495e8fe878b56913ee92173a2241" => :catalina
-    sha256 "d28ad275b745fb546973c9d451df374f994eaeade2d351732ab31a7141260372" => :mojave
-    sha256 "42e177bd72cba3b27750308aeeaf8afa0ec8cc553b8a9acf1a02a6d5a698ce14" => :high_sierra
-    sha256 "42e177bd72cba3b27750308aeeaf8afa0ec8cc553b8a9acf1a02a6d5a698ce14" => :sierra
-    sha256 "42e177bd72cba3b27750308aeeaf8afa0ec8cc553b8a9acf1a02a6d5a698ce14" => :el_capitan
+    sha256 "0bf3a43daf080e5b84cd36512b28bc13c5ac74c24c711436358d00e060f84a86" => :big_sur
+    sha256 "a7d1d6994937ca3170f5bc078886339910520eb1261b835c9c6f1173fe9d5496" => :catalina
+    sha256 "6b0ed9e9d667ec92070b3f4b53f9dc90cbb508d2c6649684f39182e3bb23d6ac" => :mojave
+    sha256 "3e71fdc3039b4cc46fbbb49ae7976b8be09d8b9c4f6e5c0e052d30016668ac74" => :high_sierra
   end
 
-  depends_on :java => "1.8"
+  depends_on "openjdk@8"
 
   resource "client" do
     url "https://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.59/scm-cli-client-1.59-jar-with-dependencies.jar"
@@ -25,28 +26,16 @@ class ScmManager < Formula
 
     libexec.install Dir["*"]
 
-    (bin/"scm-server").write <<~EOS
-      #!/bin/bash
-      BASEDIR="#{libexec}"
-      REPO="#{libexec}/lib"
-      export JAVA_HOME=$(#{Language::Java.java_home_cmd("1.8")})
-      "#{libexec}/bin/scm-server" "$@"
-    EOS
-    chmod 0755, bin/"scm-server"
+    env = Language::Java.overridable_java_home_env("1.8")
+    env["BASEDIR"] = libexec
+    env["REPO"] = libexec/"lib"
+    (bin/"scm-server").write_env_script libexec/"bin/scm-server", env
 
-    tools = libexec/"tools"
-    tools.install resource("client")
-
-    scm_cli_client = bin/"scm-cli-client"
-    scm_cli_client.write <<~EOS
-      #!/bin/bash
-      export JAVA_HOME=$(#{Language::Java.java_home_cmd("1.8")})
-      java -jar "#{tools}/scm-cli-client-#{version}-jar-with-dependencies.jar" "$@"
-    EOS
-    chmod 0755, scm_cli_client
+    (libexec/"tools").install resource("client")
+    bin.write_jar_script libexec/"tools/scm-cli-client-#{version}-jar-with-dependencies.jar", "scm-cli-client", java_version: "1.8"
   end
 
-  plist_options :manual => "scm-server start"
+  plist_options manual: "scm-server start"
 
   def plist
     <<~EOS

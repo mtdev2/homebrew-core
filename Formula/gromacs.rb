@@ -1,13 +1,19 @@
 class Gromacs < Formula
   desc "Versatile package for molecular dynamics calculations"
-  homepage "http://www.gromacs.org/"
-  url "https://ftp.gromacs.org/pub/gromacs/gromacs-2020.1.tar.gz"
-  sha256 "e1666558831a3951c02b81000842223698016922806a8ce152e8f616e29899cf"
+  homepage "https://www.gromacs.org/"
+  url "https://ftp.gromacs.org/pub/gromacs/gromacs-2021.tar.gz"
+  sha256 "efa78ab8409b0f5bf0fbca174fb8fbcf012815326b5c71a9d7c385cde9a8f87b"
+
+  livecheck do
+    url "https://ftp.gromacs.org/pub/gromacs/"
+    regex(/href=.*?gromacs[._-]v?(\d+(?:\.\d+)*)\.t/i)
+  end
 
   bottle do
-    sha256 "72d49c0e34e42499f3f415d2eb0945a6a92446237b7175b385e546c3534e5b98" => :catalina
-    sha256 "bfab3f87481535fbfbfb6c03b22b0ffd27ebebf98fef1b3dba88fe5d36394f1d" => :mojave
-    sha256 "159631826837201f2d33cd1e6b018928c5e2fe82a3973439ed9e62a4f461da6e" => :high_sierra
+    sha256 big_sur: "6e77d33e5f9daa524601bdb6c298758290b42be4fb481f102161a33acad07df8"
+    sha256 arm64_big_sur: "217825d39e125e97af17405a9617386bea4db7efdb6a7698cb86b0972212f9f9"
+    sha256 catalina: "231561edcfb1afb096727fdac62a2ccb72e1d54e1adf015e77cd4aa93ad16bd5"
+    sha256 mojave: "e34650e543535f254bbe425a5d44f0d7f903b987d1011f8624c976767d91872f"
   end
 
   depends_on "cmake" => :build
@@ -20,9 +26,14 @@ class Gromacs < Formula
     inreplace "scripts/CMakeLists.txt", "CMAKE_INSTALL_BINDIR",
                                         "CMAKE_INSTALL_DATADIR"
 
-    args = std_cmake_args + %w[
-      -DCMAKE_C_COMPILER=gcc-9
-      -DCMAKE_CXX_COMPILER=g++-9
+    # Avoid superenv shim reference
+    inreplace "src/gromacs/gromacs-toolchain.cmake.cmakein", "@CMAKE_LINKER@",
+                                                             "/usr/bin/ld"
+
+    gcc_major_ver = Formula["gcc"].any_installed_version.major
+    args = std_cmake_args + %W[
+      -DCMAKE_C_COMPILER=gcc-#{gcc_major_ver}
+      -DCMAKE_CXX_COMPILER=g++-#{gcc_major_ver}
     ]
 
     mkdir "build" do

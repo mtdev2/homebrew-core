@@ -3,10 +3,12 @@ class Gpm < Formula
   homepage "https://github.com/pote/gpm"
   url "https://github.com/pote/gpm/archive/v1.4.0.tar.gz"
   sha256 "2e213abbb1a12ecb895c3f02b74077d3440b7ae3221b4b524659c2ea9065b02a"
+  license "MIT"
   revision 1
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "50e9ac019049016b8d3e220ef38e3d8bba8f184b1797a5efa967a19ca088361b" => :big_sur
     sha256 "f5c138e505b9e96ca109152ab5e5aa6871d9e9b200b7c603ca4d1c210be30838" => :catalina
     sha256 "d13ab2f5674bb5797801ca42fc50ff05ecfc9f674d09a406e8affcce2baf4111" => :mojave
     sha256 "cac9f1ce7bb82555763015539417c9e709ca27d414c24f100ed045b593573cee" => :high_sierra

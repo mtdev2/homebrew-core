@@ -3,8 +3,11 @@ class Reaver < Formula
   homepage "https://code.google.com/archive/p/reaver-wps/"
   url "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/reaver-wps/reaver-1.4.tar.gz"
   sha256 "add3050a4a05fe0ab6bfb291ee2de8e9b8a85f1e64ced93ee27a75744954b22d"
+  license "GPL-2.0"
 
   bottle do
+    sha256 "0cd13169a7c0f7603fab7ec7ac55e8896ffd5518c4e790a59183e894291a5cab" => :big_sur
+    sha256 "c4ba873b94ad8d7f968474660417e7af8ea607f9b42d3971533f84377a56a3d2" => :arm64_big_sur
     sha256 "73539f97836b5df80e030e429eb7f209dec3067c14b1bfd6753bcf7796c1f541" => :catalina
     sha256 "386ed8ae2562ae032f0d622d52d7302be2e99bbe671f1ca5ba3acb88b86f6417" => :mojave
     sha256 "c2c6d45abc45f5639b74da0bdb294a5ee83548f548642f6b61d764d05801352e" => :high_sierra

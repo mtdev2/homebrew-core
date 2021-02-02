@@ -3,8 +3,15 @@ class Hercules < Formula
   homepage "http://www.hercules-390.eu/"
   url "http://downloads.hercules-390.eu/hercules-3.13.tar.gz"
   sha256 "890c57c558d58708e55828ae299245bd2763318acf53e456a48aac883ecfe67d"
+  license "QPL-1.0"
+
+  livecheck do
+    url :homepage
+    regex(/href=.*?hercules[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
+    sha256 "a499a1f1bcd830c4adcc099f791eef857f583e8d8603ced8087b179ea0dbf640" => :big_sur
     sha256 "2ba0ca1b3ed54b5fa9e782cd1d8e225f58203e32b29b98af642932ed0fddbf1b" => :catalina
     sha256 "893e8854c92794377f2fc0b6cd96ad7f7ffd3d153a0a1678c6227468067d3696" => :mojave
     sha256 "f1feaf922ae9105c64ba207bc9e2d9b573ddcae8b6feaba501a6daf3068e9901" => :high_sierra

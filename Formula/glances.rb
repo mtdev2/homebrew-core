@@ -1,17 +1,19 @@
 class Glances < Formula
   desc "Alternative to top/htop"
   homepage "https://nicolargo.github.io/glances/"
-  url "https://github.com/nicolargo/glances/archive/v3.1.4.1.tar.gz"
-  sha256 "0347a0b949451fd0022c0f22e54092fe526120a776af1f2bde1ea7ba61d6b792"
+  url "https://files.pythonhosted.org/packages/fd/12/8b572d2944d5e2e6f9298c39933cbedc296325e5c650083ee3864ccb87eb/Glances-3.1.6.1.tar.gz"
+  sha256 "e9b21da06994d91822a43679ad57c03703e40f699ef9d3ce6a0f478b23602e90"
+  license "LGPL-3.0-or-later"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3bc1dc122d7ed7542795ac6b390dea5e7645528439295d29f8f127148425b5c2" => :catalina
-    sha256 "4f1c3d51bf77bb95586c81bdf5170f5fd2b53d544f06a311d9152c00f4abb038" => :mojave
-    sha256 "27db703a8a6fd3decc1d96ebed0c0d991c41a74e5a25d1c708a843671be072fd" => :high_sierra
+    sha256 "76c4d76215950ba7c9739b42bb0542a2ae5675950104bdd99b3c1e9eacd801d2" => :big_sur
+    sha256 "b8df470b377572b9586901f7c64aed23d84e9ff1490ffb16afbc24ae7be4d379" => :arm64_big_sur
+    sha256 "1fd1fa2bfce06817d40711060ce0d2918303ce62e32e203de70bf89175d0176a" => :catalina
+    sha256 "6939d40ec9f567132efbcf71539d503e2d5407fefcb08a90337a2059bf8e0dc4" => :mojave
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "bernhard" do
     url "https://files.pythonhosted.org/packages/51/d4/b2701097f9062321262c4d4e3488fdf127887502b2619e8fd1ae13955a36/bernhard-0.2.6.tar.gz"
@@ -129,8 +131,8 @@ class Glances < Formula
   end
 
   resource "psutil" do
-    url "https://files.pythonhosted.org/packages/c4/b8/3512f0e93e0db23a71d82485ba256071ebef99b227351f0f5540f744af41/psutil-5.7.0.tar.gz"
-    sha256 "685ec16ca14d079455892f25bd124df26ff9137664af445563c1bd36629b5e0e"
+    url "https://files.pythonhosted.org/packages/e1/b0/7276de53321c12981717490516b7e612364f2cb372ee8901bd4a66a000d7/psutil-5.8.0.tar.gz"
+    sha256 "0c9ccb99ab76025f2f0bbecf341d4656e9c1351db8cc8a03ccd62e318ab4b5c6"
   end
 
   resource "py-cpuinfo" do
@@ -228,11 +230,6 @@ class Glances < Formula
     sha256 "893a841445663e0c4c20d1111ce41484bd62d58f59d653d0485187343368ef4a"
   end
 
-  resource "bernhard" do
-    url "https://files.pythonhosted.org/packages/51/d4/b2701097f9062321262c4d4e3488fdf127887502b2619e8fd1ae13955a36/bernhard-0.2.6.tar.gz"
-    sha256 "7efafa3ae1221a465fcbd74c4f78e5ad4a1841b9fa70c95eb38ba103a71bdb9b"
-  end
-
   def install
     xy = Language::Python.major_minor_version "python3"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
@@ -246,7 +243,7 @@ class Glances < Formula
     system "python3", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir[libexec/"bin/*"]
-    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.env_script_all_files(libexec/"bin", PYTHONPATH: ENV["PYTHONPATH"])
 
     prefix.install libexec/"share"
   end
@@ -254,7 +251,7 @@ class Glances < Formula
   test do
     read, write = IO.pipe
     pid = fork do
-      exec bin/"glances", "-q", "--export", "csv", "--export-csv-file", "/dev/stdout", :out => write
+      exec bin/"glances", "-q", "--export", "csv", "--export-csv-file", "/dev/stdout", out: write
     end
     header = read.gets
     assert_match "timestamp", header

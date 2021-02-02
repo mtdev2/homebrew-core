@@ -1,14 +1,15 @@
 class TerraformProviderLibvirt < Formula
   desc "Terraform provisioning with Linux KVM using libvirt"
   homepage "https://github.com/dmacvicar/terraform-provider-libvirt"
-  url "https://github.com/dmacvicar/terraform-provider-libvirt/archive/v0.6.1.tar.gz"
-  sha256 "3562070c22bda0f38c44fbef88f345e08a22a567bccc56f7a25eaecc6400ee36"
+  url "https://github.com/dmacvicar/terraform-provider-libvirt/archive/v0.6.3.tar.gz"
+  sha256 "5ddd180da79629ec36a26f7ff9caa39b5682c2f39e110f8e9c70d3a22b4ea125"
+  license "Apache-2.0"
 
   bottle do
     cellar :any
-    sha256 "7b458aace029d7bbdf3eee429253a3ae8259372a24c6fc4a069f2088cf6d18cf" => :catalina
-    sha256 "ff697a12beb2941a68bbeb641ac13ce9acbff6f8380521e41370f3727bb26ae9" => :mojave
-    sha256 "e853e165d278c60fce1287fbf4207802ae4f57280cc90cec2cef3b55ca587bc1" => :high_sierra
+    sha256 "16ae4512f40a98056d05c21077bac05f96a6356e17362bfcff28e3649548f254" => :big_sur
+    sha256 "d9b1288e730298acd13c72661eaab16cec9d1f435032f9a3d12340910a6cb85a" => :catalina
+    sha256 "9d54585dbad9de738460f1cf773aefcf1d557e5edadb1e245f8cf618edbc6152" => :mojave
   end
 
   depends_on "go" => :build
@@ -18,7 +19,7 @@ class TerraformProviderLibvirt < Formula
   depends_on "terraform"
 
   def install
-    system "go", "build", "-mod=vendor", "-trimpath", "-ldflags", "-X main.version=#{version}", "-o", bin/name
+    system "go", "build", *std_go_args, "-ldflags", "-X main.version=#{version}"
   end
 
   test do

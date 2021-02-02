@@ -1,20 +1,22 @@
 class Botan < Formula
   desc "Cryptographic algorithms and formats library in C++"
   homepage "https://botan.randombit.net/"
-  url "https://botan.randombit.net/releases/Botan-2.13.0.tar.xz"
-  sha256 "f57ae42a41e1091bca58f44f41addebd9a390b651603952c881ec89d50187e90"
+  url "https://botan.randombit.net/releases/Botan-2.17.3.tar.xz"
+  sha256 "79123b654445a4abba486e09a431788545c708237382a3e765664c9f55b03b88"
+  license "BSD-2-Clause"
   head "https://github.com/randombit/botan.git"
 
   bottle do
-    sha256 "287dfed529e8e3318f53f8b7c15bb28d824ce7d37cc9d0efc31359758b816b34" => :catalina
-    sha256 "39b24feecd714f011916d659770f5fbc11cb652b530d6828c066112a4a58283b" => :mojave
-    sha256 "a21833781daf9b3c2f227dd71975b787e6e4047756d24adbe897360a40dc3c87" => :high_sierra
+    sha256 "347cf202acade4b9f59a4fdb6eb3558556fff55629d10fdd38d728071783fb3c" => :big_sur
+    sha256 "eb4bfb2daf7cc0dffd1e545b1b474d22ee183ae41e508ad32511c4a691caac97" => :arm64_big_sur
+    sha256 "6a66ebc16aef639262f951c7ec0df47002b704dab8736128be69cc9aeefe73ff" => :catalina
+    sha256 "60143efcc59467a036924c1518a38a5b0d1497b4fe2c3f4d9d7894f0cecda50a" => :mojave
   end
 
   depends_on "pkg-config" => :build
-  depends_on "openssl@1.1"
+  depends_on "python@3.9"
+  depends_on "sqlite"
 
-  uses_from_macos "python@2" => :build
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
 
@@ -24,12 +26,12 @@ class Botan < Formula
     args = %W[
       --prefix=#{prefix}
       --docdir=share/doc
-      --cpu=#{MacOS.preferred_arch}
       --cc=#{ENV.compiler}
       --os=darwin
-      --with-openssl
       --with-zlib
       --with-bzip2
+      --with-sqlite3
+      --with-python-versions=3.9
     ]
 
     system "./configure.py", *args
@@ -38,7 +40,7 @@ class Botan < Formula
 
   test do
     (testpath/"test.txt").write "Homebrew"
-    (testpath/"testout.txt").write Utils.popen_read("#{bin}/botan base64_enc test.txt")
+    (testpath/"testout.txt").write shell_output("#{bin}/botan base64_enc test.txt")
     assert_match "Homebrew", shell_output("#{bin}/botan base64_dec testout.txt")
   end
 end

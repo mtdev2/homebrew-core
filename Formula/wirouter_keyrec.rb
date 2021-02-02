@@ -4,8 +4,16 @@ class WirouterKeyrec < Formula
   url "https://www.mirrorservice.org/sites/distfiles.macports.org/wirouterkeyrec/WiRouter_KeyRec_1.1.2.zip"
   mirror "https://distfiles.macports.org/wirouterkeyrec/WiRouter_KeyRec_1.1.2.zip"
   sha256 "3e59138f35502b32b47bd91fe18c0c232921c08d32525a2ae3c14daec09058d4"
+  license "GPL-3.0"
+
+  livecheck do
+    url :homepage
+    regex(%r{href=.*?/WiRouter_KeyRec[._-]v?(\d+(?:\.\d+)+)\.zip}i)
+  end
 
   bottle do
+    sha256 "f5a1ec8cb71d5240eb01a3dbd0cbfa8f09c4b76cae27cacd2fea058ccb8c9f78" => :big_sur
+    sha256 "e3cfa2752a3957af0fcc474d4ad24ab76f026ee4479e0fa74d84222d16c02812" => :arm64_big_sur
     sha256 "907d4ed63f0f9c13217a9120749b12521ad773d310d554534a507ca9714d2dd7" => :catalina
     sha256 "ca8371cae9a6a4ce5ce4541a811d17260d877695426b16777e4b89d0fb912332" => :mojave
     sha256 "60a9b2a5fffe6027b296ad5b320377dd98a28658b628d6b3acbe94126e54ff3e" => :high_sierra

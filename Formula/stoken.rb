@@ -3,14 +3,19 @@ class Stoken < Formula
   homepage "https://stoken.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/stoken/stoken-0.92.tar.gz"
   sha256 "aa2b481b058e4caf068f7e747a2dcf5772bcbf278a4f89bc9efcbf82bcc9ef5a"
+  revision 1
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "a802cd05fc1de00af961c7de284078a6472c8327a58ecdc4cad8479c812d1175" => :catalina
-    sha256 "8b558486eeb55f39205d26201a1613eaaadc9b6615d1e5f24b3487749acfb89b" => :mojave
-    sha256 "2aeef625d9594a2fc26890500d1c8ff611e8c5c69df6f8ac905b6a72f179caf0" => :high_sierra
-    sha256 "0896359e6966f067248616b2393e5e0f24a05639c4059c7f6bbd025acb867714" => :sierra
+    sha256 "701102c6cb8138920a8ccf7aae6d89ea247d259d17f7f4ce3e4af46cad516802" => :big_sur
+    sha256 "2f66cb207fe048720b4497e774752de500d005b4bcc7bd45ccb164ecd11fafc8" => :arm64_big_sur
+    sha256 "423dbce4e76710fe932fc4d86fa25b39ced8f138d781fcccbc3982ce83136216" => :catalina
+    sha256 "59ee230b63a707bf9c1fd966ec003c14ca16c7e61a331b765e31a1ba4b7db867" => :mojave
+    sha256 "6c6b704e5f9830e0192383c53717f64b0af48119d6f0d96d78de521820a6c84b" => :high_sierra
   end
 
   depends_on "pkg-config" => :build

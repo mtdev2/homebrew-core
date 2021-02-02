@@ -3,9 +3,12 @@ class Fcgiwrap < Formula
   homepage "https://www.nginx.com/resources/wiki/start/topics/examples/fcgiwrap/"
   url "https://github.com/gnosek/fcgiwrap/archive/1.1.0.tar.gz"
   sha256 "4c7de0db2634c38297d5fcef61ab4a3e21856dd7247d49c33d9b19542bd1c61f"
+  license "MIT"
 
   bottle do
     cellar :any
+    sha256 "bd98b43c74955117affa9b619376f09eae18890dea9b4bdb3ea81b70c44024ac" => :big_sur
+    sha256 "b7f23b86cfdfcf813fadf2e7a3c228fa70476bae53c5617f20d810e07c7c355b" => :arm64_big_sur
     sha256 "c871c0641217165e88fcdde225c8058a62d043083e434fe3b371c0b7d58ea45f" => :mojave
     sha256 "92140b4ed813b4a718ec9ed035b664fe744a6ae860a4b533ed7425b014e25f22" => :high_sierra
     sha256 "ed81f5b0cec39f7138a877cea2a0e397007d3271393805af53739b837537bd0f" => :sierra

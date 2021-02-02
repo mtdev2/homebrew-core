@@ -3,10 +3,13 @@ class GitVendor < Formula
   homepage "https://brettlangdon.github.io/git-vendor"
   url "https://github.com/brettlangdon/git-vendor/archive/v1.1.2.tar.gz"
   sha256 "1ae2c12ae535669d0f65d297f5ff79d36d37dabf372feb6bda3f7856cf14ef97"
+  license "MIT"
   head "https://github.com/brettlangdon/git-vendor.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "b922c7f613914dc676bd45200c91bb5a2f35f191e6d6a058cc0e8f30eb9562f5" => :big_sur
+    sha256 "f012312be4f0c5ac8ff5cd67dc2c0c8b46b2a997e3b2d2aba61f5cd582332078" => :arm64_big_sur
     sha256 "18f987b67a107a3bf300ecde0a8bfe9ae11876f150450697b43d13d76f8df840" => :catalina
     sha256 "ce617fdad4c3a2eda141623da2e9eff59435f4ffd1c6a192efb6a8b5d13faa44" => :mojave
     sha256 "468cfcc770bb7a88baf9961d665262be06de01bc85cfce19385e03d6e381521c" => :high_sierra

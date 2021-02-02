@@ -3,10 +3,18 @@ class TidyHtml5 < Formula
   homepage "https://www.html-tidy.org/"
   url "https://github.com/htacg/tidy-html5/archive/5.6.0.tar.gz"
   sha256 "08a63bba3d9e7618d1570b4ecd6a7daa83c8e18a41c82455b6308bc11fe34958"
-  head "https://github.com/htacg/tidy-html5.git", :branch => "next"
+  license "Zlib"
+  head "https://github.com/htacg/tidy-html5.git", branch: "next"
+
+  livecheck do
+    url :head
+    regex(/^v?(\d+\.\d*?[02468]\.\d+)$/i)
+  end
 
   bottle do
     cellar :any
+    sha256 "9c4ed7860ed418e2a018690ee52c83c1a520004bd9d97f7eb6760cf4e82f2af2" => :big_sur
+    sha256 "3120baf4b5155c0ef5baa272f5a756909cb683c9c9447bdeaf7a07c388376370" => :arm64_big_sur
     sha256 "fb2134180fbdb92cc10f3fad33c769073adceb7796e465db7dbc3778f7d3547a" => :catalina
     sha256 "bd3ca7dc82a913c8576716cbcc957260251132f6dd7b8c526c9ef0c4674faf0f" => :mojave
     sha256 "af9633f1578980fe3d4351c3d71b4b83cc79f814d87310e4b7d05830c53c9621" => :high_sierra

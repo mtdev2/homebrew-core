@@ -2,15 +2,22 @@ class Octant < Formula
   desc "Kubernetes introspection tool for developers"
   homepage "https://octant.dev"
   url "https://github.com/vmware-tanzu/octant.git",
-      :tag      => "v0.11.1",
-      :revision => "a5f7847a7e21d781fdb7edd5389b04edc2ca6b87"
+      tag:      "v0.16.3",
+      revision: "656c7404e529262861eacb13e88d33dccd6035bf"
+  license "Apache-2.0"
   head "https://github.com/vmware-tanzu/octant.git"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6ac1314499a56195058fe0c0e811eb2fc05302733a90bdc84d7a1a7c3548cd95" => :catalina
-    sha256 "de5825b649f4fff4c4b43fad0aba6c809f406518fada7df6fda30ef24c89442e" => :mojave
-    sha256 "edbe599e70fc8b2df10c9dfbbb1b8a129401ce0da9041eacfc557215968d043f" => :high_sierra
+    rebuild 1
+    sha256 "e5e053c672b960819d117b7aeb6af91810458d508ab6b366e23cfc27c7c6491f" => :big_sur
+    sha256 "27cbe24e2fe0f5284f39656bf19914274490fa3f400200b9e5b1f762de7428a9" => :catalina
+    sha256 "1fad5c7151847338d432789e3b579e36f96839dc8a820d66b41b8e1f46b2e0ee" => :mojave
   end
 
   depends_on "go" => :build
@@ -29,13 +36,12 @@ class Octant < Formula
       system "go", "run", "build.go", "go-install"
       ENV.prepend_path "PATH", buildpath/"bin"
 
-      system "go", "generate", "./pkg/icon"
+      system "go", "generate", "./pkg/plugin/plugin.go"
       system "go", "run", "build.go", "web-build"
 
-      commit = Utils.popen_read("git rev-parse HEAD").chomp
-      build_time = Utils.popen_read("date -u +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null").chomp
+      build_time = Utils.safe_popen_read("date -u +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null").chomp
       ldflags = ["-X \"main.version=#{version}\"",
-                 "-X \"main.gitCommit=#{commit}\"",
+                 "-X \"main.gitCommit=#{Utils.git_head}\"",
                  "-X \"main.buildTime=#{build_time}\""]
 
       system "go", "build", "-o", bin/"octant", "-ldflags", ldflags.join(" "),
@@ -44,10 +50,13 @@ class Octant < Formula
   end
 
   test do
-    kubeconfig = testpath/"config"
-    output = shell_output("#{bin}/octant --kubeconfig #{kubeconfig} 2>&1", 1)
-    assert_match "failed to init cluster client", output
+    fork do
+      exec bin/"octant", "--kubeconfig", testpath/"config", "--disable-open-browser"
+    end
+    sleep 2
 
+    output = shell_output("curl -s http://localhost:7777")
+    assert_match "<title>Octant</title>", output, "Octant did not start"
     assert_match version.to_s, shell_output("#{bin}/octant version")
   end
 end

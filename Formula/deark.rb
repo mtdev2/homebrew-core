@@ -1,24 +1,21 @@
-require "base64"
-
 class Deark < Formula
   desc "File conversion utility for older formats"
   homepage "https://entropymine.com/deark/"
-  url "https://entropymine.com/deark/releases/deark-1.5.4.tar.gz"
-  sha256 "e414f4d08f0069550091a24de188ef7537780f407d76d5c4f1b82b3645a88f8f"
+  url "https://entropymine.com/deark/releases/deark-1.5.7.tar.gz"
+  sha256 "b50ff49d13cfa3621721bac8c9af05e3ccb091852ddee0bc2e06a05e43d2ee9c"
+  license "MIT"
+
+  livecheck do
+    url "https://entropymine.com/deark/releases/"
+    regex(/href=.*?deark[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d659ec48b4737eea12cafa7db3cbf4ef430246827b00b1a621376ccaa3fd8370" => :catalina
-    sha256 "3a268374ec97cfe9f745c8e58e23ad7d1ebe3ef5dc8e6c3a81ea3097d84bd501" => :mojave
-    sha256 "c6aa781abc7a8c87f5c376223bf46ad9a178131ce35e428beb1ee39ba77a99d6" => :high_sierra
-  end
-
-  # Fixes a redefinition of the uint type, which led to build failures
-  # on macOS. Fixed upstream, will be in the next release.
-  # https://github.com/jsummers/deark/issues/9
-  patch do
-    url "https://github.com/jsummers/deark/commit/0fe5528c38f9b63d8fbaafcf57ac31ada0dbb5ff.patch?full_index=1"
-    sha256 "a85b552d2908eaa458e3ed8dc462651e98286c1c817408eafea74df5c41dfb7d"
+    sha256 "58be36b00198b12edb3ee670a9dd664ce7383fa3e3c439d94905a8b55a24d650" => :big_sur
+    sha256 "1f35652e63074f3e95a766508b3ce264b3e7e5208196124224f9a77768ec059a" => :arm64_big_sur
+    sha256 "191a4f3431f5c0f937e100249cb6ca24e95813562d45d292afcbd5b824ce6503" => :catalina
+    sha256 "dc7c1e91110744973866610fb65368d2b7039562c889e449a5035c28691f1a6b" => :mojave
   end
 
   def install
@@ -27,6 +24,8 @@ class Deark < Formula
   end
 
   test do
+    require "base64"
+
     (testpath/"test.gz").write ::Base64.decode64 <<~EOS
       H4sICKU51VoAA3Rlc3QudHh0APNIzcnJ11HwyM9NTSpKLVfkAgBuKJNJEQAAAA==
     EOS

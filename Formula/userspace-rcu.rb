@@ -1,25 +1,28 @@
 class UserspaceRcu < Formula
   desc "Library for userspace RCU (read-copy-update)"
   homepage "https://liburcu.org"
-  url "https://lttng.org/files/urcu/userspace-rcu-0.11.1.tar.bz2"
-  sha256 "92b9971bf3f1c443edd6c09e7bf5ff3b43531e778841f16377a812c8feeb3350"
+  url "https://lttng.org/files/urcu/userspace-rcu-0.12.1.tar.bz2"
+  sha256 "bbfaead0345642b97e0de90f889dfbab4b2643a6a5e5c6bb59cd0d26fc0bcd0e"
+
+  livecheck do
+    url "https://www.lttng.org/files/urcu/"
+    regex(/href=.*?userspace-rcu[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "9775f683e726589140c2c5e7ceb3c0c050ea40315275eb093f25f866501e5626" => :catalina
-    sha256 "2b70670f8a4a37cfd7a60a3a5c46908556ec7fb78f9992dbe73f022154c601fe" => :mojave
-    sha256 "c1923cecf3ed76e60ac2980a703817789dbc82315aec3fd84d49b528ce28da80" => :high_sierra
-    sha256 "70f936b43372e4596cdfa543f1b3a42aa01a4d8ca93fe2a38e0b8e6994aa65de" => :sierra
+    cellar :any
+    rebuild 1
+    sha256 "16786f80939cc886441f4be7850c1ffc3cad092aaedcfb9a5d3f4bc08aa17edf" => :big_sur
+    sha256 "8d45763c520497f2a3062f4d4c7c9a291c956462e79fad11fc2f6bafc63ede75" => :arm64_big_sur
+    sha256 "87815b2af972d7e3596e639cec95b6da61436108dcb7380629c5f5b56785d513" => :catalina
+    sha256 "a5fc1494e06f10ab0aa2743dea422d94206248cc72ea504cc48dd0fb1837c780" => :mojave
   end
 
   def install
-    # Enforce --build to work around broken upstream detection
-    # https://bugs.lttng.org/issues/578#note-1
     args = %W[
       --disable-dependency-tracking
       --disable-silent-rules
       --prefix=#{prefix}
-      --build=x86_64
     ]
 
     system "./configure", *args

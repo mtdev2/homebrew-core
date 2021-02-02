@@ -3,9 +3,15 @@ class Wput < Formula
   homepage "https://wput.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/wput/wput/0.6.2/wput-0.6.2.tgz"
   sha256 "229d8bb7d045ca1f54d68de23f1bc8016690dc0027a16586712594fbc7fad8c7"
+  license "GPL-2.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "2a5d49be96808777f249d96b6f86e2e0e0e301be0e929ba1eaea99cf79cacf42" => :big_sur
     sha256 "77703d5dfb1bde183ccc207ee5e3f14b1a677acc697806a2b16f00c56cc0595e" => :catalina
     sha256 "563c5204880172786cbbfc75dafa818e670ac5d1a67fdbe8bea1dd2588587eab" => :mojave
     sha256 "e01d35805cd00e8f4d9ba1ab989104d66dc4150648a2288f5f49eea5c17b5025" => :high_sierra

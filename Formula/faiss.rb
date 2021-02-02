@@ -1,25 +1,36 @@
 class Faiss < Formula
   desc "Efficient similarity search and clustering of dense vectors"
   homepage "https://github.com/facebookresearch/faiss"
-  url "https://github.com/facebookresearch/faiss/archive/v1.6.2.tar.gz"
-  sha256 "8be8fcb943e94a93fb0796cad02a991432c0d912d8ae946f4beb5a8a9c5d4932"
+  url "https://github.com/facebookresearch/faiss/archive/v1.7.0.tar.gz"
+  sha256 "f86d346ac9f409ee30abe37e52f6cce366b7f60d3924d65719f40aa07ceb4bec"
+  license "MIT"
 
-  bottle do
-    cellar :any
-    sha256 "2ed35e49a096403ccf38e721a9d76aee9690ecf307bf9279fe56e158933d22bc" => :catalina
-    sha256 "6e4c9e7c66c700cbce22296fb258ec6e779118acef74741e1bfcadab389634a7" => :mojave
-    sha256 "2ca185b2dc508c2d8b7a3f44779a603c199db50000da6aea6ac66c802f3867cc" => :high_sierra
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  bottle do
+    sha256 cellar: :any, big_sur: "89ec9edffccfa90801a31fea3d5339b7e3c772a0184d950fb26b6ee8d10e0d5b"
+    sha256 cellar: :any, catalina: "12b6e1ba976aadc8b04cc0f6be7fa258e9b02d8fefe48abcc4ec0c2a413c819a"
+    sha256 cellar: :any, mojave: "599117b399279c6a0030fa2c13f74fec22dd777c1c1f68eaa17b0055748d7ebe"
+  end
+
+  depends_on "cmake" => :build
   depends_on "libomp"
+  depends_on "openblas"
 
   def install
-    system "./configure", "--without-cuda",
-                          "--prefix=#{prefix}",
-                          "ac_cv_prog_cxx_openmp=-Xpreprocessor -fopenmp",
-                          "LIBS=-lomp"
-    system "make"
-    system "make", "install"
+    args = *std_cmake_args + %w[
+      -DFAISS_ENABLE_GPU=OFF
+      -DFAISS_ENABLE_PYTHON=OFF
+      -DBUILD_SHARED_LIBS=ON
+    ]
+    system "cmake", "-B", "build", ".", *args
+    cd "build" do
+      system "make"
+      system "make", "install"
+    end
     pkgshare.install "demos"
   end
 

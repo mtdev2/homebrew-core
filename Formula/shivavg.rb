@@ -3,9 +3,16 @@ class Shivavg < Formula
   homepage "https://sourceforge.net/projects/shivavg/"
   url "https://downloads.sourceforge.net/project/shivavg/ShivaVG/0.2.1/ShivaVG-0.2.1.zip"
   sha256 "9735079392829f7aaf79e02ed84dd74f5c443c39c02ff461cfdd19cfc4ae89c4"
+  license "LGPL-2.1"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any
+    sha256 "2d89164bed390c7556dbf88d65bb25775ea17bc04e1e4bfb026792ef64fba6ed" => :big_sur
+    sha256 "8d928dc2b52759bad7394d50cc55b1b6d512fbbbba9fe902cb5e3296bd0e915a" => :arm64_big_sur
     sha256 "b7c8f247b6db49cd1cabd2efd39d034c25d727f27bce09a329d9cc3c8e36a621" => :catalina
     sha256 "6ddd7a34be8f7650a001df8b4ad627d574ac2c14e71d239a5a263d1848b12149" => :mojave
     sha256 "bea07d86639a8d24f90324552ed1880fd6a162141a394338e0ad2a81a3abeb5f" => :high_sierra

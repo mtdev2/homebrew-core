@@ -4,8 +4,14 @@ class Pcal < Formula
   url "https://downloads.sourceforge.net/project/pcal/pcal/pcal-4.11.0/pcal-4.11.0.tgz"
   sha256 "8406190e7912082719262b71b63ee31a98face49aa52297db96cc0c970f8d207"
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
     cellar :any_skip_relocation
+    sha256 "53c8157fa626298655248853dc283fe15947f47c725de2ea0c934773f0470063" => :big_sur
+    sha256 "fdd9d437f60310691c6df93af1ee0bd2cc08e8bae5ee3fa1d73d76b76b4c88e4" => :arm64_big_sur
     sha256 "9d7f46d2cbf308cd81bcce8fb98e48d295917562a46e509e739cad51d90dcf2c" => :catalina
     sha256 "0d4a63fb432c80894e629b89cf5500ffb1a03928b68b0e8c334c96adda01ce2b" => :mojave
     sha256 "25a667f9b166482637d890497e6fc9465ff8e28a4315a25ba5413fef9c68d79c" => :high_sierra

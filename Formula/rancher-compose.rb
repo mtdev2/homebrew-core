@@ -3,6 +3,7 @@ class RancherCompose < Formula
   homepage "https://github.com/rancher/rancher-compose"
   url "https://github.com/rancher/rancher-compose/archive/v0.12.5.tar.gz"
   sha256 "cdff53b2c3401b990ad33e229c7ef429504419e49e18a814101e2fa3c84859ea"
+  license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
@@ -13,6 +14,8 @@ class RancherCompose < Formula
     sha256 "8503ea7d7ca208ca7fe8d0c0b81f9ab9b69d926c58f856ac9de4f9f3600cde17" => :el_capitan
     sha256 "23291133a0a775210ae1244ae594931ce04fab8e7c0a37ba90431d61d869317b" => :yosemite
   end
+
+  deprecate! date: "2020-10-18", because: :repo_archived
 
   depends_on "go" => :build
 

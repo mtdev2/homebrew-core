@@ -3,9 +3,16 @@ class BulkExtractor < Formula
   homepage "https://github.com/simsong/bulk_extractor/wiki"
   url "https://digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.5.5.tar.gz"
   sha256 "297a57808c12b81b8e0d82222cf57245ad988804ab467eb0a70cf8669594e8ed"
+  license "MIT"
   revision 3
 
+  livecheck do
+    url "https://digitalcorpora.org/downloads/bulk_extractor/"
+    regex(/href=.*?bulk_extractor[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
+    sha256 "4207941ab88e766e1a0fd55031585c52cea1c27ac528b7db1496a714fbeda5c4" => :big_sur
     sha256 "6acada1995761f484993f407f33014260f8c16596381172b405fe84eef206e06" => :catalina
     sha256 "da01b2d5208c362fa10baa1a3b1d7fd018f4886eddb068107b9786c36bbff480" => :mojave
     sha256 "621af8efc0671cd2905f4f077c9cfef8ac2493cf65421fb2973228c2b651c24e" => :high_sierra

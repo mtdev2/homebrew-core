@@ -3,10 +3,18 @@ class Bgpq3 < Formula
   homepage "http://snar.spb.ru/prog/bgpq3/"
   url "https://github.com/snar/bgpq3/archive/v0.1.35.tar.gz"
   sha256 "571b99dc4186618ad3c77317eef2c20a8e601ce665a6b0f1ffca6e3d8d804cde"
+  license "BSD-2-Clause"
   head "https://github.com/snar/bgpq3.git"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "4550c91dd5daeaf0320c7b678ffd68c5d5fc3d611857f5dcb4fe9b7130e3f439" => :big_sur
+    sha256 "8007ef3e5542b067d4684b88e1ac509d2bc8566ba85536235070081dba0994f1" => :arm64_big_sur
     sha256 "428a0dcb0af2876c03374236ee10b2385ab993dc54cc12e080198d7e552bbdea" => :catalina
     sha256 "a16c482aa8e1a821d6747b2871174109ccbcf407e5799794f6307303fcffafcb" => :mojave
     sha256 "2bf730bec0bca51bd9a3db7a3cd5e4bf36199717a8190db270a5f4751bb1a5e1" => :high_sierra

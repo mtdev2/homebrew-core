@@ -1,17 +1,20 @@
 class Helib < Formula
   desc "Implementation of homomorphic encryption"
   homepage "https://github.com/homenc/HElib"
-  url "https://github.com/homenc/HElib/archive/v1.0.0.tar.gz"
-  sha256 "5b917a6ba1555be580db4c102a339abe124c284007f0044d637892ec85877214"
+  url "https://github.com/homenc/HElib/archive/v2.0.0.tar.gz"
+  sha256 "4e371807fe052ca27dce708ea302495a8dae8d1196e16e86df424fb5b0e40524"
+  license "Apache-2.0"
 
   bottle do
     cellar :any
-    sha256 "ad8926ac577b4adb2ce1cce23769e3a3d31027ed7264c99aa42099e238525fe4" => :catalina
-    sha256 "3ffb80af12a8fd92b03292a375a3ca30c24ae61281b1dd81e5022fe363e39b8f" => :mojave
-    sha256 "c0fed1980b3e977ab565b6bea93d885c3a697881d20ecd812640f3d0a869b6d2" => :high_sierra
+    sha256 "be618fac7a91399ea6639c6854d79409d03b602c81252d20fd3c58ad8783af60" => :big_sur
+    sha256 "9ce026c3f27f43a2a83add1321b376fd5a5f058f3c727487b974e6a52ed4219f" => :arm64_big_sur
+    sha256 "f1d09887bf3f3ec3d99d69f3b88bade395061e0663252fc688cee9ed7ec0a583" => :catalina
+    sha256 "0bbf1b2dbe1998ae2d9c27b14bc73ab81fc90c2b910320adb3ec416b92603fc0" => :mojave
   end
 
   depends_on "cmake" => :build
+  depends_on "bats-core" => :test
   depends_on "ntl"
 
   def install
@@ -23,11 +26,12 @@ class Helib < Formula
   end
 
   test do
-    cp (pkgshare/"examples/BGV_general_example/BGV_general_example.cpp"), testpath/"test.cpp"
-    system ENV.cxx, "-std=c++14", "-L#{lib}", "-L#{Formula["ntl"].opt_lib}",
-                    "-lhelib", "-lntl", "test.cpp", "-o", "test"
-    # 2*(n^2) from 0 to 23
-    expected = "0 2 8 18 32 50 72 98 128 162 200 242 288 338 392 450 512 578 648 722 800 882 968 1058"
-    assert_match expected, shell_output("./test")
+    cp pkgshare/"examples/BGV_country_db_lookup/BGV_country_db_lookup.cpp", testpath/"test.cpp"
+    mkdir "build"
+    system ENV.cxx, "-std=c++17", "-L#{lib}", "-L#{Formula["ntl"].opt_lib}",
+                    "-lhelib", "-lntl", "test.cpp", "-o", "build/BGV_country_db_lookup"
+
+    cp_r pkgshare/"examples/tests", testpath
+    system "bats", "."
   end
 end

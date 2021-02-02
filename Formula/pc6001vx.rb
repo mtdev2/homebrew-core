@@ -1,16 +1,17 @@
 class Pc6001vx < Formula
   desc "PC-6001 emulator"
   homepage "https://eighttails.seesaa.net/"
-  url "https://eighttails.up.seesaa.net/bin/PC6001VX_3.1.3_src.tar.gz"
-  sha256 "0f7644d91759771639216a722f24e1a9bebc0f6bbdd8ea55807b2b0df87ccb73"
+  url "https://eighttails.up.seesaa.net/bin/PC6001VX_3.6.1_src.tar.gz"
+  sha256 "9bd3d7eb02c6535c98539bb0c3f5e6146b945ff021ec1e221d6b4feb18ac3cf3"
+  license "LGPL-2.1-or-later"
   head "https://github.com/eighttails/PC6001VX.git"
 
   bottle do
     cellar :any
-    sha256 "8743c365fa52afc7d5e2a29092bdcfbd0f7f9fdd5a5209ef575cd8f3e70434cc" => :catalina
-    sha256 "86348c8928c6c7e8c09ab6db792f5b0393dac46e87d7ce1e531d369e47ec0ea4" => :mojave
-    sha256 "19a0fe720094d0dd8a180ee8adf6d4511d1c51f73765bba1fc6fa61368cb4721" => :high_sierra
-    sha256 "9bf00dc16e3c78425109ebe2a17170bb8c0341bb27c3875dc844af815b441b23" => :sierra
+    sha256 "8b5a64b028a8534033f6ea1b6101aeb1599bb497a8f2fd55ddff718e020a19a3" => :big_sur
+    sha256 "44404d7b3752cecfa0a5f6ddca04fa30f8f8dd10fb3c262cd9d2e69c5cb3958c" => :arm64_big_sur
+    sha256 "80de7e25b021a3913630a7c56ed5e5d5b56313806ab837dbc7111b8a6561e115" => :catalina
+    sha256 "f8ed76c4f02f54d813f476a83ea4500e4c79d72105283a55cd94eaf47eb6d692" => :mojave
   end
 
   depends_on "pkg-config" => :build

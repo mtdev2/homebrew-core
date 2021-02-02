@@ -1,16 +1,16 @@
 class Ttyd < Formula
   desc "Command-line tool for sharing terminal over the web"
   homepage "https://tsl0922.github.io/ttyd/"
-  url "https://github.com/tsl0922/ttyd/archive/1.6.0.tar.gz"
-  sha256 "d14740bc82be0d0760dd0a3c97acbcbde490412a4edc61edabe46d311b068f83"
-  revision 1
+  url "https://github.com/tsl0922/ttyd/archive/1.6.3.tar.gz"
+  sha256 "1116419527edfe73717b71407fb6e06f46098fc8a8e6b0bb778c4c75dc9f64b9"
+  license "MIT"
   head "https://github.com/tsl0922/ttyd.git"
 
   bottle do
-    cellar :any
-    sha256 "200057b5acc12cc45115145e56a074f4d7b47d5ad886ecc5a9cb36e7fa66344d" => :catalina
-    sha256 "2622c50c776719257ec250d25c4d4837f3cbebdf025372fa023ade0ea9f5bc46" => :mojave
-    sha256 "44820b071a3e4ab8e2a4bf3dea4be710ea348bd8e50149576e971630d0bd63d9" => :high_sierra
+    sha256 "a02e04e5aa70943d5998c5e75c49a82037725d205560391c89987cfdfb397472" => :big_sur
+    sha256 "f7627069a2b82aa5a279fb5b3ac54ac4da377c1b26a70998d3ebd6822e0cf266" => :arm64_big_sur
+    sha256 "c915f944862f3db3e74444db19a8df4e0f045f826877b1a1abad8f366c57b1a9" => :catalina
+    sha256 "b3e8614d3b270121d85fae679016c68fe0f2c633d538dde1daa7887d1137cbeb" => :mojave
   end
 
   depends_on "cmake" => :build

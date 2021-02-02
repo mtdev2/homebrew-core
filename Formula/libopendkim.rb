@@ -12,11 +12,17 @@ class Libopendkim < Formula
     sha256 "33a66999fc2479cd6d0d27d2189ed34125e2510afb7afe0c97cdb08ed67efc95" => :sierra
   end
 
+  disable! date: "2020-12-08", because: :unmaintained
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "openssl@1.1"
   depends_on "unbound"
+
+  on_linux do
+    depends_on "pkg-config" => :build
+  end
 
   # Patch for compatibility with OpenSSL 1.1.1
   # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=223568

@@ -1,28 +1,23 @@
 class Elvish < Formula
   desc "Friendly and expressive shell"
   homepage "https://github.com/elves/elvish"
-  url "https://github.com/elves/elvish/archive/v0.13.1.tar.gz"
-  sha256 "83275a4c36f66b831ba4864d1f5ffdc823616ed0a8e41b2a9a3e9fcba9279e27"
+  url "https://github.com/elves/elvish/archive/v0.15.0.tar.gz"
+  sha256 "761739307c68fcbc51fd46c052c0a20ae848a30dba1ce3fbb6d27f99672f58e0"
+  license "BSD-2-Clause"
   head "https://github.com/elves/elvish.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "7969a147539fa423bcb85e346b9d894284605f2e5150de6ebe986c74f0fddcf3" => :catalina
-    sha256 "79ba70c505baddd02e912ce5608ea00273afd56bc9c6ac051e325ee7281e23c3" => :mojave
-    sha256 "d8db3a284b39a5e007b7cf61ed1bdb3be75b7c9b248ea14312f187b5aae92c4c" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur: "4f94ee1690a4e64a5d8d6e3bac2494f8a1936ca9d9e3dece173ffc1e870e9a19"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "79c48f95ff206c058f77401f776ca9696d68528eab1e1df26023eeab986646f5"
+    sha256 cellar: :any_skip_relocation, catalina: "5699b736a32e20ce52ad1ec440af26cb409be9bcb09512d82939d3ae743a51f1"
+    sha256 cellar: :any_skip_relocation, mojave: "f39264950f60b3c7aeac77f179818d111ceebaea86f1e07cf914ff035d524d17"
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
-    (buildpath/"src/github.com/elves/elvish").install buildpath.children
-    cd "src/github.com/elves/elvish" do
-      system "go", "build", "-ldflags",
-             "-X github.com/elves/elvish/pkg/buildinfo.Version=#{version}",
-             "-o", bin/"elvish"
-      prefix.install_metafiles
-    end
+    system "go", "build", *std_go_args, "-ldflags",
+           "-X github.com/elves/elvish/pkg/buildinfo.Version=#{version}"
   end
 
   test do

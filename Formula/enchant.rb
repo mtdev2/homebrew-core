@@ -1,13 +1,15 @@
 class Enchant < Formula
   desc "Spellchecker wrapping library"
   homepage "https://abiword.github.io/enchant/"
-  url "https://github.com/AbiWord/enchant/releases/download/v2.2.8/enchant-2.2.8.tar.gz"
-  sha256 "c7b5e2853f0dd0b1aafea2f9e071941affeec3a76df8e3f6d67a718c89293555"
+  url "https://github.com/AbiWord/enchant/releases/download/v2.2.15/enchant-2.2.15.tar.gz"
+  sha256 "3b0f2215578115f28e2a6aa549b35128600394304bd79d6f28b0d3b3d6f46c03"
+  license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 "d469967da67083b5cc8bc487abecda421ee2e325b96e39fde1c7e8679c58b0c7" => :catalina
-    sha256 "ec8877a36d41989ae3bd3c532908017c4f4b959956777c6098bcd5e305d22b51" => :mojave
-    sha256 "b2fb985de774158cad73461be089bf6734bc096f0060c7b6cb2eed2016ed273b" => :high_sierra
+    sha256 "fa2be4ac2134abd0e26253fec654924b0331abe62588a48840e3a467ec4c20c2" => :big_sur
+    sha256 "a18ef73a8b2164aa221d4d9a35e5e2986b8beea6005401ac4ae2f940f1fc9300" => :arm64_big_sur
+    sha256 "822040f225a771c940f4595a3b7e7c592c6a794828bbc34bce8b8f3143c70443" => :catalina
+    sha256 "cb7f88089f5fb746127ad384c7f3cd813f16b1ff9b7b263872bc75b1a9293916" => :mojave
   end
 
   depends_on "pkg-config" => :build

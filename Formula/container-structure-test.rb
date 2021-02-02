@@ -1,35 +1,29 @@
 class ContainerStructureTest < Formula
   desc "Validate the structure of your container images"
   homepage "https://github.com/GoogleContainerTools/container-structure-test"
-  url "https://github.com/GoogleContainerTools/container-structure-test/archive/v1.9.0.tar.gz"
-  sha256 "6a70b123a5a7781501109912249bc1209527d5dbee026e38777a25340b77a1df"
+  url "https://github.com/GoogleContainerTools/container-structure-test/archive/v1.10.0.tar.gz"
+  sha256 "52ba2ff4e948c6740da6da8804aeb674cf631e4d470ae5d78af07f17ba0ecbec"
+  license "Apache-2.0"
   head "https://github.com/GoogleContainerTools/container-structure-test.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "51c418c5331fa47eb2a4fcaad891a9fdf16b1f1603350845cbbcef5e9b555306" => :catalina
-    sha256 "284e7ef67863ec90229ccae95dc240c850803aff531476f26194a84ed8cf33c7" => :mojave
-    sha256 "5c176caeb206957f6a943faad2a194ee88ebd5d3e6ed02cd6d9441fd3d1556c9" => :high_sierra
+    sha256 "fe1c78a41314a909b9251ac55e09a109dcfff01315bde3d515dd2344038183df" => :big_sur
+    sha256 "91fcb7cb88abaa849aa25cbf4a6f1d4d7115fd214f80f16e4a0cdb8e38c04e23" => :arm64_big_sur
+    sha256 "62fe8a2e6ee7931c9755dcede739cc54f27173362e1767c675f2fa244dbebf42" => :catalina
+    sha256 "11d19adb68076f69c4fc9a27bdfd858cdb9260406e5ec72b15f04b08d795650c" => :mojave
   end
 
   depends_on "go" => :build
 
   # Small Docker image to run tests against
   resource "busybox-image-tar" do
-    url "https://gist.github.com/AndiDog/1fab301b2dbc812b1544cd45db939e94/raw/5160ab30de17833fdfe183fc38e4e5f69f7bbae0/busybox-1.31.1.tar",
-      :using => :nounzip
+    url "https://gist.github.com/AndiDog/1fab301b2dbc812b1544cd45db939e94/raw/5160ab30de17833fdfe183fc38e4e5f69f7bbae0/busybox-1.31.1.tar", using: :nounzip
     sha256 "ab5088c314316f39ff1d1a452b486141db40813351731ec8d5300db3eb35a316"
   end
 
   def install
-    ENV["GOPATH"] = buildpath
-    dir = buildpath/"src/github.com/GoogleContainerTools/container-structure-test"
-    dir.install buildpath.children - [buildpath/".brew_home"]
-    cd dir do
-      system "make"
-      bin.install "out/container-structure-test"
-      prefix.install_metafiles
-    end
+    system "go", "build", *std_go_args, "./cmd/container-structure-test"
   end
 
   test do

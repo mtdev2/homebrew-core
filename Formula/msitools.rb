@@ -3,8 +3,15 @@ class Msitools < Formula
   homepage "https://wiki.gnome.org/msitools"
   url "https://download.gnome.org/sources/msitools/0.100/msitools-0.100.tar.xz"
   sha256 "bbf1a6e3a9c2323b860a3227ac176736a3eafc4a44a67346c6844591f10978ea"
+  license "GPL-2.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
+    sha256 "0c1f853fe5b312dead4d5d805f17b9620b8c5a759167e8ea38fea102bcd7579f" => :big_sur
+    sha256 "524ebab8f0758feefa9560aadfaf06bbdc133cd76584524dc7804306c3b467db" => :arm64_big_sur
     sha256 "f9b65f68c973c323e96a0492df562bae32e3ede79d9e5a6f24b89f53ef085883" => :catalina
     sha256 "b7646423954ae62a8dcb8ee413f98e0f5e1c4b8a73876255fcd2f0371e547f92" => :mojave
     sha256 "fd8689ba0902ed4d784f85969d281a0e1c58bb76f0fe17a93d96ba2d3f845cdb" => :high_sierra
@@ -25,13 +32,13 @@ class Msitools < Formula
   # https://gitlab.gnome.org/GNOME/msitools/commit/9bbcc6da06ccf6144258c26ddcaab3262538d3ce
   # Remove in next release.
   patch do
-    url "https://gitlab.gnome.org/GNOME/msitools/commit/248450a2f2a23df59428fa816865a26f7e2496e0.diff"
-    sha256 "5046316e61af8af32a2b7d4ed2579a88fe0618e56d0aca32fea2c8a64b747f06"
+    url "https://gitlab.gnome.org/GNOME/msitools/commit/248450a2f2a23df59428fa816865a26f7e2496e0.patch"
+    sha256 "32bf8c2995085c2751c3fe8cd67878ea28b2ee255f5d00ed3ea7c5fddea3d902"
   end
 
   patch do
-    url "https://gitlab.gnome.org/GNOME/msitools/commit/9bbcc6da06ccf6144258c26ddcaab3262538d3ce.diff"
-    sha256 "fadc1c5ade1afd8add5f5a4997a10098efa9f24a5788230a16af89965551c1c7"
+    url "https://gitlab.gnome.org/GNOME/msitools/commit/9bbcc6da06ccf6144258c26ddcaab3262538d3ce.patch"
+    sha256 "5178df1577a967e887a859fe1a6c791071712e3acfc6f898e1e83352b7336a9a"
   end
 
   def install

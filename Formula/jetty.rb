@@ -1,9 +1,15 @@
 class Jetty < Formula
   desc "Java servlet engine and webserver"
   homepage "https://www.eclipse.org/jetty/"
-  url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-distribution/9.4.27.v20200227/jetty-distribution-9.4.27.v20200227.tar.gz"
-  version "9.4.27.v20200227"
-  sha256 "b47b0990493196acdb82325e355019485f96ee12f9bf3d4f47a9ac748ab3d56a"
+  url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-distribution/9.4.36.v20210114/jetty-distribution-9.4.36.v20210114.tar.gz"
+  version "9.4.36.v20210114"
+  sha256 "a460428e3125f275dba3f90e2d621332d95963de9718f61a16afbdc6e4ef58af"
+  license any_of: ["Apache-2.0", "EPL-1.0"]
+
+  livecheck do
+    url "https://www.eclipse.org/jetty/download.php"
+    regex(/href=.*?jetty-distribution[._-]v?(\d+(?:\.\d+)+(?:\.v\d+)?)\.t/i)
+  end
 
   bottle :unneeded
 
@@ -27,6 +33,7 @@ class Jetty < Formula
   end
 
   test do
+    ENV["JETTY_ARGS"] = "jetty.http.port=#{free_port} jetty.ssl.port=#{free_port}"
     ENV["JETTY_BASE"] = testpath
     cp_r Dir[libexec/"*"], testpath
     pid = fork { exec bin/"jetty", "start" }

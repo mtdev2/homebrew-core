@@ -3,10 +3,13 @@ class Ondir < Formula
   homepage "https://swapoff.org/ondir.html"
   url "https://swapoff.org/files/ondir/ondir-0.2.3.tar.gz"
   sha256 "504a677e5b7c47c907f478d00f52c8ea629f2bf0d9134ac2a3bf0bbe64157ba3"
+  license "GPL-2.0"
   head "https://github.com/alecthomas/ondir.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "1ba9a457a52f2964f6c831a192f8c107d73c96b5868d2a3d84cea954b2b33860" => :big_sur
+    sha256 "135b0885a206244ce74e430ac0f2131b92742481d81f7774cc25377ca8da4b1e" => :arm64_big_sur
     sha256 "99ac333a6908b1862267764e69850b8f21b9ed160e271719393eb82e83becf42" => :catalina
     sha256 "d0887254ee09aa205791efded5cdec39cdd2d997132fd5b4bf3c7fa4c4f90337" => :mojave
     sha256 "5f1e570b6cd0ef892deaf6f04c90d752ff976dcca8d3be31d6d6ddb546241995" => :high_sierra

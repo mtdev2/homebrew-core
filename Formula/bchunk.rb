@@ -3,10 +3,13 @@ class Bchunk < Formula
   homepage "http://he.fi/bchunk/"
   url "http://he.fi/bchunk/bchunk-1.2.2.tar.gz"
   sha256 "e7d99b5b60ff0b94c540379f6396a670210400124544fb1af985dd3551eabd89"
+  license "GPL-2.0"
   head "https://github.com/hessu/bchunk.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "bf3ec0f873db02e0234790bc8b700e4f1b989877742cf1560854e7b561698f4b" => :big_sur
+    sha256 "94279b4e400c05770ec6c5cce6fe7ef50a062835508add3e981942944bb3eecc" => :arm64_big_sur
     sha256 "b9f7bc758711585d7a016b7b3ddefe3256a368c00b21c51691481c7fbfc2823a" => :catalina
     sha256 "232935a7e7291016af594df742848d851ceca12ff9c06e183485c6a184c1df38" => :mojave
     sha256 "d6183607b5b987345ee3380263819f1d5e12f2f3cc9f6fd55accfbf92c26d5ef" => :high_sierra

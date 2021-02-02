@@ -3,10 +3,16 @@ class Myman < Formula
   homepage "https://myman.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/myman/myman-cvs/myman-cvs-2009-10-30/myman-wip-2009-10-30.tar.gz"
   sha256 "bf69607eabe4c373862c81bf56756f2a96eecb8eaa8c911bb2abda78b40c6d73"
-  head ":pserver:anonymous:@myman.cvs.sourceforge.net:/cvsroot/myman", :using => :cvs
+  head ":pserver:anonymous:@myman.cvs.sourceforge.net:/cvsroot/myman", using: :cvs
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     rebuild 2
+    sha256 "651100d0ad19af5ef07a55c1bd0d728211d8810e9da024d9344f3ed5c024e46b" => :big_sur
+    sha256 "a38be300e040956aa8f9d997a715c91152868d5aeaadc6406330729523036828" => :arm64_big_sur
     sha256 "90c5dee20ff2517495521e588b09678789462a8a63dc6a600da13a76cb5e86b0" => :catalina
     sha256 "1ff1470d676dabb177f06c2683b67da5e70e39bbab28f7457762d4adda5cffb0" => :mojave
     sha256 "b5f0af51ce1098ea35e48bc50f4097cbb9e647989decd6d7791476b062ef7582" => :high_sierra

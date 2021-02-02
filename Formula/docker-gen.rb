@@ -5,9 +5,11 @@ class DockerGen < Formula
   homepage "https://github.com/jwilder/docker-gen"
   url "https://github.com/jwilder/docker-gen/archive/0.7.4.tar.gz"
   sha256 "7951b63684e4ace9eab4f87f0c5625648f8add2559fa7779fabdb141a8a83908"
+  license "MIT"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "77385699141202354e27dbfbe1d57c936e4eec4beb1c5f7537f29db4cfc57602" => :big_sur
     sha256 "d5305ec74f29526e6e7b01632dda0e48b0af397d9a65baf233db4da48f96ee8a" => :catalina
     sha256 "00f1f34756eadc57f39945a00bc4e8c9e8ff2beefafbb58052667c2611e29e0f" => :mojave
     sha256 "42d2757b01271ef6c14de5441b3c65507538388db1e00e69f322272a5ba5b59c" => :high_sierra
@@ -19,17 +21,17 @@ class DockerGen < Formula
 
   go_resource "github.com/agtorre/gocolorize" do
     url "https://github.com/agtorre/gocolorize.git",
-        :revision => "99fea4bc9517f07eea8194702cb7076f4845b7de"
+        revision: "99fea4bc9517f07eea8194702cb7076f4845b7de"
   end
 
   go_resource "github.com/robfig/glock" do
     url "https://github.com/robfig/glock.git",
-        :revision => "428181ba14e0e3722090fe6e63402643a099e8bd"
+        revision: "428181ba14e0e3722090fe6e63402643a099e8bd"
   end
 
   go_resource "golang.org/x/tools" do
     url "https://go.googlesource.com/tools.git",
-        :revision => "fbec762f837dc349b73d1eaa820552e2ad177942"
+        revision: "fbec762f837dc349b73d1eaa820552e2ad177942"
   end
 
   def install

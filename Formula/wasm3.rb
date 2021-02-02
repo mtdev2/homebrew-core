@@ -1,14 +1,16 @@
 class Wasm3 < Formula
-  desc "The fastest WebAssembly interpreter"
+  desc "High performance WebAssembly interpreter"
   homepage "https://github.com/wasm3/wasm3"
-  url "https://github.com/wasm3/wasm3/archive/v0.4.6.tar.gz"
-  sha256 "e6b3cd44c6e4d3ba6d7ada7d10b0c5b87e0592dbb994bcec1e02bedbc5b6250a"
+  url "https://github.com/wasm3/wasm3/archive/v0.4.8.tar.gz"
+  sha256 "75a1736d4616e3463b29eece86ca4f03b687503bee81601381aba91e0119ea68"
+  license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "42e440fbce683dcaa195d378c8055c6c64b249059b36482f4563c04f95887133" => :catalina
-    sha256 "10c4261bfa7dace1846c8da883f641df23f223ae84f6516a407ea5170fa6847e" => :mojave
-    sha256 "422987721304957a1af0fff5bcc1a5628f8624809510568790e8aabe51561132" => :high_sierra
+    sha256 "296862636f23bda386da3d469e6bd22e79959203d8960e457777e7ea88952978" => :big_sur
+    sha256 "a89be08c7ff241a0a624161b333d9d08c3ebd4539fb4499d2fa96bb5a5c5e31d" => :arm64_big_sur
+    sha256 "94625f80433b1af43daba906cc715d78891e202f92d323fae9164efbc2fa76ed" => :catalina
+    sha256 "e7aac098bda9f38e0f10778b82bcd0b08e88f7834d9a0e511dc6d4f7536ae74d" => :mojave
   end
 
   depends_on "cmake" => :build

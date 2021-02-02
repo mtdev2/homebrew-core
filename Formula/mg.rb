@@ -1,15 +1,17 @@
 class Mg < Formula
   desc "Small Emacs-like editor"
   homepage "https://github.com/ibara/mg"
-  url "https://github.com/ibara/mg/releases/download/mg-6.6/mg-6.6.tar.gz"
-  sha256 "2a4590124f9d3cf287b0863e0b24945ae2e46081cef73f72b0ddab6c86a56e72"
+  url "https://github.com/ibara/mg/releases/download/mg-6.8.1/mg-6.8.1.tar.gz"
+  sha256 "a4af7afa77fed691096be8e2ff0507cc6bdd8efe7255916f714168d02790044c"
+  license all_of: [:public_domain, "ISC", :cannot_represent]
   version_scheme 1
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5e1101814aad6dfb5191f3b0b8c2fab64b119f830275cf17a5d0ccf3b349cfb5" => :catalina
-    sha256 "d4ba4bdd794bafa810faf9bd24d705bb5eb219f035039b8c01ee4702ad4ffefa" => :mojave
-    sha256 "ce20159b78121c3806337165951d796b8a842cef21e05ef9d928152fd7e5feaf" => :high_sierra
+    sha256 "d953ff7efb6a4fffedc3021dc85397ada7062a5af02a27ccd6480235c808d9f5" => :big_sur
+    sha256 "5f981515a969a53ba0a0dfa6eb180d73a0e094d8dca0490edf0a7785ab49a2a8" => :arm64_big_sur
+    sha256 "3dba473bffce8dbbd93c3b73e989348873317705b768cd9e920c8d4365caa5e6" => :catalina
+    sha256 "c81adc2432c2e5f07faac951fe0f07407d0abc24234e6302acd55ac7e99bb501" => :mojave
   end
 
   def install

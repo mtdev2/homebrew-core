@@ -3,6 +3,7 @@ class Vavrdiasm < Formula
   homepage "https://github.com/vsergeev/vAVRdisasm"
   url "https://github.com/vsergeev/vavrdisasm/archive/v3.1.tar.gz"
   sha256 "4fe5edde40346cb08c280bd6d0399de7a8d2afdf20fb54bf41a8abb126636360"
+  license "GPL-3.0-only"
 
   bottle do
     cellar :any_skip_relocation
@@ -14,6 +15,8 @@ class Vavrdiasm < Formula
     sha256 "ce57062586ca9cb91290141376f1da1f5de3c6efb6fe4687585a3e64cc29c014" => :yosemite
     sha256 "f881c5a6d94581c4fc9efb13118c84c40700f13d130302f6ee4cb16968d1f6b0" => :mavericks
   end
+
+  disable! date: "2020-09-17", because: :unmaintained
 
   # Patch:
   # - BSD `install(1)' does not have a GNU-compatible `-D' (create intermediate

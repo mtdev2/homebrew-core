@@ -3,8 +3,15 @@ class Cdrdao < Formula
   homepage "https://cdrdao.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/cdrdao/cdrdao-1.2.4.tar.bz2"
   sha256 "358d9cb83370ceaecdc60564cbf14c2ea2636eac60a966e2461c011ba09853b4"
+  license "GPL-2.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
+    sha256 "1a2440998c344f7b1df9d01d6e3079f86fbc79e8827c440883fda7f8e12aa2fd" => :big_sur
+    sha256 "29b520f278e11f6742704d93aa391c44dc5cb386f04610fefb07a787fbcf0595" => :arm64_big_sur
     sha256 "81acc38e0a51134c0eeebf20e76dcee4e80eabfac72f0ec890e448271a96792c" => :catalina
     sha256 "f8894deccbd18e7d5362ace73618666d9a79b233cea5dc6af367ab9e257332e0" => :mojave
     sha256 "1efaa356872419da65763a5e28faf262b79f5a37e2eb83c06c22e9846bae188f" => :high_sierra

@@ -4,9 +4,16 @@ class Libftdi0 < Formula
   url "https://www.intra2net.com/en/developer/libftdi/download/libftdi-0.20.tar.gz"
   sha256 "3176d5b5986438f33f5208e690a8bfe90941be501cc0a72118ce3d338d4b838e"
 
+  livecheck do
+    url "https://www.intra2net.com/en/developer/libftdi/download.php"
+    regex(/href=.*?libftdi[._-]v?(0(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
     cellar :any
     rebuild 2
+    sha256 "710564aabb66bbb9b82f0fccd149fdf40f6e1a7886bd624829a07a9c41752e63" => :big_sur
+    sha256 "0c48950d5292b7eca6aa02488d53792cc2b83b3bb0aa657cce08d10141eba5d2" => :arm64_big_sur
     sha256 "064e2f32a4a8959f2a489611c931beac426f509a8299bbcdd03871b1d5f5859e" => :catalina
     sha256 "c3238e8f4458ead2c663c8d5b48e2052d3ee606b75278a9839546fd2e6c7de49" => :mojave
     sha256 "ef988a7e074542fb5df2c8e803b19e9d20b8602e3899833b10d6cdf862b4c5be" => :high_sierra
@@ -18,8 +25,8 @@ class Libftdi0 < Formula
 
   depends_on "libusb-compat"
 
-  conflicts_with "cspice", :because => "both install `simple` binaries"
-  conflicts_with "openhmd", :because => "both install `simple` binaries"
+  conflicts_with "cspice", because: "both install `simple` binaries"
+  conflicts_with "openhmd", because: "both install `simple` binaries"
 
   def install
     mkdir "libftdi-build" do

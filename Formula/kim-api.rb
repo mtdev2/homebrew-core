@@ -1,14 +1,20 @@
 class KimApi < Formula
-  desc "The Knowledgebase of Interatomic Models (KIM) API"
+  desc "Knowledgebase of Interatomic Models (KIM) API"
   homepage "https://openkim.org"
-  url "https://s3.openkim.org/kim-api/kim-api-2.1.3.txz"
-  sha256 "88a5416006c65a2940d82fad49de0885aead05bfa8b59f87d287db5516b9c467"
+  url "https://s3.openkim.org/kim-api/kim-api-2.2.1.txz"
+  sha256 "1d5a12928f7e885ebe74759222091e48a7e46f77e98d9147e26638c955efbc8e"
+  license "CDDL-1.0"
+
+  livecheck do
+    url "https://openkim.org/kim-api/previous-versions/"
+    regex(/href=.*?kim-api[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
-    sha256 "ae59f45bf8d539f1b633120cdb942c2a0a0f1880eee4ee91981f268792e1b1c4" => :catalina
-    sha256 "f652b6fac2383753b53c16f22b4cd64ca96adaf5b61906e8a51d893fb453588a" => :mojave
-    sha256 "05e8711131862fa14cc38277d33694be33d488bbcb5efc9e59a54c67ca1df2ea" => :high_sierra
-    sha256 "31502a90222cdeffb15c7b1ad820fcae8780c6db807634e23917bd182691c0ee" => :sierra
+    cellar :any
+    sha256 "5dd5843a46622bc3371a60fd99968e5a94890d72ee5461c72b0a81983d2d447d" => :big_sur
+    sha256 "ef2fca76455a7b3511664b32451fe1fcde637735de43797b5179c55d26405cac" => :catalina
+    sha256 "5d892bfae5488c6a0e019235dac4eee23f918f5f4d63da117a92eaea46ba5ab8" => :mojave
   end
 
   depends_on "cmake" => :build

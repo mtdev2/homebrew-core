@@ -3,9 +3,12 @@ class Rolldice < Formula
   homepage "https://github.com/sstrickl/rolldice"
   url "https://github.com/sstrickl/rolldice/archive/v1.16.tar.gz"
   sha256 "8bc82b26c418453ef0fe79b43a094641e7a76dae406032423a2f0fb270930775"
+  license "GPL-2.0"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "65289049d189acb12af84edb62fb1fb5b0e8faa55931176aa4430d4442e28cdb" => :big_sur
+    sha256 "1feb7522fecad653acb8a6d91152475486f1fa0f19107df1086c7674074a6870" => :arm64_big_sur
     sha256 "a3fec25c1ccaf264a80a81f276aabf54cea670f3e88a48a40c7ffa9c7942bad4" => :catalina
     sha256 "eb32f285b1ba6a4ce42e22d4c636aac91f9f899e0a5e6355200f14d7f0ccc990" => :mojave
     sha256 "74364058c7f8859e71b5b43b80b40c01dd99ce6b80724ef4e97f9a9ea0587775" => :high_sierra

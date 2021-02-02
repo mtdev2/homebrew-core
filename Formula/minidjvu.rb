@@ -3,10 +3,18 @@ class Minidjvu < Formula
   homepage "https://minidjvu.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/minidjvu/minidjvu/0.8/minidjvu-0.8.tar.gz"
   sha256 "e9c892e0272ee4e560eaa2dbd16b40719b9797a1fa2749efeb6622f388dfb74a"
+  license "GPL-2.0"
+
+  livecheck do
+    url :stable
+    regex(%r{url=.*?/minidjvu[._-]v?((?!0\.33)\d+(?:\.\d+)+)\.t}i)
+  end
 
   bottle do
     cellar :any
     rebuild 1
+    sha256 "fee2aaa060b89cd006949111164d953b1da44d3f4367409cff38880aa175cebb" => :big_sur
+    sha256 "a0a735a5315eba83afe335cd152f428e292527df6a3d3c0ce06aecc29eb7efc4" => :arm64_big_sur
     sha256 "ac5ddf434a115b421a2fd20645d09c690b559e7c135bfa71687d540f80e9dadb" => :catalina
     sha256 "6bb235aea08165b0a9d359f3813fa3e1760ff283697734761d9663fe1488a0fb" => :mojave
     sha256 "e86d9876389882d5cc6db29798566bc845584280a4fb4f5baf6226313a74dd6d" => :high_sierra

@@ -3,10 +3,13 @@ class TheSilverSearcher < Formula
   homepage "https://github.com/ggreer/the_silver_searcher"
   url "https://github.com/ggreer/the_silver_searcher/archive/2.2.0.tar.gz"
   sha256 "6a0a19ca5e73b2bef9481c29a508d2413ca1a0a9a5a6b1bd9bbd695a7626cbf9"
+  license "Apache-2.0"
   head "https://github.com/ggreer/the_silver_searcher.git"
 
   bottle do
     cellar :any
+    sha256 "e0fe6360a649e3a9722d72d258a65a4ec449e76e82166c9d0fc48530e73e952e" => :big_sur
+    sha256 "a1fa06a9147b1138f884408f88557357e4a48330373f720ca428aac0f3333221" => :arm64_big_sur
     sha256 "6fd80fdd0896dae09c01d3c9785ddd658bb5f2f229e7d011d3fbdde887bc35d0" => :catalina
     sha256 "e57f89664f48c131dfb462dc4be2f5265867d827f82efb1c3841ba71d9156ed0" => :mojave
     sha256 "0bf5394d8ab5f61b8fbb593249f556f13b358d16eb0d3c97215be3da0476e94b" => :high_sierra

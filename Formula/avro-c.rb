@@ -1,14 +1,20 @@
 class AvroC < Formula
   desc "Data serialization system"
   homepage "https://avro.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=avro/avro-1.9.2/c/avro-c-1.9.2.tar.gz"
-  mirror "https://archive.apache.org/dist/avro/avro-1.9.2/c/avro-c-1.9.2.tar.gz"
-  sha256 "08697f7dc9ff52829ff90368628a80f6fd5c118004ced931211c26001e080cd2"
+  url "https://www.apache.org/dyn/closer.lua?path=avro/avro-1.10.1/c/avro-c-1.10.1.tar.gz"
+  mirror "https://archive.apache.org/dist/avro/avro-1.10.1/c/avro-c-1.10.1.tar.gz"
+  sha256 "5313dcb6d240b919f218a80a8b9b58f7a3eb501ff177b0dedc1c0595d0ee916d"
+  license "Apache-2.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
-    sha256 "ad0ea0e835b07b6e2e9bf152c6a207a032b6aa6a99d7ba8c9df5463d39fb5eeb" => :catalina
-    sha256 "45832acdf64f958cfa8a84a5f2121a44ffefdb788b67a47c542e870198e60b63" => :mojave
-    sha256 "3c61ea219581bcd0386da82113d5f7998823852d662385b7da144ba4456d33ff" => :high_sierra
+    sha256 "c99913941625740c45fd76a1fa8a69750f585375c0559af04284d8bed2cab872" => :big_sur
+    sha256 "e4cd6b302cfadbcd1f445c8957fd616b5f2fdc6730ca64ab3c825cd81a9d8dc5" => :arm64_big_sur
+    sha256 "2b10e0adb725faf050ecc7c3ffccec6f9a003714ccd76d544b0d644253d2626f" => :catalina
+    sha256 "0fc00159098c04997d2537f79283517497f01a8100a4a3cba8ac09099844a80f" => :mojave
   end
 
   depends_on "cmake" => :build

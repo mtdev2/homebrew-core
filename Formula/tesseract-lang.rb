@@ -3,9 +3,12 @@ class TesseractLang < Formula
   homepage "https://github.com/tesseract-ocr/tessdata_fast/"
   url "https://github.com/tesseract-ocr/tessdata_fast/archive/4.0.0.tar.gz"
   sha256 "f1b71e97f27bafffb6a730ee66fd9dc021afc38f318fdc80a464a84a519227fe"
+  license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "3dacd0c9b5cfe25a31ba32de2dd316149d7e0a0fe490f231591863af89ab59fc" => :big_sur
+    sha256 "5ff2ce72fff2b70c59eba17a8b0f687d84ceddb1ba775ceabe37aefac73f72c4" => :arm64_big_sur
     sha256 "5cfe25847d5eaa4983c7b5ae2b6973bd036ce7363b4332cc66e1ab1b8d41a0d5" => :catalina
     sha256 "631211ef37fcafa9a3fac6a7cd6ca94aaeca83ae28543716a7aaa9cf1072d414" => :mojave
     sha256 "631211ef37fcafa9a3fac6a7cd6ca94aaeca83ae28543716a7aaa9cf1072d414" => :high_sierra

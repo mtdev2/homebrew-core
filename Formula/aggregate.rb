@@ -7,6 +7,8 @@ class Aggregate < Formula
   bottle do
     cellar :any_skip_relocation
     rebuild 1
+    sha256 "ab6914ea220f96d957eb322596ddc34fb72e8beedaed0bc21ee5dbfb2d0c64ca" => :big_sur
+    sha256 "429949518b51d72ff7e05ebe6b0ae77a11d7aa593bcec67e0edd6477fe273a8d" => :arm64_big_sur
     sha256 "3e22a340761b031b33e9f4a48f39edd98c18f7ea7c77abd02d95f816e7fe7245" => :catalina
     sha256 "231a7cce3160591eff39c8f70a9324dd0329a6a21355d49747c74308527cc946" => :mojave
     sha256 "6dc7626282f519003e1d559ac42a983f4a571494ac04e5b61858fdf16d1ca924" => :high_sierra
@@ -16,7 +18,7 @@ class Aggregate < Formula
     sha256 "169598a0d41382215ba51ed0c377c98857804e82fb1658414dd04ee94ddbb993" => :mavericks
   end
 
-  conflicts_with "crush-tools", :because => "both install an `aggregate` binary"
+  conflicts_with "crush-tools", because: "both install an `aggregate` binary"
 
   def install
     bin.mkpath

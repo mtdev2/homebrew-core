@@ -3,6 +3,7 @@ class Xidel < Formula
   homepage "http://www.videlibri.de/xidel.html"
   url "https://github.com/benibela/xidel/releases/download/Xidel_0.9.8/xidel-0.9.8.src.tar.gz"
   sha256 "72b5b1a2fc44a0a61831e268c45bc6a6c28e3533b5445151bfbdeaf1562af39c"
+  license "GPL-3.0"
 
   bottle do
     cellar :any_skip_relocation
@@ -11,6 +12,8 @@ class Xidel < Formula
     sha256 "16eb3dc18004c0be8e384714ef543aa6dfe0b026e4ec0a7b6294dd499606bb12" => :high_sierra
     sha256 "623ba6f72816f4d9cb2055539a023f36a620add9c77a61193fcaea88a08cedf5" => :sierra
   end
+
+  disable! date: "2020-12-08", because: :unmaintained
 
   depends_on "fpc"
   depends_on "openssl@1.1"

@@ -1,11 +1,13 @@
 class Mmix < Formula
   desc "64-bit RISC architecture designed by Donald Knuth"
-  homepage "http://mmix.cs.hm.edu/"
-  url "http://mmix.cs.hm.edu/src/mmix-20160804.tgz"
+  homepage "https://mmix.cs.hm.edu/"
+  url "https://mmix.cs.hm.edu/src/mmix-20160804.tgz"
   sha256 "fad8e64fddf2d75cbcd5080616b47e11a2d292a428cdb0c12e579be680ecdee9"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "fa0a9dd7f5ea9520ffd9c4682df2d754462a7b7e6d7b30bc8ea84f39903fa29e" => :big_sur
+    sha256 "03a6468d729fc0ccddb6187c50b8f0318dedbe2bf613ef2e86e95aada83daeac" => :arm64_big_sur
     sha256 "ca577c8e313e25ce4b0ccdf1067a9fa1765b23a3f63b26905ad3aea044507ece" => :catalina
     sha256 "8b1cc6672a548ea1c3320ac4889e6b081792c3181fd4ecfc126ebe9c2fb18365" => :mojave
     sha256 "7bc054e2d244fe693b4ed5ef47c56e23ac4952b15ddc5de55d19150d4dc2bf30" => :high_sierra

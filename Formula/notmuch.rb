@@ -1,16 +1,23 @@
 class Notmuch < Formula
   desc "Thread-based email index, search, and tagging"
   homepage "https://notmuchmail.org/"
-  url "https://notmuchmail.org/releases/notmuch-0.29.3.tar.xz"
-  sha256 "d5f704b9a72395e43303de9b1f4d8e14dd27bf3646fdbb374bb3dbb7d150dc35"
-  head "https://git.notmuchmail.org/git/notmuch", :using => :git
+  url "https://notmuchmail.org/releases/notmuch-0.31.3.tar.xz"
+  sha256 "484041aed08f88f3a528a5b82489b6cda4090764228813bca73678da3a753aca"
+  license "GPL-3.0-or-later"
+  revision 1
+  head "https://git.notmuchmail.org/git/notmuch", using: :git
+
+  livecheck do
+    url "https://notmuchmail.org/releases/"
+    regex(/href=.*?notmuch[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "b716979f4ea49239ca25a860b5e80c8b6a14fb40b7bb4cfa95993ea813a9478d" => :catalina
-    sha256 "7d2af85514a0341e949898fcfb7f7085045e1c639f6ad8bfdabf315a2868dfc3" => :mojave
-    sha256 "f766e26f85311557e59bc79839721f13b7c274377129a942866377b6b22e0776" => :high_sierra
+    sha256 "50463927fdfdbd0c2ce451b058d62411c1103224b782594a7c0e31e5cfb6b62d" => :big_sur
+    sha256 "adf2064697804a4c19a1840b14e2ad346062ad27511eccee87cf12d9d772f83d" => :arm64_big_sur
+    sha256 "ce1daba205ab1785008998e93dcb203c06afba8967dece326fec8a868b08de97" => :catalina
+    sha256 "b3dff4eefeaa3438b0b3c87c36b6fb2b3c41da2cdc59e1870a9f8eb1348d4392" => :mojave
   end
 
   depends_on "doxygen" => :build
@@ -19,7 +26,7 @@ class Notmuch < Formula
   depends_on "sphinx-doc" => :build
   depends_on "glib"
   depends_on "gmime"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "talloc"
   depends_on "xapian"
   depends_on "zlib"
@@ -35,7 +42,7 @@ class Notmuch < Formula
       --without-ruby
     ]
 
-    ENV.append_path "PYTHONPATH", Formula["sphinx-doc"].opt_libexec/"lib/python3.7/site-packages"
+    ENV.append_path "PYTHONPATH", Formula["sphinx-doc"].opt_libexec/"lib/python3.9/site-packages"
 
     system "./configure", *args
     system "make", "V=1", "install"
@@ -47,7 +54,7 @@ class Notmuch < Formula
     (prefix/"vim").install "vim/syntax"
 
     cd "bindings/python" do
-      system "python3", *Language::Python.setup_install_args(prefix)
+      system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(prefix)
     end
   end
 

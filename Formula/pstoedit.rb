@@ -3,8 +3,15 @@ class Pstoedit < Formula
   homepage "http://www.pstoedit.net/"
   url "https://downloads.sourceforge.net/project/pstoedit/pstoedit/3.75/pstoedit-3.75.tar.gz"
   sha256 "b7b5d8510b40a5b148f7751268712fcfd0c1ed2bb46f359f655b6fcdc53364cf"
+  license "GPL-2.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
+    sha256 "1eb7bdc1ab76c8ae40450b686b1948f3e037ca871d7c505657489d501e073a5a" => :big_sur
+    sha256 "62d09abcd35a1d933545c501578d9583978eac45569bb7b3702f6fd1b5cbea9a" => :arm64_big_sur
     sha256 "f048d902c088f0625c0c9e18d84b159493775b40e742812b040e7b517900260a" => :catalina
     sha256 "1f3ec91e58d95e08081694b43e031ed83f13a73cecff15c55c532268282b0ad1" => :mojave
     sha256 "22710dd8997d40cec3492c40960a9966b80b386bdbd3fed46515c66bb25053d7" => :high_sierra

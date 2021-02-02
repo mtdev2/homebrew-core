@@ -1,9 +1,15 @@
 class NodeBuild < Formula
   desc "Install NodeJS versions"
   homepage "https://github.com/nodenv/node-build"
-  url "https://github.com/nodenv/node-build/archive/v4.8.0.tar.gz"
-  sha256 "d6fe6242d55f0f691f7b3ae153fc41e22632ed637a2575f6db2b84bc8d275613"
+  url "https://github.com/nodenv/node-build/archive/v4.9.27.tar.gz"
+  sha256 "2b6af04382f6b2920ad7f802dfea5be7024648d65b02fc9cd9915145c8b14c48"
+  license "MIT"
   head "https://github.com/nodenv/node-build.git"
+
+  livecheck do
+    url :head
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle :unneeded
 

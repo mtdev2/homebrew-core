@@ -1,17 +1,21 @@
 class Pango < Formula
   desc "Framework for layout and rendering of i18n text"
   homepage "https://www.pango.org/"
-  url "https://download.gnome.org/sources/pango/1.44/pango-1.44.7.tar.xz"
-  sha256 "66a5b6cc13db73efed67b8e933584509f8ddb7b10a8a40c3850ca4a985ea1b1f"
+  url "https://download.gnome.org/sources/pango/1.48/pango-1.48.1.tar.xz"
+  sha256 "08c2d550a96559f15fb317d7167b96df57ef743fef946f4e274bd8b6f2918058"
+  license "LGPL-2.0-or-later"
+  head "https://gitlab.gnome.org/GNOME/pango.git"
 
-  bottle do
-    sha256 "38a8cab63ed7ea37fc5448b74dae21b7f935d4f4ea9c08b658f3553f20ec8f28" => :catalina
-    sha256 "643284e68fcb4699572e7ab327a16ae3eb1c242527a96cb404cd98f14f22a893" => :mojave
-    sha256 "42552a9d26655f006f2361c9a1773d56bd5c5cabcd4f6ad5861fec29bd27c2cc" => :high_sierra
+  livecheck do
+    url :stable
   end
 
-  head do
-    url "https://gitlab.gnome.org/GNOME/pango.git"
+  bottle do
+    cellar :any
+    sha256 "a370a18fe0ed8f328b1e059047d8e3f5ec6962e61eef8bb73dddc687929abdfe" => :big_sur
+    sha256 "61423401e031618466684aded96340d6df28170d679126342206a4e5b7114851" => :arm64_big_sur
+    sha256 "218767642ce196886e84c3968f4c0c4f6139ac13feecb911eef2d0c040034d99" => :catalina
+    sha256 "4dc2faae3e57781d8b1d6751c1f695386eb624dadde62e83eba739bd36d47702" => :mojave
   end
 
   depends_on "gobject-introspection" => :build
@@ -26,9 +30,9 @@ class Pango < Formula
 
   def install
     mkdir "build" do
-      system "meson", "--prefix=#{prefix}",
+      system "meson", *std_meson_args,
                       "-Ddefault_library=both",
-                      "-Dintrospection=true",
+                      "-Dintrospection=enabled",
                       "-Duse_fontconfig=true",
                       ".."
       system "ninja", "-v"
@@ -78,10 +82,12 @@ class Pango < Formula
       -lcairo
       -lglib-2.0
       -lgobject-2.0
-      -lintl
       -lpango-1.0
       -lpangocairo-1.0
     ]
+    on_macos do
+      flags << "-lintl"
+    end
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

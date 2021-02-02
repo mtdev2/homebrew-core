@@ -2,35 +2,53 @@ class Kustomize < Formula
   desc "Template-free customization of Kubernetes YAML manifests"
   homepage "https://github.com/kubernetes-sigs/kustomize"
   url "https://github.com/kubernetes-sigs/kustomize.git",
-      :tag      => "kustomize/v3.5.4",
-      :revision => "3af514fa9f85430f0c1557c4a0291e62112ab026"
+      tag:      "kustomize/v3.9.2",
+      revision: "e98eada7365fc564c9aba392e954f306a9cbf1dd"
+  license "Apache-2.0"
+  revision 2
   head "https://github.com/kubernetes-sigs/kustomize.git"
+
+  livecheck do
+    url :head
+    regex(%r{kustomize/v?(\d+(?:\.\d+)+)$}i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "e7e4728e65df26734f4815f517940b47d5a1d3cf6e0ce709772a76da4905c053" => :catalina
-    sha256 "ae5b7fa548e13b5d191ef95499b50a469ca29b840b086848d608bf9cc27c2e2f" => :mojave
-    sha256 "9cc7948af53b2711ef41d539032544ce472237c3466702bd5ac0d40370292148" => :high_sierra
+    sha256 "75e67191c19af18ced915e0b1e54aafe1d1c23bd000575766d938aed13f1a7e4" => :big_sur
+    sha256 "521a2cb12359f6dac37604ef15995e4ffba2fc86ef1512bb04b302bbf5156c54" => :arm64_big_sur
+    sha256 "b0c24578d829ae5ee53debb872488220c6410e39a605c4976b720d6ac105935a" => :catalina
+    sha256 "c5540417ed2d8db9a313defd9494fa688ae5068c6125d076c131936b6daa43a7" => :mojave
   end
 
   depends_on "go" => :build
 
   def install
-    revision = Utils.popen_read("git", "rev-parse", "HEAD").strip
+    commit = Utils.git_head
+    tag = Utils.safe_popen_read("git", "tag", "--contains", "HEAD").strip
 
     cd "kustomize" do
       ldflags = %W[
-        -s -X sigs.k8s.io/kustomize/api/provenance.version=#{version}
-        -X sigs.k8s.io/kustomize/api/provenance.gitCommit=#{revision}
+        -s
+        -X sigs.k8s.io/kustomize/api/provenance.version=#{tag}
+        -X sigs.k8s.io/kustomize/api/provenance.gitCommit=#{commit}
         -X sigs.k8s.io/kustomize/api/provenance.buildDate=#{Time.now.iso8601}
       ]
       system "go", "build", "-ldflags", ldflags.join(" "), "-o", bin/"kustomize"
     end
+
+    output = Utils.safe_popen_read("#{bin}/kustomize", "completion", "bash")
+    (bash_completion/"kustomize").write output
+
+    output = Utils.safe_popen_read("#{bin}/kustomize", "completion", "zsh")
+    (zsh_completion/"_kustomize").write output
+
+    output = Utils.safe_popen_read("#{bin}/kustomize", "completion", "fish")
+    (fish_completion/"kustomize.fish").write output
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/kustomize version")
+    assert_match "kustomize/v#{version}", shell_output("#{bin}/kustomize version")
 
     (testpath/"kustomization.yaml").write <<~EOS
       resources:

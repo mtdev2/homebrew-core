@@ -3,10 +3,17 @@ class Libcsv < Formula
   homepage "https://sourceforge.net/projects/libcsv/"
   url "https://downloads.sourceforge.net/project/libcsv/libcsv/libcsv-3.0.3/libcsv-3.0.3.tar.gz"
   sha256 "d9c0431cb803ceb9896ce74f683e6e5a0954e96ae1d9e4028d6e0f967bebd7e4"
+  license "GPL-2.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any
     rebuild 2
+    sha256 "4edab615e912a3a0e931fff1b4f594093cfa1c4bc4869340046300b181f9ebc5" => :big_sur
+    sha256 "5fab325e7caac0db2cb892eebd55b5ef1094b92eaa3413bdd9ce85f47d82ff17" => :arm64_big_sur
     sha256 "e596efc37a1bf77cdbbab5fdc904e6ffa796f221b3ffa531f3ac24f56237d18a" => :catalina
     sha256 "ad3c84168c138aef88134f7666f870dcb17f8b779b5e5b54417515f7c9b740af" => :mojave
     sha256 "6946a6ff37a03f75d464cdc1229eb72251ae6b5d2726a658a016e39e862f0e33" => :high_sierra

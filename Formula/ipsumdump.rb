@@ -3,9 +3,12 @@ class Ipsumdump < Formula
   homepage "https://read.seas.harvard.edu/~kohler/ipsumdump/"
   url "https://read.seas.harvard.edu/~kohler/ipsumdump/ipsumdump-1.86.tar.gz"
   sha256 "e114cd01b04238b42cd1d0dc6cfb8086a6b0a50672a866f3d0d1888d565e3b9c"
+  license "MIT"
   head "https://github.com/kohler/ipsumdump.git"
 
   bottle do
+    sha256 "f3302bce45a3eed980b7c07d05eabc9088a469cd07528c5e1f32a52474b6383a" => :big_sur
+    sha256 "6348649ec33f562a3622f97fb7b253d39ed8b3f919a9aa2af8fa84b8d67d765a" => :arm64_big_sur
     sha256 "bf3d17d0d8bd97b75c44fd7929e348e096f3f1ac6a94ff31e785eb1f685db041" => :catalina
     sha256 "1ca321c3b11654d07e0f2f6a13e6e36ccc28b550a42515cd495777f15f1e05e9" => :mojave
     sha256 "16c995a9158257d8390cda7223f4d0620b6189c331177336b81f81077ee81620" => :high_sierra

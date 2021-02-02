@@ -3,12 +3,15 @@ class Ctl < Formula
   homepage "https://github.com/ampas/CTL"
   url "https://github.com/ampas/CTL/archive/ctl-1.5.2.tar.gz"
   sha256 "d7fac1439332c4d84abc3c285b365630acf20ea041033b154aa302befd25e0bd"
-  revision 4
+  license "AMPAS"
+  revision 5
 
   bottle do
-    sha256 "e76d1577ae18eff19a8a4b82941ab42d1be88e0cede2e6f53daaf611363a1eee" => :catalina
-    sha256 "42fae5bdcc9ebd6fdcf65048748659a0f5d27169396cf4dc2aef6668263ff8a4" => :mojave
-    sha256 "1a63d9afedf0845adb9daf5b7700c5715217e477b99453dc02c50be0eb9e8565" => :high_sierra
+    sha256 "3c08d14f9641ece8b5bff55783df5905f349974470452d4002c171d794265f65" => :big_sur
+    sha256 "e0279cf65e4c8dc7d574ef2e6e15e79e3d8632829cf7ba41535802d4d9d5d399" => :arm64_big_sur
+    sha256 "e44cbdbb013b350d22ff4cafeeb2a8e93dd164dc36bb6e181fb5cf086a8345c1" => :catalina
+    sha256 "6c88c03a0826a11e7267bf056e15362d4824cea2291b16af6db172d21f3654ce" => :mojave
+    sha256 "61b7606c62fb60aa86d887084e1cb0aa194ff5c64cb9726208ee364f870d7b43" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -17,14 +20,16 @@ class Ctl < Formula
   depends_on "libtiff"
   depends_on "openexr"
 
+  # from https://github.com/ampas/CTL/pull/73
   patch do
-    url "https://github.com/ampas/CTL/pull/73.diff?full_index=1"
-    sha256 "119c2410403d16d1ecfe88bc687c16a0a5645f91824eec8de2d996d1248a06fd"
+    url "https://github.com/ampas/CTL/commit/bda2165b97e512a39ee67cf36fe95e1d897e823b.patch?full_index=1"
+    sha256 "09145020a79b180bb8bb8e18129194b064d4c8a949940fb97be4945b99b06d7f"
   end
 
+  # from https://github.com/ampas/CTL/pull/74
   patch do
-    url "https://github.com/ampas/CTL/pull/74.diff?full_index=1"
-    sha256 "0c261caf34f14a097811ceb82fc1d9aa29bc6c4861921361e6eb1b4fe5f8ebae"
+    url "https://github.com/ampas/CTL/commit/0646adf9dcf966db3c6ec9432901c08387c1a1eb.patch?full_index=1"
+    sha256 "5ec79eed7499612855d09d7bb18a66a660b6be9785fdfcc880d946f95fb7a44c"
   end
 
   def install

@@ -3,6 +3,7 @@ class Beansdb < Formula
   homepage "https://github.com/douban/beansdb"
   url "https://github.com/douban/beansdb/archive/v0.7.1.4.tar.gz"
   sha256 "c89f267484dd47bab272b985ba0a9b9196ca63a9201fdf86963b8ed04f52ccdb"
+  license "BSD-3-Clause"
   head "https://github.com/douban/beansdb.git"
 
   bottle do
@@ -14,6 +15,10 @@ class Beansdb < Formula
     sha256 "5bb5311949ba21cde40848d1c1f58cf3317d8e8d604d3d0590dab2e9953a5ece" => :el_capitan
     sha256 "e3c0bfa02e012ef1b0935fe13be8286dce080e8898b6519f5bf8c886ea77b9bc" => :yosemite
   end
+
+  # Deprecated upstream in favor of `gobeansdb`:
+  # https://github.com/douban/gobeansdb
+  deprecate! date: "2018-06-11", because: :repo_archived
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -28,7 +33,7 @@ class Beansdb < Formula
     (var/"log").mkpath
   end
 
-  plist_options :manual => "beansdb"
+  plist_options manual: "beansdb"
 
   def plist
     <<~EOS

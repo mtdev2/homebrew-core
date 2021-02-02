@@ -1,23 +1,37 @@
 class Go < Formula
   desc "Open source programming language to build simple/reliable/efficient software"
   homepage "https://golang.org"
+  license "BSD-3-Clause"
+  revision 1
 
   stable do
-    url "https://dl.google.com/go/go1.14.1.src.tar.gz"
-    mirror "https://fossies.org/linux/misc/go1.14.1.src.tar.gz"
-    sha256 "2ad2572115b0d1b4cb4c138e6b3a31cee6294cb48af75ee86bec3dca04507676"
+    if Hardware::CPU.arm?
+      url "https://golang.org/dl/go1.16rc1.src.tar.gz"
+      sha256 "6a33569f9d0d21db31614086cc2a4f0fbc683b41c1c53fb512a1341ce5763ff5"
+      version "1.15.7"
+    else
+      url "https://golang.org/dl/go1.15.7.src.tar.gz"
+      mirror "https://fossies.org/linux/misc/go1.15.7.src.tar.gz"
+      sha256 "8631b3aafd8ecb9244ec2ffb8a2a8b4983cf4ad15572b9801f7c5b167c1a2abc"
+    end
 
-    go_version = version.to_s.split(".")[0..1].join(".")
+    go_version = version.major_minor
     resource "gotools" do
       url "https://go.googlesource.com/tools.git",
-          :branch => "release-branch.go#{go_version}"
+          branch: "release-branch.go#{go_version}"
     end
   end
 
+  livecheck do
+    url "https://golang.org/dl/"
+    regex(/href=.*?go[._-]?v?(\d+(?:\.\d+)+)[._-]src\.t/i)
+  end
+
   bottle do
-    sha256 "36fdd54a9307ba19cc69425586e2d63188f2f2b7f541ab9fd2ef3447e376329f" => :catalina
-    sha256 "bab387fda3e4683943bd7b9b9208141502d6a2cc42c4b21137effaec9f208e1c" => :mojave
-    sha256 "ffb583abeb5263269281532f45a70a074ae0affe6edecb13442024b70bf13b04" => :high_sierra
+    sha256 big_sur: "f9fafcc83029a1f568e586a8acbd95834d35b03153d6de8f9b52db97313c65d0"
+    sha256 arm64_big_sur: "142cd5c1aaec872347771022567305de891bcfd3d5563bc66860f35f2416a1a0"
+    sha256 catalina: "591f8cb8670af19adffa3917416c36d0222f0010f078851f452f8ac0305f4558"
+    sha256 mojave: "61e4f758c48b7b6cf5d302328bf34d72be2316606d1f93f4152934b874319c84"
   end
 
   head do
@@ -28,12 +42,22 @@ class Go < Formula
     end
   end
 
-  depends_on :macos => :el_capitan
-
   # Don't update this unless this version cannot bootstrap the new version.
   resource "gobootstrap" do
-    url "https://storage.googleapis.com/golang/go1.7.darwin-amd64.tar.gz"
-    sha256 "51d905e0b43b3d0ed41aaf23e19001ab4bc3f96c3ca134b48f7892485fc52961"
+    on_macos do
+      if Hardware::CPU.arm?
+        url "https://storage.googleapis.com/golang/go1.16beta1.darwin-arm64.tar.gz"
+        sha256 "fd57f47987bb330fd9b438e7b4c8941b63c3807366602d99c1d99e0122ec62f1"
+      else
+        url "https://storage.googleapis.com/golang/go1.7.darwin-amd64.tar.gz"
+        sha256 "51d905e0b43b3d0ed41aaf23e19001ab4bc3f96c3ca134b48f7892485fc52961"
+      end
+    end
+
+    on_linux do
+      url "https://storage.googleapis.com/golang/go1.7.linux-amd64.tar.gz"
+      sha256 "702ad90f705365227e902b42d91dd1a40e48ca7f67a2f4b2fd052aaa4295cd95"
+    end
   end
 
   def install
@@ -42,7 +66,6 @@ class Go < Formula
 
     cd "src" do
       ENV["GOROOT_FINAL"] = libexec
-      ENV["GOOS"]         = "darwin"
       system "./make.bash", "--no-clean"
     end
 
@@ -62,6 +85,19 @@ class Go < Formula
       (libexec/"bin").install "godoc"
     end
     bin.install_symlink libexec/"bin/godoc"
+  end
+
+  def caveats
+    s = ""
+
+    if Hardware::CPU.arm?
+      s += <<~EOS
+        This is a release candidate version of the Go compiler for Apple Silicon
+        (Go 1.16rc1).
+      EOS
+    end
+
+    s
   end
 
   test do

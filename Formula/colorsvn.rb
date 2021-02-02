@@ -1,7 +1,7 @@
 class Colorsvn < Formula
   desc "Subversion output colorizer"
-  homepage "http://colorsvn.tigris.org/"
-  url "http://colorsvn.tigris.org/files/documents/4414/49311/colorsvn-0.3.3.tar.gz"
+  homepage "https://web.archive.org/web/20170725092001/colorsvn.tigris.org/"
+  url "https://web.archive.org/web/20170725092001/colorsvn.tigris.org/files/documents/4414/49311/colorsvn-0.3.3.tar.gz"
   sha256 "db58d5b8f60f6d4def14f8f102ff137b87401257680c1acf2bce5680b801394e"
   revision 1
 
@@ -15,6 +15,8 @@ class Colorsvn < Formula
     sha256 "88c79f8a9bc43d118449ce9d97061af4633f15f942a0a48caef5e1b327aea0e5" => :yosemite
     sha256 "2711d058fa4c892f350b6309a82f7eeb85455bc1b336afc75587c467121a553d" => :mavericks
   end
+
+  disable! date: "2020-12-08", because: :unmaintained
 
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/85fa66a9/colorsvn/0.3.3.patch"

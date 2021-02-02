@@ -3,10 +3,13 @@ class Dex < Formula
   homepage "https://github.com/tihirvon/dex"
   url "https://github.com/tihirvon/dex/archive/v1.0.tar.gz"
   sha256 "4468b53debe8da6391186dccb78288a8a77798cb4c0a00fab9a7cdc711cd2123"
+  license "GPL-2.0"
   head "https://github.com/tihirvon/dex.git"
 
   bottle do
     rebuild 1
+    sha256 "32ae7c5467361a979d7e96249ab4f95af72b202e260064a4c0ba58455ba44034" => :big_sur
+    sha256 "f8ffe6f83659dbdf5f60ee7367291371a1b5cb502ce288ba76d7d392ad943c85" => :arm64_big_sur
     sha256 "d59f96c9f1e021bc400a832d680039313256073d88527ef18b961e783c71879b" => :catalina
     sha256 "689a8e1a94a3c2922defac96859aca9b4675118858d9abc8338c0687cf714f43" => :mojave
     sha256 "1d36402b9470f2e714bf9b9b94e9575d06130485559826a08181ff9087e77176" => :high_sierra

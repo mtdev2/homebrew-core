@@ -3,11 +3,14 @@ class CrosstoolNg < Formula
   homepage "https://crosstool-ng.github.io/"
   url "http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.24.0.tar.xz"
   sha256 "804ced838ea7fe3fac1e82f0061269de940c82b05d0de672e7d424af98f22d2d"
+  license "LGPL-2.1"
   revision 1
   head "https://github.com/crosstool-ng/crosstool-ng.git"
 
   bottle do
     cellar :any
+    sha256 "e96a70d1be1e25e77895b7c509929435ca2a5950abea37c5e5387c2586ad4db0" => :big_sur
+    sha256 "d917bda890f8a1f6eecb6f0ba6f914fcd7fcc92909d7f0d8e76e8eb05e8e6e43" => :arm64_big_sur
     sha256 "733a1e37563ffd06a187fdad312bb03e1eca1467832771b57141b4542b81464a" => :catalina
     sha256 "f95cc7d4b3bfcc8584d89c5dfa11d39e246c36ca2d707b108d5330fe24ac41c7" => :mojave
     sha256 "c7f30be654aece34ce9e7cf5fc08f745cad233ff11ad1fd81826d9344a22345b" => :high_sierra
@@ -30,8 +33,13 @@ class CrosstoolNg < Formula
   depends_on "lzip"
   depends_on "m4"
   depends_on "make"
-  depends_on "ncurses" if DevelopmentTools.clang_build_version >= 1000
+  depends_on "ncurses"
   depends_on "xz"
+
+  uses_from_macos "flex" => :build
+  uses_from_macos "gperf" => :build
+  uses_from_macos "texinfo" => :build
+  uses_from_macos "unzip" => :build
 
   def install
     system "./bootstrap" if build.head?

@@ -4,8 +4,13 @@ class Dgen < Formula
   url "https://downloads.sourceforge.net/project/dgen/dgen/1.33/dgen-sdl-1.33.tar.gz"
   sha256 "99e2c06017c22873c77f88186ebcc09867244eb6e042c763bb094b02b8def61e"
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
     cellar :any
+    sha256 "476760ba116d162e64497c9bfec9e8222f55b455c31083269789057a76776228" => :big_sur
     sha256 "753f4d198c110edbcadb1b81db8200a161d67104b2e9ffa75b44d9fde6521bc0" => :catalina
     sha256 "7ebcef39d27013a647585ab076ca31fc1be468c85aeafe2d504242b4194a3d2e" => :mojave
     sha256 "bac08b08f7cfb9c108ccf0bfe2d4623324e5038f01e508c1fb5da6b3c4d58dff" => :high_sierra

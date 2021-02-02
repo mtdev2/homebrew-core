@@ -2,12 +2,14 @@ class Libtar < Formula
   desc "C library for manipulating POSIX tar files"
   homepage "https://repo.or.cz/libtar.git"
   url "https://repo.or.cz/libtar.git",
-      :tag      => "v1.2.20",
-      :revision => "0907a9034eaf2a57e8e4a9439f793f3f05d446cd"
+      tag:      "v1.2.20",
+      revision: "0907a9034eaf2a57e8e4a9439f793f3f05d446cd"
 
   bottle do
     cellar :any
     rebuild 2
+    sha256 "7424cf8229c7aea825592a76227da3355f32a43b9fbc5e140a0cf1eb07d05c8e" => :big_sur
+    sha256 "7481da1834936b6237f152fe8b7e22196ad5c76833af39c9e9f74eae6347c9a5" => :arm64_big_sur
     sha256 "35617f312e3c6fb1e473a5d20a559dcbd1815544bdd99c95419ac7e6e8abf9f6" => :catalina
     sha256 "070d9355e6d03dcb64ea33ecf7e3b99972e0b3ca5fc8e60e89616f0a061ee0e5" => :mojave
     sha256 "a263cfaa1499f0c82902009964df0a310e7841ddff29409c67ede0a79157c31e" => :high_sierra

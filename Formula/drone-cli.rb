@@ -1,15 +1,16 @@
 class DroneCli < Formula
-  desc "Drone CLI"
+  desc "Command-line client for the Drone continuous integration server"
   homepage "https://drone.io"
   url "https://github.com/drone/drone-cli.git",
-    :tag      => "v1.2.1",
-    :revision => "a5f8e7c245635a3855cebfde61c29b805d0b46a0"
+      tag:      "v1.2.4",
+      revision: "6f4c96818cf659f3f1bc44498e18ea93313d62ed"
+  license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6f6c2e86acf8190aa34f419213a622ac59c6f1b7848743b5066baebc89402605" => :catalina
-    sha256 "6f942cbf4739e14966324724d37dfb422bfc22949c5aec9ed568f212f8ff88ef" => :mojave
-    sha256 "2e3947c81733f0b548815fe37601551165ccb1f8d49df7f49b3b0671529f4e22" => :high_sierra
+    sha256 "5eb1960f5073fe2dbe0cebb658c9b31b905d9b77f9dea41a1e65cb01331875e9" => :big_sur
+    sha256 "b0f855c942279e6f28de3fd52611f6e88f5d9a7feb008f49d1f66a00752f2b25" => :catalina
+    sha256 "1d6f199fd82f2da5bef17f40640011b69c3c1ba67816c2db6f5bbcbb1da52ba0" => :mojave
   end
 
   depends_on "go" => :build

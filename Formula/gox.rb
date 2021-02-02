@@ -3,21 +3,22 @@ class Gox < Formula
   homepage "https://github.com/mitchellh/gox"
   url "https://github.com/mitchellh/gox/archive/v1.0.1.tar.gz"
   sha256 "25aab55a4ba75653931be2a2b95e29216b54bd8fecc7931bd416efe49a388229"
+  license "MPL-2.0"
   head "https://github.com/mitchellh/gox.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6693416aef377d44385c25eb786d25f963258c0895491beedbf6039d7c84c06d" => :catalina
-    sha256 "008ec56acef96c3ad3117bcde87f1998fcf4ef9c93f82ae363ed6ac39914a95d" => :mojave
-    sha256 "c2d77e6fadb6c7585a5df89eb91aaf1f41f6b88829e1a647efb4ebbc70277b3b" => :high_sierra
-    sha256 "1d48879bdbbd84d2406aeaf5f052c51ed2f0b8f9484508ad6085bf537be6f5f6" => :sierra
+    rebuild 1
+    sha256 "ee0ae4811c2bd84db661328bda7ff64e3560aae5bea9b9447dc75f0c4528ea03" => :big_sur
+    sha256 "0faf261981e71df491ffe35d995aeefe1660bf73c204206ad88668981882e88e" => :catalina
+    sha256 "96cf3f477de802c91e532a362cfaab221854f8683414b0abecbbe1e4b66c6b56" => :mojave
   end
 
   depends_on "go"
 
   resource "iochan" do
     url "https://github.com/mitchellh/iochan.git",
-        :revision => "87b45ffd0e9581375c491fef3d32130bb15c5bd7"
+        revision: "87b45ffd0e9581375c491fef3d32130bb15c5bd7"
   end
 
   # This resource is for the test so doesn't really need to be updated.
@@ -27,13 +28,7 @@ class Gox < Formula
   end
 
   def install
-    ENV["GOPATH"] = buildpath
-    (buildpath/"src/github.com/mitchellh/gox").install buildpath.children
-    (buildpath/"src/github.com/mitchellh/iochan").install resource("iochan")
-    cd "src/github.com/mitchellh/gox" do
-      system "go", "build", "-o", bin/"gox"
-      prefix.install_metafiles
-    end
+    system "go", "build", *std_go_args
   end
 
   test do

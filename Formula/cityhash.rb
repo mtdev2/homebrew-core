@@ -3,9 +3,12 @@ class Cityhash < Formula
   homepage "https://github.com/google/cityhash"
   url "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/cityhash/cityhash-1.1.1.tar.gz"
   sha256 "76a41e149f6de87156b9a9790c595ef7ad081c321f60780886b520aecb7e3db4"
+  license "MIT"
 
   bottle do
     cellar :any
+    sha256 "8ef1413a8bdd03a86b054f673462e82cdea4230fb9a75f98ada2d996bdcd0893" => :big_sur
+    sha256 "e43f909c5fb775ca6c05675798d12343b1187820316716a844634e1a3419e21f" => :arm64_big_sur
     sha256 "ddca5903f40b8ec22ca0a2da4f116a03dc45d0f383c508f4f0370cd5899b80c3" => :catalina
     sha256 "4d7f25360b715d36177c70f06f7c21f39d38b6b8aa9f8a5befe80818baa3545f" => :mojave
     sha256 "37e8244399c42c6f3bdb2fad91562607e96bc3380378d318ceecbc16ec8d52be" => :high_sierra

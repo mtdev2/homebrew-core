@@ -5,6 +5,11 @@ class Umlet < Formula
   sha256 "f4b064ed57ac0640daa31f5d59649a95596fc9290e503734ec4974a9bbecde49"
   revision 1
 
+  livecheck do
+    url "https://www.umlet.com/changes.htm"
+    regex(/href=.*?umlet-standalone[._-]v?(\d+(?:\.\d+)+)\.(t|zip)/i)
+  end
+
   bottle :unneeded
 
   depends_on "openjdk"
@@ -18,7 +23,7 @@ class Umlet < Formula
 
     chmod 0755, "#{libexec}/umlet.sh"
 
-    (bin/"umlet-#{version}").write_env_script "#{libexec}/umlet.sh", :JAVA_HOME => Formula["openjdk"].opt_prefix
+    (bin/"umlet-#{version}").write_env_script "#{libexec}/umlet.sh", JAVA_HOME: Formula["openjdk"].opt_prefix
     bin.install_symlink "umlet-#{version}" => "umlet"
   end
 

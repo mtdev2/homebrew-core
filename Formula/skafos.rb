@@ -3,6 +3,7 @@ class Skafos < Formula
   homepage "https://skafos.ai/"
   url "https://github.com/MetisMachine/skafos/archive/1.7.7.tar.gz"
   sha256 "42eecd6094126f1e4febf94541c4b640f2b4ed39829af2686cd83a60fafcd994"
+  license "Apache-2.0"
   revision 2
 
   bottle do
@@ -11,6 +12,8 @@ class Skafos < Formula
     sha256 "c487b351e95ab98ef03e4184020bda27b1cdc8353cfb505a54e75036731cfe0e" => :mojave
     sha256 "57dc00bd0e8bfc96998c690cbd77a7c4c6486d50655603bfdf65771e340ee6b6" => :high_sierra
   end
+
+  deprecate! date: "2020-12-16", because: :repo_archived
 
   depends_on "cmake" => :build
   depends_on "libarchive"

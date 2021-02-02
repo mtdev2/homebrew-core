@@ -3,9 +3,16 @@ class Bittwist < Formula
   homepage "https://bittwist.sourceforge.io"
   url "https://downloads.sourceforge.net/project/bittwist/Mac%20OS%20X/Bit-Twist%202.0/bittwist-macosx-2.0.tar.gz"
   sha256 "8954462ac9e21376d9d24538018d1225ef19ddcddf9d27e0e37fe7597e408eaa"
+  license "GPL-2.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "501f3df64c0991adb8be19bc835d4abc5277293de53206580ee9851ad36c23ce" => :big_sur
+    sha256 "32f0ed29ff9caa578d26286aec740330e6218cfe4c9ea2aa35df9587e90b9699" => :arm64_big_sur
     sha256 "784d96d15ae2ba653dcf4289cfbc58d16359e32bbb9e178a346d2dd6ee62c18a" => :catalina
     sha256 "5a282944a4d5c10caaea1217aa1b9e6225a2a5d8f5fb941bb3a77eed747cdc90" => :mojave
     sha256 "b19dd7e9297e5f4d26472e93f1fc90bbe5c2b7d11cd18ab04606d3176d064fb7" => :high_sierra

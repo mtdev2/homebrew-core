@@ -1,28 +1,35 @@
 class Minetest < Formula
   desc "Free, open source voxel game engine and game"
   homepage "https://www.minetest.net/"
+  license "LGPL-2.1"
 
   stable do
-    url "https://github.com/minetest/minetest/archive/5.1.1.tar.gz"
-    sha256 "65d483bce244827de174edcb30f7e453b06a7590da6cdeb7a2237ff6180c090b"
+    url "https://github.com/minetest/minetest/archive/5.3.0.tar.gz"
+    sha256 "65dc2049f24c93fa544500f310a61e289c1b8fa47bf60877b746a2c27a7238d6"
 
     resource "minetest_game" do
-      url "https://github.com/minetest/minetest_game/archive/5.1.1.tar.gz"
-      sha256 "89dbb7cad2a1cec1ca0cdaa0f0eafc5699676bcd6880891c7720a10dfe7f6af9"
+      url "https://github.com/minetest/minetest_game/archive/5.3.0.tar.gz"
+      sha256 "06c6c1d4b97af211dd0fa518a3e68a205f594e9816a4b2477e48d4d21d278e2d"
     end
   end
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 "6c6d62a96e916fd3640206508547e326e1d39e97a51c3abb36c7a921ed1c2e56" => :catalina
-    sha256 "bf3ca399f4349eaefdf0435577c747e5adf10aaf881797d9eba5837dee80a92c" => :mojave
-    sha256 "a79e3ee2648769f1d14b5f1c88e2f98154e3ea58355682018c8b6467c171d68b" => :high_sierra
+    rebuild 1
+    sha256 "1a0e503d7c53c7a62650c0f5b0f76ba3e6b51d10ac07d9a17b0d8c56a2900234" => :big_sur
+    sha256 "92e0b98ccb73b2ab82272dd9a165007e84dcd493453cb3701c6881b44758654d" => :catalina
+    sha256 "c42e63842c20316be1582bca49e00da8302e11409a388cd6f537148d2740d400" => :mojave
   end
 
   head do
     url "https://github.com/minetest/minetest.git"
 
     resource "minetest_game" do
-      url "https://github.com/minetest/minetest_game.git", :branch => "master"
+      url "https://github.com/minetest/minetest_game.git", branch: "master"
     end
   end
 
@@ -38,8 +45,8 @@ class Minetest < Formula
   def install
     (buildpath/"games/minetest_game").install resource("minetest_game")
 
-    args = std_cmake_args - %w[-DCMAKE_BUILD_TYPE=None]
-    args << "-DCMAKE_BUILD_TYPE=Release" << "-DBUILD_CLIENT=1" << "-DBUILD_SERVER=0"
+    args = std_cmake_args
+    args << "-DBUILD_CLIENT=1" << "-DBUILD_SERVER=0"
     args << "-DENABLE_FREETYPE=1" << "-DCMAKE_EXE_LINKER_FLAGS='-L#{Formula["freetype"].opt_lib}'"
     args << "-DENABLE_GETTEXT=1" << "-DCUSTOM_GETTEXT_PATH=#{Formula["gettext"].opt_prefix}"
 

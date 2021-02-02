@@ -3,9 +3,12 @@ class Namebench < Formula
   homepage "https://code.google.com/archive/p/namebench/"
   url "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/namebench/namebench-1.3.1-source.tgz"
   sha256 "30ccf9e870c1174c6bf02fca488f62bba280203a0b1e8e4d26f3756e1a5b9425"
+  license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "072034ec4c593736c7a77e9de48f8d149794b2e3f6b000efb20e58b6bb3e7ddb" => :big_sur
+    sha256 "d599439f8524ed8a398ac60452bac1d333da837d8727ae9b84fc5f67f3d12dfa" => :arm64_big_sur
     sha256 "c958cb3841f9462efd7e2199cad803262dcb3b0b6ab766af53681910090e95e2" => :catalina
     sha256 "35225323dc77dc1954cd19b1aa0476e4ebab47e91dbabbfc7e169b5b500b0eba" => :mojave
     sha256 "4c2312daef0aae052b7e65bdb4b20cdcf1bfa601e5f8a484a7f846be1096bcb1" => :high_sierra
@@ -22,7 +25,7 @@ class Namebench < Formula
                      "--install-data=#{libexec}/lib/python2.7/site-packages"
 
     bin.install "namebench.py" => "namebench"
-    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.env_script_all_files(libexec/"bin", PYTHONPATH: ENV["PYTHONPATH"])
   end
 
   test do

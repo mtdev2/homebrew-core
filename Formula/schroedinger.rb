@@ -5,9 +5,15 @@ class Schroedinger < Formula
   mirror "https://deb.debian.org/debian/pool/main/s/schroedinger/schroedinger_1.0.11.orig.tar.gz"
   sha256 "1e572a0735b92aca5746c4528f9bebd35aa0ccf8619b22fa2756137a8cc9f912"
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
     cellar :any
     rebuild 1
+    sha256 "81ea2f319f7e300c222b2788fdb03bfc3b3177f5a8166caa88afc1b4538b291d" => :big_sur
+    sha256 "eed0918ea3c7ff3e75968249865c6743b5dd6a444b1022f15926c9e0b3496cfb" => :arm64_big_sur
     sha256 "904f8940085832802e511565d1bcea91262a0ca871612509c1e521db37da4227" => :catalina
     sha256 "ab901d9879b3bc110eeb7eadd5ab815af7d7fc446b2f5577795737c410c3bf4e" => :mojave
     sha256 "1e9953cbef67e87a7ca9ebecfcc4af5f0eb2261d17f3a1195386b7512b9312be" => :high_sierra
@@ -18,7 +24,7 @@ class Schroedinger < Formula
   end
 
   head do
-    url "lp:schroedinger", :using => :bzr
+    url "lp:schroedinger", using: :bzr
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

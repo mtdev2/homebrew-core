@@ -3,10 +3,13 @@ class Chruby < Formula
   homepage "https://github.com/postmodern/chruby#readme"
   url "https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz"
   sha256 "7220a96e355b8a613929881c091ca85ec809153988d7d691299e0a16806b42fd"
+  license "MIT"
   head "https://github.com/postmodern/chruby.git"
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "16f188427ecc5432c18a004f567b73a8138fd2c2010d76821843e3804663fc02" => :big_sur
+    sha256 "97ca44a014def181a1bd3cacb5ff86783c6fddb1d1262336e9765d14a7d5959a" => :arm64_big_sur
     sha256 "004f825f798a41ffb3c9576aa3b77e7b8cef227287725818f5d3f1a779b12de6" => :catalina
     sha256 "4b3e7d6e76cd5d914b0bb4871a0a0f33c9b997a9c579ca4450191c87c3dc4f53" => :mojave
     sha256 "d59074fe39429eb9979acd0e81e6b9a142aa73595971cee42ab91bbe850c6105" => :high_sierra

@@ -4,9 +4,16 @@ class Xqilla < Formula
   url "https://downloads.sourceforge.net/project/xqilla/XQilla-2.3.4.tar.gz"
   sha256 "292631791631fe2e7eb9727377335063a48f12611d641d0296697e0c075902eb"
 
+  livecheck do
+    url :stable
+    regex(%r{url=.*?/XQilla[._-]v?(\d+(?:\.\d+)+)\.t}i)
+  end
+
   bottle do
     cellar :any
     rebuild 1
+    sha256 "ac66706739f52be905422e387435524387fdec6ca86243aad5b8be446182d59a" => :big_sur
+    sha256 "1b8493188f6fc779948193c1ae7cc803e85a4a18c32464c039448a27f830d9fe" => :arm64_big_sur
     sha256 "3e01ca81220688c9680e3c23c0f7434f415e2b1e7b2e812f514a540eb51b50cd" => :catalina
     sha256 "93ae09129c45ee7b1a4ecfe996c305791e06833c1e73b604b33282e5ea90248a" => :mojave
     sha256 "38579e6ab1b6f6801ca5404cc79fcd972f395b9dd2e981672889b3eac5441c86" => :high_sierra
@@ -16,7 +23,7 @@ class Xqilla < Formula
 
   depends_on "xerces-c"
 
-  conflicts_with "zorba", :because => "Both supply xqc.h"
+  conflicts_with "zorba", because: "both supply `xqc.h`"
 
   def install
     ENV.cxx11

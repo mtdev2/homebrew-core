@@ -5,8 +5,15 @@ class LibusbCompat < Formula
   sha256 "404ef4b6b324be79ac1bfb3d839eac860fbc929e6acb1ef88793a6ea328bc55a"
   revision 1
 
+  livecheck do
+    url :stable
+    regex(%r{url=.*?/libusb-compat[._-]v?(\d+(?:\.\d+)+)\.t}i)
+  end
+
   bottle do
     cellar :any
+    sha256 "75c7921c73433f1481dfc4aeed5e63dac1a75d67ed13409ed1c2ec053864dadc" => :big_sur
+    sha256 "8e54f4e98a9dd9e39c8d18e053729472c23a20f35c858fefdc78c8aa6552368f" => :arm64_big_sur
     sha256 "e1f03f77caed5418c50c3c9659e6c56f2363eddfd6cc1aac3f8dcac9451771d2" => :catalina
     sha256 "11fe66aff70c0177a186c946624f91417565c43bbdc9e7c51725e26ea0c868c5" => :mojave
     sha256 "fccc08c6c3ff2bf93d2aa8e7cc18f30c1fb95fbca044ecaa42d45f7c73a8facf" => :high_sierra

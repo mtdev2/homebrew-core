@@ -1,13 +1,20 @@
 class Gedit < Formula
-  desc "The GNOME text editor"
+  desc "GNOME text editor"
   homepage "https://wiki.gnome.org/Apps/Gedit"
-  url "https://download.gnome.org/sources/gedit/3.36/gedit-3.36.1.tar.xz"
-  sha256 "6dc38eda227d1c368e039e9bff485d0bee9a49d5f9560c387ee08f5818a4e387"
+  url "https://download.gnome.org/sources/gedit/3.38/gedit-3.38.1.tar.xz"
+  sha256 "0053853d2cd59cad8a1662f5b4fdcfab47b4c0940063bacd6790a9948642844d"
+  license "GPL-2.0-or-later"
+  revision 1
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
-    sha256 "6c19428d04cc675a778f3fec056ca5275ebbf4efd3ff5fd3ed86bd22defe8585" => :catalina
-    sha256 "55192cacaac7d6bb990bd7d40c8182e9dc44b421e2ae4c562b8fe9c384e80597" => :mojave
-    sha256 "95fac8e5c87b702c88fba9f3d927b92faa349b903193c75b94b4b8e0d2280580" => :high_sierra
+    sha256 "21b705058ca192bd2e0d8ef85efa3d6161d893286d9b0696307f4bcbee0d8458" => :big_sur
+    sha256 "7e2ee800477f0616c684e787b666b70153bd89ea686db852e07d6ece2ddd7ee6" => :arm64_big_sur
+    sha256 "9fa220812eb73ae117aa410e438311ea6bb9f7477ba757dd9d5f706c8e65319d" => :catalina
+    sha256 "5b23b365f2b2a0308a3e28c82ee103d07bd2766559ed3a95c4d2101ae37336bf" => :mojave
   end
 
   depends_on "itstool" => :build
@@ -36,7 +43,7 @@ class Gedit < Formula
     ENV["DESTDIR"] = "/"
 
     mkdir "build" do
-      system "meson", "--prefix=#{prefix}", ".."
+      system "meson", *std_meson_args, ".."
       system "ninja", "-v"
       system "ninja", "install", "-v"
     end
@@ -52,10 +59,10 @@ class Gedit < Formula
     system bin/"gedit", "--version"
     # API test
     (testpath/"test.c").write <<~EOS
-      #include <gedit/gedit-utils.h>
+      #include <gedit/gedit-debug.h>
 
       int main(int argc, char *argv[]) {
-        gchar *text = gedit_utils_make_valid_utf8("test text");
+        gedit_debug_init();
         return 0;
       }
     EOS
@@ -91,7 +98,7 @@ class Gedit < Formula
       -I#{gtksourceview4.opt_include}/gtksourceview-4
       -I#{gtkx3.opt_include}/gtk-3.0
       -I#{harfbuzz.opt_include}/harfbuzz
-      -I#{include}/gedit-3.36
+      -I#{include}/gedit-3.38
       -I#{libepoxy.opt_include}
       -I#{libffi.opt_lib}/libffi-3.0.13/include
       -I#{libpeas.opt_include}/libpeas-1.0
@@ -116,7 +123,7 @@ class Gedit < Formula
       -lcairo-gobject
       -lgdk-3
       -lgdk_pixbuf-2.0
-      -lgedit-3.36
+      -lgedit-3.38
       -lgio-2.0
       -lgirepository-1.0
       -lglib-2.0

@@ -1,14 +1,15 @@
 class Fq < Formula
   desc "Brokered message queue optimized for performance"
   homepage "https://github.com/circonus-labs/fq"
-  url "https://github.com/circonus-labs/fq/archive/v0.13.0.tar.gz"
-  sha256 "01fb729a0a2257c944e6489718ce6d334f3dd3639cb8d604592c291d1bd017ea"
+  url "https://github.com/circonus-labs/fq/archive/v0.13.6.tar.gz"
+  sha256 "bda73f07ea22f29695bad82bd767e8c325e488d7f9fe118dd7167f44f11ad13f"
+  license "MIT"
   head "https://github.com/circonus-labs/fq.git"
 
   bottle do
-    sha256 "cca321d03043680c3e666e064a22ea8dc68ee65e239160393356f96713b48c47" => :catalina
-    sha256 "d0b2de2159e496bbe939ad72a64ce637551787cb44a4e822372e33c049ee3f6f" => :mojave
-    sha256 "58c430bd24667e0209009d9b3aae0c1fc07e857dc16ec5f19c9b568afeba0d68" => :high_sierra
+    sha256 big_sur: "43fbc72078e9932a6a4e6a7366672e8bc125ba8141a0819282c1c25177279aeb"
+    sha256 catalina: "c40fe71ff341f6143ecbc0a8d8da289965b2c045359fb878975e432e0027d374"
+    sha256 mojave: "914c62b4e0a5cf235cb770d9de8ea409e66941801afa5fc511c6654333b1b004"
   end
 
   depends_on "concurrencykit"
@@ -16,6 +17,8 @@ class Fq < Formula
   depends_on "openssl@1.1"
 
   def install
+    ENV.append_to_cflags "-DNO_BCD=1"
+    inreplace "Makefile", "-lbcd", ""
     inreplace "Makefile", "/usr/lib/dtrace", "#{lib}/dtrace"
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
@@ -24,7 +27,7 @@ class Fq < Formula
 
   test do
     pid = fork { exec sbin/"fqd", "-D", "-c", testpath/"test.sqlite" }
-    sleep 1
+    sleep 10
     begin
       assert_match /Circonus Fq Operational Dashboard/, shell_output("curl 127.0.0.1:8765")
     ensure

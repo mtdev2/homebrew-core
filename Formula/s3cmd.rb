@@ -3,18 +3,30 @@ class S3cmd < Formula
 
   desc "Command-line tool for the Amazon S3 service"
   homepage "https://s3tools.org/s3cmd"
-  url "https://files.pythonhosted.org/packages/3a/f5/c70bfb80817c9d81b472e077e390d8c97abe130c9e86b61307a1d275532c/s3cmd-2.0.2.tar.gz"
-  sha256 "6d7a3a49a12048a6c8e5fbb5ef42a83101e2fc69f16013d292b7f37ecfc574a0"
-  revision 3
+  url "https://files.pythonhosted.org/packages/c7/eb/5143fe1884af2303cb7b23f453e5c9f337af46c2281581fc40ab5322dee4/s3cmd-2.1.0.tar.gz"
+  sha256 "966b0a494a916fc3b4324de38f089c86c70ee90e8e1cae6d59102103a4c0cc03"
+  license "GPL-2.0-or-later"
+  revision 2
   head "https://github.com/s3tools/s3cmd.git"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f0627257d8f5f897d8e256646ec08ab3a5275b8eb0f477f3227a95d5fed9ba8c" => :catalina
-    sha256 "b64f9fa8cb6ba4c2eb5183f6bf40735dbee52d673d198cdf1fdcedf4d29ed1b3" => :mojave
-    sha256 "570fd3c229506b4afaf8f9a78e9566537d649ed53f99a3a732bd35eb637f85ac" => :high_sierra
+    sha256 "e664b592e99416b945694ac030208b0ff12c41d9cfd7905dea7f9a5bc46d577d" => :big_sur
+    sha256 "e2625bb936c5d4b7965544f722e94acef3565a4844735eedd036b70b3d11ad80" => :arm64_big_sur
+    sha256 "140b574c93db1f67b40b7cf22e8468bbcb066ecbbfffb8cf649b31d268a82775" => :catalina
+    sha256 "c76760a661e4c9438bd2d0b7016430a99a934ac8e6705727b55bc868a466031d" => :mojave
+    sha256 "6c2188352b0662521ee7dac484183e0e0a65a1f802e282dad4d5287fa3c955e6" => :high_sierra
   end
 
+  # s3cmd version 2.1.0 is not compatible with Python 3.9, know issues are:
+  # - https://github.com/s3tools/s3cmd/issues/1146
+  # - https://github.com/s3tools/s3cmd/pull/1144
+  # - https://github.com/s3tools/s3cmd/pull/1137
+  # Do not bump Python version until these issues are fixed, probably when version 2.2.0 is released.
   depends_on "python@3.8"
 
   resource "python-dateutil" do

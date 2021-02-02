@@ -5,7 +5,13 @@ class Gdmap < Formula
   sha256 "a200c98004b349443f853bf611e49941403fce46f2335850913f85c710a2285b"
   revision 2
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
+    sha256 "a362457b2b3e0cba8a2b88555e794a2cd9a5c0b17591c632f3cc27e3e85777c8" => :big_sur
+    sha256 "5a8b13614d00034566780fe17bfdffa2e3e9c08a10953de82b7f1e162f6846cb" => :arm64_big_sur
     sha256 "d465a02727acca541229325a9d3ffa79e1ef9693512da5b1d3a3b37437fbe00d" => :catalina
     sha256 "9c178f409b81ce7808efe356bf09d82804265de11d4527dcc1dea20948a76b16" => :mojave
     sha256 "1f82d4cf21c4166fd579e132e3ecf7302179cba2d6b19bf33ef18618f5354416" => :high_sierra

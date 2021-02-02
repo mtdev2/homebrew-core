@@ -1,8 +1,14 @@
 class WildflyAs < Formula
   desc "Managed application runtime for building applications"
   homepage "https://wildfly.org/"
-  url "https://download.jboss.org/wildfly/19.0.0.Final/wildfly-19.0.0.Final.tar.gz"
-  sha256 "00e011f88c36b30dcf61ed1c54eb6f5d64f6bed9039e3774684fa152328e6535"
+  url "https://download.jboss.org/wildfly/22.0.0.Final/wildfly-22.0.0.Final.tar.gz"
+  sha256 "af5381b54d426ee12c52d90468cf0e4d0ee0ac1d1734ff63a6d2b375953600f9"
+  license "LGPL-2.1-or-later"
+
+  livecheck do
+    url "https://wildfly.org/downloads/"
+    regex(/href=.*?wildfly[._-]v?(\d+(?:\.\d+)+)\.Final\.t/i)
+  end
 
   bottle :unneeded
 
@@ -28,7 +34,7 @@ class WildflyAs < Formula
     EOS
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/wildfly-as/libexec/bin/standalone.sh --server-config=standalone.xml"
+  plist_options manual: "#{HOMEBREW_PREFIX}/opt/wildfly-as/libexec/bin/standalone.sh --server-config=standalone.xml"
 
   def plist
     <<~EOS
@@ -66,9 +72,7 @@ class WildflyAs < Formula
     ENV["JBOSS_HOME"] = opt_libexec
     system "#{opt_libexec}/bin/standalone.sh --version | grep #{version}"
 
-    server = TCPServer.new(0)
-    port = server.addr[1]
-    server.close
+    port = free_port
 
     pidfile = testpath/"pidfile"
     ENV["LAUNCH_JBOSS_IN_BACKGROUND"] = "true"

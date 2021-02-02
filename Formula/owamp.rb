@@ -3,10 +3,19 @@ class Owamp < Formula
   homepage "https://www.internet2.edu/products-services/performance-analytics/performance-tools/"
   url "https://software.internet2.edu/sources/owamp/owamp-3.4-10.tar.gz"
   sha256 "059f0ab99b2b3d4addde91a68e6e3641c85ce3ae43b85fe9435841d950ee2fb3"
+  license "Apache-2.0"
+
+  livecheck do
+    # HTTP allows directory listing while HTTPS returns 403
+    url "http://software.internet2.edu/sources/owamp/"
+    regex(/href=.*?owamp[._-]v?(\d+(?:\.\d+)+(?:-\d+)?)\.t/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
     rebuild 1
+    sha256 "d9599177f43e538b1fea107a4395cbd466ee5991e8c1d7e8d510baf32878a32a" => :big_sur
+    sha256 "e3c656cab3adb4646e47897e27351fb92b97b9a7cd0810887567b5d1bb9a125a" => :arm64_big_sur
     sha256 "a7bce114bb407f1663671ee68793b7751d512e0451cf9bbf35c1f36ad9b4c3f9" => :catalina
     sha256 "22833b09d6faa093c2d186560cd22e328b9ab11efa8f9774543392e7dca127f2" => :mojave
     sha256 "0ce1d8385c1cb2036acbccbcd92ed5778c8ec0aa8e4db5c06a9ea018621f58dc" => :high_sierra

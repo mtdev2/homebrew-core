@@ -1,16 +1,16 @@
 class Traefik < Formula
   desc "Modern reverse proxy"
   homepage "https://traefik.io/"
-  url "https://github.com/containous/traefik/releases/download/v2.2.0/traefik-v2.2.0.src.tar.gz"
-  version "2.2.0"
-  sha256 "f5f52b25291bef455b3df710e319ded54b8b5138b1c34293d2303749f7b02a6f"
-  head "https://github.com/containous/traefik.git"
+  url "https://github.com/traefik/traefik/releases/download/v2.4.1/traefik-v2.4.1.src.tar.gz"
+  sha256 "b157fc609551b1fafe14a3e049737838d9d7c9283c4f10eb95075814d19d0300"
+  license "MIT"
+  head "https://github.com/traefik/traefik.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "fa6c7a0faa0a538b68428eb3fe06cfa45f42ab9b4bb67b70536875f503cf4c38" => :catalina
-    sha256 "5d2c7142079dbbe195fde08907c817391460caf4fe99aaed95ba60c2dc8f777f" => :mojave
-    sha256 "ddbb4fdcce9c626bd9ce3d3ecf27a0703e2863aa28f0f645411bec9444ac27c4" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur: "0cb77e0f47e3f36186bde18f4e2790818d0c64c38d0067e869d17f3b5cf42784"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1448ee34c83dfdc9d1ce1ae3f6434de0165797624e4cdad82b7ab754cb15c370"
+    sha256 cellar: :any_skip_relocation, catalina: "119ac28e3bddde355e1a546c349ddb72816c1fad378d30c9ca8d73b5cf60014c"
+    sha256 cellar: :any_skip_relocation, mojave: "957be222473a016837f44022f963f8f26f33384d94b176629d312a44f5d8ae8a"
   end
 
   depends_on "go" => :build
@@ -19,12 +19,11 @@ class Traefik < Formula
   def install
     system "go", "generate"
     system "go", "build",
-      "-ldflags", "-s -w -X github.com/containous/traefik/v2/pkg/version.Version=#{version}",
+      "-ldflags", "-s -w -X github.com/traefik/traefik/v#{version.major}/pkg/version.Version=#{version}",
       "-trimpath", "-o", bin/"traefik", "./cmd/traefik"
-    prefix.install_metafiles
   end
 
-  plist_options :manual => "traefik"
+  plist_options manual: "traefik"
 
   def plist
     <<~EOS
@@ -58,14 +57,8 @@ class Traefik < Formula
   end
 
   test do
-    require "socket"
-
-    ui_server = TCPServer.new(0)
-    http_server = TCPServer.new(0)
-    ui_port = ui_server.addr[1]
-    http_port = http_server.addr[1]
-    ui_server.close
-    http_server.close
+    ui_port = free_port
+    http_port = free_port
 
     (testpath/"traefik.toml").write <<~EOS
       [entryPoints]

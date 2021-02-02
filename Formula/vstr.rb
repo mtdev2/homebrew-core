@@ -3,9 +3,11 @@ class Vstr < Formula
   homepage "http://www.and.org/vstr/"
   url "http://www.and.org/vstr/1.0.15/vstr-1.0.15.tar.bz2"
   sha256 "d33bcdd48504ddd21c0d53e4c2ac187ff6f0190d04305e5fe32f685cee6db640"
+  license "LGPL-2.1"
 
   bottle do
     cellar :any
+    sha256 "cc1c69c834bde35ed9e0df8178e8e65d9ba5703fbf2cf896290aed6a7433c4b3" => :big_sur
     sha256 "adbf13e88473af357032472ac09af1230667c5010089089a3c223819ef74c7f6" => :catalina
     sha256 "8927c49aa4daba57ffab9a9ea332504346467cf22c137af3e1a16b859318a0f5" => :mojave
     sha256 "af6d9cc097c4eb9c1719496b2e29593763b5b17b279ef4c234d681cfe4174b37" => :high_sierra

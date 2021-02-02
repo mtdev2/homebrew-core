@@ -1,14 +1,22 @@
 class Libtrace < Formula
   desc "Library for trace processing supporting multiple inputs"
   homepage "https://research.wand.net.nz/software/libtrace.php"
-  url "https://research.wand.net.nz/software/libtrace/libtrace-4.0.11.tar.bz2"
-  sha256 "75a2a8bc1c3cb32a6a5e1ef41d5e3740505880d94cc97df94cf33f7a8f65750e"
+  url "https://research.wand.net.nz/software/libtrace/libtrace-4.0.15.tar.bz2"
+  sha256 "1f0352200171fa4adcef0a2df22714186e2585ebc7e6f7ca5fdc90e1af2e18c8"
+  license "GPL-3.0-or-later"
+
+  livecheck do
+    url :homepage
+    regex(/href=.*?libtrace[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
     cellar :any
-    sha256 "e79359353b5aa4c7177bb015be328a7d9d25e17729de6103a1dafec79d8edb28" => :catalina
-    sha256 "c82d9d3ef55ac52c4b7ac2640c758ad8997e77869de5558d68384a456f4ab74f" => :mojave
-    sha256 "764cf9c54d186d1dca1b5d5e27bdaaca48764bce7f8abe32b77f2f3274acd827" => :high_sierra
+    sha256 "7f0ac81acc44dc40358023b349d3d7fc6a9b973270a250561d6f7d797d6d14f5" => :big_sur
+    sha256 "32c9993b534ff20808cac15d19c009fc3af56d6bb8828babf43e9d4b64bc61e0" => :arm64_big_sur
+    sha256 "3bb611b3ca108fa85d4945111e2da2843be58b96090b6d54ffc3143db0353992" => :catalina
+    sha256 "1657d836b2cf3c5571b7b8606d448f977307b7b922f0abe58598d5b867633459" => :mojave
+    sha256 "7332a34eae708cfa8b297a71affc48e88044258bf11602a17824745c452da435" => :high_sierra
   end
 
   depends_on "openssl@1.1"

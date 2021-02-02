@@ -3,12 +3,19 @@ class Libgit2Glib < Formula
   homepage "https://github.com/GNOME/libgit2-glib"
   url "https://download.gnome.org/sources/libgit2-glib/0.99/libgit2-glib-0.99.0.1.tar.xz"
   sha256 "e05a75c444d9c8d5991afc4a5a64cd97d731ce21aeb7c1c651ade1a3b465b9de"
+  license "LGPL-2.1"
+  revision 2
   head "https://github.com/GNOME/libgit2-glib.git"
 
+  livecheck do
+    url :stable
+    regex(/libgit2-glib[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
-    sha256 "5c25dc11f5ece68ba259cc2a7833a06448e9a760af2da879878da4331b7445d5" => :catalina
-    sha256 "ae7bdeaf32d9b2ad8750f334322c0259787d4e5a67bf1f408613320dac9e882f" => :mojave
-    sha256 "d814e394b79a6a34e8d36d9445d5ba3d28be87bbef079f09b2a5e45c798e5f33" => :high_sierra
+    sha256 "bffdfd6183ae4bdb486f40f9a449ab0582387b40be36c356ce6f83642011bec7" => :big_sur
+    sha256 "335de71224cede561e05645cde3709acf3763e168d2da11b13586d3c3605d67e" => :catalina
+    sha256 "308f244da46a0a70ab9e1fb9cf2eae8dd24e26c363b344f5872f5ee65ef9043a" => :mojave
   end
 
   depends_on "gobject-introspection" => :build
@@ -22,7 +29,7 @@ class Libgit2Glib < Formula
 
   def install
     mkdir "build" do
-      system "meson", "--prefix=#{prefix}",
+      system "meson", *std_meson_args,
                       "-Dpython=false",
                       "-Dvapi=true",
                       ".."

@@ -1,18 +1,21 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/v0.4.3.tar.gz"
-  sha256 "91a0b5d32204a821bf414690e6b48cf69224d1961d37158c2b383f6a6cf854d2"
+  url "https://github.com/neovim/neovim/archive/v0.4.4.tar.gz"
+  sha256 "2f76aac59363677f37592e853ab2c06151cca8830d4b3fe4675b4a52d41fc42c"
+  license "Apache-2.0"
 
   bottle do
-    sha256 "389ab254794ea04df8a106bf281c227c4fdee27c609d52951f32b9a0239031d6" => :catalina
-    sha256 "fb6cc38c45be4650a4a750a314cec27f6f7643dc7c22a1f5abae347e1b39b388" => :mojave
-    sha256 "b2f7450e005f4eb22bfaf650fe7741fa8629393a947b4dd48c9f91e7fc258113" => :high_sierra
+    rebuild 1
+    sha256 "83957460b7c664b65f7339c6e37a6b468274ca747ba8f8746616c4cebf97caa9" => :big_sur
+    sha256 "736260e14d50d9a42562fb0fe2215d5154a9cef3e3227469a961d030b45358fd" => :catalina
+    sha256 "9f8a7cb52a0060c524d4d4f96b2590d034257cc4f255a8f05dfbf464bef29cf1" => :mojave
+    sha256 "7286d497b92cf31f5839af325a1fc7760fb3006fa4a0dad7e547ab9c966cb491" => :high_sierra
   end
 
   head do
     url "https://github.com/neovim/neovim.git"
-    depends_on "utf8proc"
+    depends_on "tree-sitter"
   end
 
   depends_on "cmake" => :build
@@ -26,9 +29,19 @@ class Neovim < Formula
   depends_on "msgpack"
   depends_on "unibilium"
 
+  uses_from_macos "gperf" => :build
+  uses_from_macos "unzip" => :build
+
+  on_linux do
+    depends_on "libnsl"
+  end
+
+  # Keep resources updated according to:
+  # https://github.com/neovim/neovim/blob/v#{version}/third-party/CMakeLists.txt
+
   resource "mpack" do
-    url "https://github.com/libmpack/libmpack-lua/releases/download/1.0.7/libmpack-lua-1.0.7.tar.gz"
-    sha256 "68565484a3441d316bd51bed1cacd542b7f84b1ecfd37a8bd18dd0f1a20887e8"
+    url "https://github.com/libmpack/libmpack-lua/releases/download/1.0.8/libmpack-lua-1.0.8.tar.gz"
+    sha256 "ed6b1b4bbdb56f26241397c1e168a6b1672f284989303b150f7ea8d39d1bc9e9"
   end
 
   resource "lpeg" do
@@ -60,15 +73,21 @@ class Neovim < Formula
     ENV.prepend_path "LUA_CPATH", "#{buildpath}/deps-build/lib/lua/5.1/?.so"
     lua_path = "--lua-dir=#{Formula["luajit"].opt_prefix}"
 
+    cmake_compiler_args = []
+    on_macos do
+      cmake_compiler_args << "-DCMAKE_C_COMPILER=/usr/bin/clang"
+      cmake_compiler_args << "-DCMAKE_CXX_COMPILER=/usr/bin/clang++"
+    end
+
     cd "deps-build" do
       %w[
-        mpack/mpack-1.0.7-0.rockspec
+        mpack/mpack-1.0.8-0.rockspec
         lpeg/lpeg-1.0.2-1.src.rock
         inspect/inspect-3.1.1-0.src.rock
       ].each do |rock|
         dir, rock = rock.split("/")
         cd "build/src/#{dir}" do
-          output = Utils.popen_read("luarocks", "unpack", lua_path, rock, "--tree=#{buildpath}/deps-build")
+          output = Utils.safe_popen_read("luarocks", "unpack", lua_path, rock, "--tree=#{buildpath}/deps-build")
           unpack_dir = output.split("\n")[-2]
           cd unpack_dir do
             system "luarocks", "make", lua_path, "--tree=#{buildpath}/deps-build"
@@ -78,6 +97,7 @@ class Neovim < Formula
 
       cd "build/src/luv" do
         cmake_args = std_cmake_args.reject { |s| s["CMAKE_INSTALL_PREFIX"] }
+        cmake_args += cmake_compiler_args
         cmake_args += %W[
           -DCMAKE_INSTALL_PREFIX=#{buildpath}/deps-build
           -DLUA_BUILD_TYPE=System
@@ -93,6 +113,7 @@ class Neovim < Formula
 
     mkdir "build" do
       cmake_args = std_cmake_args
+      cmake_args += cmake_compiler_args
       cmake_args += %W[
         -DLIBLUV_INCLUDE_DIR=#{buildpath}/deps-build/include
         -DLIBLUV_LIBRARY=#{buildpath}/deps-build/lib/libluv.a

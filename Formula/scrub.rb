@@ -4,10 +4,13 @@ class Scrub < Formula
   url "https://github.com/chaos/scrub/releases/download/2.6.1/scrub-2.6.1.tar.gz"
   mirror "https://deb.debian.org/debian/pool/main/s/scrub/scrub_2.6.1.orig.tar.gz"
   sha256 "43d98d3795bc2de7920efe81ef2c5de4e9ed1f903c35c939a7d65adc416d6cb8"
+  license "GPL-2.0"
 
   bottle do
     cellar :any_skip_relocation
     rebuild 1
+    sha256 "ebb6d9f6cab14e6a4d7cab7336aa033c7e02b8ec50b4c0af6f8734ce92766e58" => :big_sur
+    sha256 "5ae1b98ef6a66707490f04eb3d5a14c7536b9509c90213fb3bb397a993ca79cc" => :arm64_big_sur
     sha256 "01146146976c9be7bf2b74b018e7b98a158407f7318ffe604bee4603270e6f4f" => :catalina
     sha256 "9343d2cc328739d3315f319eeb6704cbd8e98e8105065ff194fcb51456114c4e" => :mojave
     sha256 "c9e96dce0a6f2d7c3b32d481aae3a3aa2c0f42cd3c53b10e2fd60c6479ebf128" => :high_sierra

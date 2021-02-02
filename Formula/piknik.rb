@@ -3,11 +3,13 @@ class Piknik < Formula
   homepage "https://github.com/jedisct1/piknik"
   url "https://github.com/jedisct1/piknik/archive/0.9.1.tar.gz"
   sha256 "a682e16d937a5487eda5b0d0889ae114e228bd3c9beddd743cad40f1bad94448"
+  license "BSD-2-Clause"
   head "https://github.com/jedisct1/piknik.git"
 
   bottle do
     cellar :any_skip_relocation
     rebuild 1
+    sha256 "3b8097063683df3dafbe8f807abd626a348714e6a8a588be2bd4bc49ba83427c" => :big_sur
     sha256 "4c8bce52891ea6547f5644108b72300405c27e84e539fde0fa60c25e69db7a8e" => :catalina
     sha256 "eee56739c24346b50d4fb7afa1285c87fbea135f3acd5fa90d1c2b9a81f84284" => :mojave
     sha256 "1209dc34580813c42b1075174e9f78e049f43449845c63aa3f033e761ecf0bd0" => :high_sierra
@@ -40,7 +42,7 @@ class Piknik < Formula
     EOS
   end
 
-  plist_options :manual => "piknik -server"
+  plist_options manual: "piknik -server"
 
   def plist
     <<~EOS

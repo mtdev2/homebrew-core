@@ -1,15 +1,27 @@
 class Proftpd < Formula
   desc "Highly configurable GPL-licensed FTP server software"
   homepage "http://www.proftpd.org/"
-  url "ftp://ftp.proftpd.org/distrib/source/proftpd-1.3.6c.tar.gz"
-  mirror "https://fossies.org/linux/misc/proftpd-1.3.6c.tar.gz"
-  mirror "https://ftp.osuosl.org/pub/blfs/conglomeration/proftpd/proftpd-1.3.6c.tar.gz"
-  sha256 "fa3541c4b34136a7b80cb12a2f6f9a0cab5118a5b0a1653d40af49c6479c35ad"
+  url "https://github.com/proftpd/proftpd/archive/v1.3.7a.tar.gz"
+  mirror "https://fossies.org/linux/misc/proftpd-1.3.7a.tar.gz"
+  mirror "https://ftp.osuosl.org/pub/blfs/conglomeration/proftpd/proftpd-1.3.7a.tar.gz"
+  sha256 "8b7bbf9757988935352d9dec5ebf96b6a1e6b63a6cdac2e93202ac6c42c4cd96"
+  license "GPL-2.0"
+
+  # Proftpd uses an incrementing letter after the numeric version for
+  # maintenance releases. Versions like `1.2.3a` and `1.2.3b` are not alpha and
+  # beta respectively. Prerelease versions use a format like `1.2.3rc1`.
+  livecheck do
+    url :stable
+    strategy :github_latest
+    regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+[a-z]?)["' >]}i)
+  end
 
   bottle do
-    sha256 "096d6a619238c4077e541a3cd9e2b9f68aaf1d89ce5c6fa5432d31a25f66115f" => :catalina
-    sha256 "4ca5576cb0fa5a34b9497c0f0717014729f06214a41389db42e45264703a7182" => :mojave
-    sha256 "eb14442fb150bcae6314a12df485a705277f8c6cc5ea679347dedea3d065bedf" => :high_sierra
+    sha256 "a8ec8266a93ac34dde37fd36889e0d956e39fc6aca8efd57a0adef0f40db813e" => :big_sur
+    sha256 "2913d2fbadf8d1c65d1512b78480adf7398afaf8099f876e69cc6da54169aab8" => :arm64_big_sur
+    sha256 "b30ef0c9ea4f2642cb98e863c51ef8b337605ca5d9a3df8d2d9995ac00c6e9be" => :catalina
+    sha256 "2f529091ef2c1e07ca1db9ec0a974f639530cca275e2f3ebbd910b42a3cb5f12" => :mojave
+    sha256 "af399e07592ed468d356963c8a2b27318476dd422499ba0148d1579e4d80cd69" => :high_sierra
   end
 
   def install
@@ -26,7 +38,7 @@ class Proftpd < Formula
     system "make", "INSTALL_USER=#{install_user}", "INSTALL_GROUP=#{install_group}", "install"
   end
 
-  plist_options :manual => "proftpd"
+  plist_options manual: "proftpd"
 
   def plist
     <<~EOS

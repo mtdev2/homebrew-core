@@ -8,22 +8,32 @@ class Bind < Formula
   # "version_scheme" because someone upgraded to 9.15.0, and required a
   # downgrade.
 
-  url "https://downloads.isc.org/isc/bind9/9.16.1/bind-9.16.1.tar.xz"
-  sha256 "a913d7e78135b9123d233215b58102fa0f18130fb1e158465a1c2b6f3bd75e91"
+  url "https://downloads.isc.org/isc/bind9/9.16.11/bind-9.16.11.tar.xz"
+  sha256 "0111f64dd7d8f515cfa129e181cce96ff82070d1b27f11a21f6856110d0699c1"
+  license "MPL-2.0"
   version_scheme 1
   head "https://gitlab.isc.org/isc-projects/bind9.git"
 
+  # BIND indicates stable releases with an even-numbered minor (e.g., x.2.x)
+  # and the regex below only matches these versions.
+  livecheck do
+    url "https://www.isc.org/downloads/"
+    regex(/href=.*?bind[._-]v?(\d+\.\d*[02468](?:\.\d+)*)\.t/i)
+  end
+
   bottle do
-    sha256 "0e6a63b7868105f659f4bc6642471e38e6b93635b129e92a9acc40bde6442e6b" => :catalina
-    sha256 "ed118b5f61519dab1f66da208121c6125f2e557652dd752800ef63fd3c9967f2" => :mojave
-    sha256 "8cff3d6ff5a9b5814ab056e697e49bbc31b6f850c0b33bcf20b9334cc5372350" => :high_sierra
+    sha256 "3d8446c1e6ed36ce2865befd33976f82a4afbef7ab78618a22e05acf8a75ec93" => :big_sur
+    sha256 "6c4b3a416ce53c1b458d39072c90ef8d2aa779faefbc1301dba8899d442b2037" => :arm64_big_sur
+    sha256 "2761e4f6c37938561718b170b556b0c3fb275cbdc7a9609efe192ff8eb81809f" => :catalina
+    sha256 "8dc492d9884999ea04a43c784d160b7afc71a3bd5071fa75370c8cab59265f5a" => :mojave
   end
 
   depends_on "pkg-config" => :build
   depends_on "json-c"
+  depends_on "libidn2"
   depends_on "libuv"
   depends_on "openssl@1.1"
-  depends_on "python"
+  depends_on "python@3.9"
 
   resource "ply" do
     url "https://files.pythonhosted.org/packages/e5/69/882ee5c9d017149285cab114ebeab373308ef0f874fcdac9beb90e0ac4da/ply-3.11.tar.gz"
@@ -31,24 +41,32 @@ class Bind < Formula
   end
 
   def install
-    xy = Language::Python.major_minor_version "python3"
+    xy = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
     vendor_site_packages = libexec/"vendor/lib/python#{xy}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", vendor_site_packages
     resources.each do |r|
       r.stage do
-        system "python3", *Language::Python.setup_install_args(libexec/"vendor")
+        system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
 
     # Fix "configure: error: xml2-config returns badness"
-    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :sierra || MacOS.version == :el_capitan
+    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version <= :sierra
 
-    system "./configure", "--prefix=#{prefix}",
-                          "--with-json-c",
-                          "--with-openssl=#{Formula["openssl@1.1"].opt_prefix}",
-                          "--with-python-install-dir=#{vendor_site_packages}",
-                          "--with-python=#{Formula["python"].opt_bin}/python3",
-                          "--without-lmdb"
+    args = [
+      "--prefix=#{prefix}",
+      "--with-json-c",
+      "--with-openssl=#{Formula["openssl@1.1"].opt_prefix}",
+      "--with-libjson=#{Formula["json-c"].opt_prefix}",
+      "--with-python-install-dir=#{vendor_site_packages}",
+      "--with-python=#{Formula["python@3.9"].opt_bin}/python3",
+      "--without-lmdb",
+      "--with-libidn2=#{Formula["libidn2"].opt_prefix}",
+    ]
+    on_linux do
+      args << "--disable-linux-caps"
+    end
+    system "./configure", *args
 
     system "make"
     system "make", "install"
@@ -162,7 +180,7 @@ class Bind < Formula
     EOS
   end
 
-  plist_options :startup => true
+  plist_options startup: true
 
   def plist
     <<~EOS
@@ -193,5 +211,6 @@ class Bind < Formula
   test do
     system bin/"dig", "-v"
     system bin/"dig", "brew.sh"
+    system bin/"dig", "ü.cl"
   end
 end

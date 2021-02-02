@@ -1,11 +1,18 @@
 class Lxsplit < Formula
   desc "Tool for splitting or joining files"
   homepage "https://lxsplit.sourceforge.io/"
-  url "https://downloads.sourceforge.net/lxsplit/lxsplit-0.2.4.tar.gz"
+  url "https://downloads.sourceforge.net/project/lxsplit/lxsplit/0.2.4/lxsplit-0.2.4.tar.gz"
   sha256 "858fa939803b2eba97ccc5ec57011c4f4b613ff299abbdc51e2f921016845056"
+  license "GPL-2.0"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "6fc68ea7f529c0d6d5a5efb98f9644c93cfb6472798e1686a4384be56381bfcd" => :big_sur
+    sha256 "7a37c06c81b1160f5fee4c742537310afe07cccac1251384739f4340189ec4a2" => :arm64_big_sur
     sha256 "8f2c02d85a1aec1e2ec692564896c668cb6d7c4cd28b0d3b1f08da1be7070b07" => :catalina
     sha256 "ffc9b9b7e9669e1cff8a46b3930d052ffa149179897134439b1228d8ee178777" => :mojave
     sha256 "da1b73f5843b77ce947ce546fb77a47f2c1b989efbf70fdd61b9d05f81a386b5" => :high_sierra

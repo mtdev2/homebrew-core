@@ -2,15 +2,22 @@ class Kapacitor < Formula
   desc "Open source time series data processor"
   homepage "https://github.com/influxdata/kapacitor"
   url "https://github.com/influxdata/kapacitor.git",
-      :tag      => "v1.5.4",
-      :revision => "1f648f85772efe222a3853fe1a0d9ef88854a8c1"
+      tag:      "v1.5.8",
+      revision: "873d93b7377bf1c7bfbcd508e4ea6a6213997aff"
+  license "MIT"
   head "https://github.com/influxdata/kapacitor.git"
+
+  livecheck do
+    url :head
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "8af6b08a8e349ae4713e81f08a68a798138721c6e90928aad2820d1ad36e8f77" => :catalina
-    sha256 "6e9bbd9b233325ed8dbfdaeba2f447ab47b79ab27f9102c77b39ad7ad0897070" => :mojave
-    sha256 "422565754a61ecfa4386d4f2ede3168a39a3baf68eaabd3ae1547a35d30c04e2" => :high_sierra
+    sha256 "a1381a3e165a2aeaac47206ab1de2898de021b1e6508253fdc04d57afe599d6a" => :big_sur
+    sha256 "53a4ffb90955abd638c370b605249e59cebf063a9bab2a91f8cd78f5ae81542c" => :arm64_big_sur
+    sha256 "6e5902e6a5524d6062185bc20eaedaccf68d48ff9a12e374fce7d7666e0b8ad7" => :catalina
+    sha256 "786f624493214d9b7135f4e01753cab017eb5db0f24a0629319f6c85101755f0" => :mojave
   end
 
   depends_on "go" => :build
@@ -19,12 +26,10 @@ class Kapacitor < Formula
     ENV["GOPATH"] = buildpath
     kapacitor_path = buildpath/"src/github.com/influxdata/kapacitor"
     kapacitor_path.install Dir["*"]
-    revision = Utils.popen_read("git rev-parse HEAD").strip
-    version = Utils.popen_read("git describe --tags").strip
 
     cd kapacitor_path do
       system "go", "install",
-             "-ldflags", "-X main.version=#{version} -X main.commit=#{revision}",
+             "-ldflags", "-X main.version=#{version} -X main.commit=#{Utils.git_head}",
              "./cmd/..."
     end
 
@@ -41,7 +46,7 @@ class Kapacitor < Formula
     (var/"kapacitor/tasks").mkpath
   end
 
-  plist_options :manual => "kapacitord -config #{HOMEBREW_PREFIX}/etc/kapacitor.conf"
+  plist_options manual: "kapacitord -config #{HOMEBREW_PREFIX}/etc/kapacitor.conf"
 
   def plist
     <<~EOS

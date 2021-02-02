@@ -1,25 +1,30 @@
 class Shfmt < Formula
   desc "Autoformat shell script source code"
   homepage "https://github.com/mvdan/sh"
-  url "https://github.com/mvdan/sh/archive/v3.0.2.tar.gz"
-  sha256 "4ce55f902c6c405f740357a1ccf095b605d14eb5b56d882c74bced4d6410d4ae"
+  url "https://github.com/mvdan/sh/archive/v3.2.2.tar.gz"
+  sha256 "e990aed5bb167f5cfc6790243ec3cc5e18508a64e8c9609ed5015634ba053b16"
+  license "BSD-3-Clause"
   head "https://github.com/mvdan/sh.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "8f5428c697aaa1c8f6c9ef1962a12b516746aea50718e7e59bb8cf8c5b3f6f0c" => :catalina
-    sha256 "833bc26b402baccb14b51ab208aa13edb4838d59ef3f490fe6b11e3e9ea42253" => :mojave
-    sha256 "813f4f3b102bbedc95eef92c952b663be6c572edfb5248da453cba5f33e66aba" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur: "ac89ac489e6613322caae173fd5d422032a7c967ce575a89a0a719bd4161aafb"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "b4371ba5acedef0249229c4355aaad90b9fd2ce78c1664deb323edf5d3a30c22"
+    sha256 cellar: :any_skip_relocation, catalina: "2a19f4a4e8c89a64071ef90248848199bd04b253c95c1d7f365e627068f69acc"
+    sha256 cellar: :any_skip_relocation, mojave: "8ba9f2635036f292ce79b2735421f822dbbbff454d2dd1274f29d48133951a97"
   end
 
   depends_on "go" => :build
+  depends_on "scdoc" => :build
 
   def install
     ENV["CGO_ENABLED"] = "0"
     (buildpath/"src/mvdan.cc").mkpath
     ln_sf buildpath, buildpath/"src/mvdan.cc/sh"
-    system "go", "build", "-a", "-tags", "production brew", "-ldflags", "-w -s -extldflags '-static'",
+    system "go", "build", "-a", "-tags", "production brew", "-ldflags",
+                          "-w -s -extldflags '-static' -X main.version=#{version}",
                           "-o", "#{bin}/shfmt", "./cmd/shfmt"
+    man1.mkpath
+    system "scdoc < ./cmd/shfmt/shfmt.1.scd > #{man1}/shfmt.1"
   end
 
   test do

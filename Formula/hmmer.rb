@@ -1,14 +1,20 @@
 class Hmmer < Formula
   desc "Build profile HMMs and scan against sequence databases"
   homepage "http://hmmer.org/"
-  url "http://eddylab.org/software/hmmer/hmmer-3.3.tar.gz"
-  sha256 "0186bf40af67032666014971ed8ddc3cf2834bebc2be5b3bc0304a93e763736c"
+  url "http://eddylab.org/software/hmmer/hmmer-3.3.2.tar.gz"
+  sha256 "92fee9b5efe37a5276352d3502775e7c46e9f7a0ee45a331eacb2a0cac713c69"
+  license "BSD-3-Clause"
+
+  livecheck do
+    url "http://eddylab.org/software/hmmer/"
+    regex(/href=.*?hmmer[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6cafc97dbddaa66d9e353f161ce402786d887aea8a88f52be3323ffc4cf5733b" => :catalina
-    sha256 "544c93b2fc808d5176ac562689afb59785f24ef29f3198b8ca24adf2c5fab422" => :mojave
-    sha256 "aac6c2a8264ae6192bff7dd02c57cfe5000e830a0991c9e5be8c0fc27b0daded" => :high_sierra
+    sha256 "af45073d7f7d1ce1231c03381c5e50af9de1d6773762a65200a6067b84590c9d" => :big_sur
+    sha256 "6bd9bbe8efab7ec335de773b059922574ec2a89d755afd09dc475f6b251fb886" => :catalina
+    sha256 "f170a16fcc45126a552ae1b0fdd3cbb25e73f77a53f10011e5c304afa69694fa" => :mojave
   end
 
   def install

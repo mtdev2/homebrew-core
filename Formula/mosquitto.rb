@@ -1,14 +1,22 @@
 class Mosquitto < Formula
   desc "Message broker implementing the MQTT protocol"
   homepage "https://mosquitto.org/"
-  url "https://mosquitto.org/files/source/mosquitto-1.6.9.tar.gz"
-  sha256 "412979b2db0a0020bd02fa64f0a0de9e7000b84462586e32b67f29bb1f6c1685"
+  url "https://mosquitto.org/files/source/mosquitto-2.0.6.tar.gz"
+  sha256 "0b69a105bafd8524d11f0731fcdb2fbe1c94ad3ddd8f40ccfd97067c59ddd176"
+  # dual-licensed under EPL-1.0 and EDL-1.0 (Eclipse Distribution License v1.0),
+  # EDL-1.0 is not in the SPDX list
+  license "EPL-1.0"
+
+  livecheck do
+    url "https://mosquitto.org/download/"
+    regex(/href=.*?mosquitto[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
-    cellar :any
-    sha256 "fcbdbcbd2f8abdb5880c6468a0c840a3c058d0b743c1200cd70c17d3e84d1271" => :catalina
-    sha256 "2c18ef97e5ce7f83a2a7227ce9acf53381ec83ef5321ca78d6e58e377ef5d940" => :mojave
-    sha256 "a7c9b071b2961adb291a217b13d21d286defa28d067798865dd2fd3ba5973909" => :high_sierra
+    sha256 big_sur: "831e609cd108c9d0ea81f27d8e6a5a91178b8888f50ef3a2b6fb01881666ff06"
+    sha256 arm64_big_sur: "86057a159b7a6ef46114ddcac71807f4999897bb5053355aad195ba1cdd25185"
+    sha256 catalina: "fbf7d7ce902b7782bc6cf9da760fd14fb967d9e035b33ddab0d99752ae11b3bc"
+    sha256 mojave: "97b23c542cd56132ec708ebc7645e006ac62a3bc924df4a64377f31d4a062c45"
   end
 
   depends_on "cmake" => :build
@@ -16,9 +24,16 @@ class Mosquitto < Formula
   depends_on "libwebsockets"
   depends_on "openssl@1.1"
 
+  uses_from_macos "libxslt" => :build
+
+  on_linux do
+    depends_on "util-linux"
+  end
+
   def install
-    system "cmake", ".", *std_cmake_args, "-DWITH_WEBSOCKETS=ON",
-      "-DWITH_BUNDLED_DEPS=ON"
+    system "cmake", ".", *std_cmake_args,
+                    "-DWITH_WEBSOCKETS=ON",
+                    "-DCMAKE_INSTALL_RPATH=#{lib}"
     system "make", "install"
   end
 
@@ -34,7 +49,7 @@ class Mosquitto < Formula
     EOS
   end
 
-  plist_options :manual => "mosquitto -c #{HOMEBREW_PREFIX}/etc/mosquitto/mosquitto.conf"
+  plist_options manual: "mosquitto -c #{HOMEBREW_PREFIX}/etc/mosquitto/mosquitto.conf"
 
   def plist
     <<~EOS

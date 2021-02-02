@@ -2,20 +2,24 @@ class Etcd < Formula
   desc "Key value store for shared configuration and service discovery"
   homepage "https://github.com/etcd-io/etcd"
   url "https://github.com/etcd-io/etcd.git",
-    :tag      => "v3.4.7",
-    :revision => "e694b7bb087538c146e188a29753967d189d202b"
+      tag:      "v3.4.14",
+      revision: "8a03d2e9614b8192ebaa5a25ef92f6ff62e3593c"
+  license "Apache-2.0"
   head "https://github.com/etcd-io/etcd.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7d9dafd2ebe797210e2a747f0890fe10778fbf4f0eeca4a46757fcf753a59aff" => :catalina
-    sha256 "c22614e8106fd78ebe0ffb1019c1e2cf3eba9ac54b9ad8d208139b73bc2ba21f" => :mojave
-    sha256 "ce7ecb594df8bad1272a230ad5b7e9c07d17cf21afc5a25e94860519bdeea041" => :high_sierra
+    sha256 "29c692910e379b6af425ee6ed38e8d035514308f0862f11ed9a6f880fde75ed0" => :big_sur
+    sha256 "bfac22e324e0e5c59cb9cbb28addc53d0064b963d9ab7f017f6b5d0bd23e2e75" => :catalina
+    sha256 "f6ea66701e4bcdb70fb70b333802ef22f0ba570dfedd83871d75a6132f1fbefd" => :mojave
   end
 
   depends_on "go" => :build
 
   def install
+    # Fix vendored deps issue (remove this in the next release)
+    system "go", "mod", "vendor"
+
     system "go", "build", "-mod=vendor", "-ldflags", "-s -w -X main.version=#{version}", "-trimpath", "-o",
       bin/"etcd"
     system "go", "build", "-mod=vendor", "-ldflags", "-s -w -X main.version=#{version}", "-trimpath", "-o",
@@ -23,7 +27,7 @@ class Etcd < Formula
     prefix.install_metafiles
   end
 
-  plist_options :manual => "etcd"
+  plist_options manual: "etcd"
 
   def plist
     <<~EOS

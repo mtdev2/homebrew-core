@@ -2,26 +2,36 @@ class Cppad < Formula
   desc "Differentiation of C++ Algorithms"
   homepage "https://www.coin-or.org/CppAD"
   # Stable versions have numbers of the form 201x0000.y
-  url "https://github.com/coin-or/CppAD/archive/20200000.2.tar.gz"
-  sha256 "1f28951f2d4785aac6ede0138c86b70844560f1ee8f76e61adf82a4c41eb641a"
+  url "https://github.com/coin-or/CppAD/archive/20210000.3.tar.gz"
+  sha256 "35c9fc5de4d919fe9f56613f54ab605b6442c6936bf17671e44e67f184e980d2"
+  license "EPL-2.0"
   version_scheme 1
   head "https://github.com/coin-or/CppAD.git"
 
+  livecheck do
+    url :head
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
     cellar :any
-    sha256 "07c30f9cfcbdeca73b84949453f46d87f3af99e74fba95ab172646f9c0a3dcd0" => :catalina
-    sha256 "16005d0f936d82eee3764f62ec8fae8ca5bb2735f0fb0e9e479083d6b3b3036d" => :mojave
-    sha256 "8fd83b4c2dbbbf738b1b23edb0aa10552c9f0a23bdc42fdff54467d2bb101e80" => :high_sierra
+    sha256 "4abb02a14de2587593cd00ceb6bef953529969e87dddad3b331845330f560415" => :big_sur
+    sha256 "62c2c9be49532a807e1d9698548496c21903124b8c6b4dc408ff8db186bf9a91" => :arm64_big_sur
+    sha256 "de8b01a4ded52362908c9b4551c5170de57ccd75c7d85877eefb1002bf8ff140" => :catalina
+    sha256 "4e233fc020fbb8cef7372ba617d5591547738a793f4180559633cc59008756c1" => :mojave
   end
 
   depends_on "cmake" => :build
 
   def install
+    ENV.cxx11
+
     mkdir "build" do
       system "cmake", "..", *std_cmake_args,
                       "-Dcppad_prefix=#{prefix}"
       system "make", "install"
     end
+
     pkgshare.install "example"
   end
 
@@ -38,7 +48,7 @@ class Cppad < Formula
       }
     EOS
 
-    system ENV.cxx, "#{pkgshare}/example/general/acos.cpp", "-I#{include}",
+    system ENV.cxx, "#{pkgshare}/example/general/acos.cpp", "-std=c++11", "-I#{include}",
                     "test.cpp", "-o", "test"
     system "./test"
   end

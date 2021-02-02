@@ -3,9 +3,11 @@ class Libcds < Formula
   homepage "https://libcds.sourceforge.io/doc/cds-api/index.html"
   url "https://github.com/khizmax/libcds/archive/v2.3.3.tar.gz"
   sha256 "f090380ecd6b63a3c2b2f0bdb27260de2ccb22486ef7f47cc1175b70c6e4e388"
+  license "BSL-1.0"
 
   bottle do
     cellar :any
+    sha256 "8933bb8f315e15e385985ba2ddd4b1ebecbcce970fa434afb8648d1d95b34e5d" => :big_sur
     sha256 "d2ac7fe9c424707b1a2698fabed2a81645bb4f79f9fb943a279aee1cfc5d38d9" => :catalina
     sha256 "ed2baad62fe26da2891255221ee90a8d69f84214431dce923dd7c55aafa39668" => :mojave
     sha256 "9723b22f7a6e84ef208226241ed3b19dd02b4c9aed9c01284f55bd9b825e216e" => :high_sierra

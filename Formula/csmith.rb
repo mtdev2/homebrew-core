@@ -3,10 +3,13 @@ class Csmith < Formula
   homepage "https://embed.cs.utah.edu/csmith/"
   url "https://embed.cs.utah.edu/csmith/csmith-2.3.0.tar.gz"
   sha256 "f247cc0aede5f8a0746271b40a5092b5b5a2d034e5e8f7a836c879dde3fb65d5"
+  license "BSD-2-Clause"
   head "https://github.com/csmith-project/csmith.git"
 
   bottle do
     cellar :any
+    sha256 "1194af6247da39f02e322f002dacb9654fb1b614a77ecab2a384bb8715493d01" => :big_sur
+    sha256 "79b39e5332514e816d46c871b31a283e9d16adc4d39f2b5177c3569ce2508c4a" => :arm64_big_sur
     sha256 "fdce1186c77ea774ed5575cd59bc194ab35725d3117c9a57bd54ce351a620965" => :catalina
     sha256 "7c3759ccefa73b295acd5e7e631c40594f6983e26e903b54a88a9e0dfdfcaa96" => :mojave
     sha256 "e8e818a9898b4145c5622810958fa8616f8b57156f09aeaf3045873210f0856a" => :high_sierra

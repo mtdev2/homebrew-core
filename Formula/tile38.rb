@@ -2,14 +2,18 @@ class Tile38 < Formula
   desc "In-memory geolocation data store, spatial index, and realtime geofence"
   homepage "https://tile38.com/"
   url "https://github.com/tidwall/tile38.git",
-    :tag      => "1.19.5",
-    :revision => "0490734b74cdf96f52c9f9af4d6774a9ae0f627d"
+      tag:      "1.22.5",
+      revision: "6c653ab268df2ef36618ef7c2060f6744f220632"
+  license "MIT"
+  head "https://github.com/tidwall/tile38.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4eb930318448d4302ca69361d98b3913891cf8fc76977ff6bdb67dc6780c3251" => :catalina
-    sha256 "00d5789489dbe6c29f79ae91c7a51c51d8467c968d7db25eaf6056fbb30f3aa1" => :mojave
-    sha256 "ac4e401bad311a885609a71e59fa2965c9bc97d4e4735cec82277da8c0a940f1" => :high_sierra
+    rebuild 1
+    sha256 "727d94aab4640fda5cb99ecb707b51700593611709de97e885de4c2b3add8399" => :big_sur
+    sha256 "1dafc31c60acb2fbba10a2a083dfae90ca02fee4adaa55c1f07929902ca0b6de" => :arm64_big_sur
+    sha256 "e9b1e4e676eba3b71f4e7462c4c90a0b06750c3983624bc60a2c5b30ba552ebf" => :catalina
+    sha256 "65277f9a0667a46aafc4fd49224b089fab8fe335c807cd778df3ea4cb7b4685d" => :mojave
   end
 
   depends_on "go" => :build
@@ -19,12 +23,10 @@ class Tile38 < Formula
   end
 
   def install
-    commit = Utils.popen_read("git rev-parse --short HEAD").chomp
-
     ldflags = %W[
       -s -w
       -X github.com/tidwall/tile38/core.Version=#{version}
-      -X github.com/tidwall/tile38/core.GitSHA=#{commit}
+      -X github.com/tidwall/tile38/core.GitSHA=#{Utils.git_short_head}
     ]
 
     system "go", "build", "-o", bin/"tile38-server", "-ldflags", ldflags.join(" "), "./cmd/tile38-server"
@@ -42,7 +44,7 @@ class Tile38 < Formula
     EOS
   end
 
-  plist_options :manual => "tile38-server -d #{HOMEBREW_PREFIX}/var/tile38/data"
+  plist_options manual: "tile38-server -d #{HOMEBREW_PREFIX}/var/tile38/data"
 
   def plist
     <<~EOS

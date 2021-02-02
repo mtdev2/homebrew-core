@@ -1,18 +1,22 @@
 class Opam < Formula
-  desc "The OCaml package manager"
+  desc "OCaml package manager"
   homepage "https://opam.ocaml.org"
-  url "https://github.com/ocaml/opam/releases/download/2.0.6/opam-full-2.0.6.tar.gz"
-  sha256 "7c4bff5e5f3628ad00c53ee1b044ced8128ffdcfbb7582f8773fb433e12e07f4"
+  url "https://github.com/ocaml/opam/releases/download/2.0.7/opam-full-2.0.7.tar.gz"
+  sha256 "9c0dac1094ed624158fff13000cdfa8edbc96798d32b9fab40b0b5330f9490a2"
+  license "LGPL-2.1"
   head "https://github.com/ocaml/opam.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "54e18e947ab5a8d2af76cefeb3707be24ad54d4d475851b372aac766d5350d14" => :catalina
-    sha256 "6c2a6796eead34e1116bd37e0ade8a1ad34ceeef98e396cfc36f26d591a21de6" => :mojave
-    sha256 "941366068ed9c5743d09635128defeecfcf52b3663a1fbff04d2003ded76ae89" => :high_sierra
+    rebuild 1
+    sha256 "34baee7b82515f19b8b5163bb8dd410128519e67635c079e392fc35b4625deb9" => :big_sur
+    sha256 "2b1115dfcdfe71a806d07da60597a76f0e531c828e33e2c2c9901b0ef343c285" => :catalina
+    sha256 "39900786c86d1534586d261ced1876e9d0a90d119d41b37ba7eb2fbed948c033" => :mojave
+    sha256 "2d363ac12943a0505c55b9fe3249a5f12b37d666d6b811e374908ae2cbd22626" => :high_sierra
   end
 
   depends_on "ocaml" => [:build, :test]
+  depends_on "gpatch"
 
   uses_from_macos "unzip"
 
@@ -24,7 +28,7 @@ class Opam < Formula
     system "make"
     system "make", "install"
 
-    bash_completion.install "src/state/shellscripts/complete.sh"
+    bash_completion.install "src/state/shellscripts/complete.sh" => "opam"
     zsh_completion.install "src/state/shellscripts/complete.zsh" => "_opam"
   end
 

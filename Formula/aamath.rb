@@ -3,9 +3,17 @@ class Aamath < Formula
   homepage "http://fuse.superglue.se/aamath/"
   url "http://fuse.superglue.se/aamath/aamath-0.3.tar.gz"
   sha256 "9843f4588695e2cd55ce5d8f58921d4f255e0e65ed9569e1dcddf3f68f77b631"
+  license "GPL-2.0-only"
+
+  livecheck do
+    url :homepage
+    regex(/href=.*?aamath[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "588a5ccb517b6d41a4f323f7a376cd9a34e4d0d447baf15179c05fbbf2c0e588" => :big_sur
+    sha256 "eec6c9dd0ae3b32b3d2b22ac4cf926c6b3084a41623361762a4c0a297dc05286" => :arm64_big_sur
     sha256 "1ac1413ef0322b280ae5bd5663373ed959ee54d28dbdd3261fc4da6e57abf44c" => :catalina
     sha256 "79ef03b1d334136b693131b133944109545b07aca2dfd9165531016e4250444c" => :mojave
     sha256 "41223cb51bc006abfba33b6af77b665c28de4155d19e5f43d0561b885b73368f" => :high_sierra
@@ -17,7 +25,6 @@ class Aamath < Formula
 
   uses_from_macos "bison" => :build # for yacc
   uses_from_macos "flex" => :build
-  uses_from_macos "readline"
 
   # Fix build on clang; patch by Homebrew team
   # https://github.com/Homebrew/homebrew/issues/23872

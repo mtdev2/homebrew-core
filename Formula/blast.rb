@@ -1,23 +1,30 @@
 class Blast < Formula
   desc "Basic Local Alignment Search Tool"
   homepage "https://blast.ncbi.nlm.nih.gov/"
-  url "https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.10.0/ncbi-blast-2.10.0+-src.tar.gz"
-  version "2.10.0"
-  sha256 "3acdd9cec01c4f43e56aeaf89049cb8f8013d60b9c1705eced10166967f1d926"
+  url "https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.11.0/ncbi-blast-2.11.0+-src.tar.gz"
+  version "2.11.0"
+  sha256 "d88e1858ae7ce553545a795a2120e657a799a6d334f2a07ef0330cc3e74e1954"
+  license :public_domain
+
+  livecheck do
+    url "https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/"
+    regex(%r{href=.*?v?(\d+(?:\.\d+)+)/?["' >]}i)
+  end
 
   bottle do
-    rebuild 1
-    sha256 "71ebf77b85de24cac6384b796b7b6a70fcaaeded84e1534bbfc4ba86030289d8" => :catalina
-    sha256 "4da358f7b8d0fdc4b3d3a47ee16e0f6345c0846d76a692bdfeb7a7e0f84a12dd" => :mojave
-    sha256 "0f8ce869239db65218854d9897bc47108d08a33d4f35d7afb56c22f1dc4a24ba" => :high_sierra
+    sha256 "8d32e53882b58c2ffec36a76764929759536cf72c5104337c599be08f8772aa0" => :big_sur
+    sha256 "b682885e3ef53795f010e04a55ebc607e82105b24d441f0354dda4fa2ce56b41" => :catalina
+    sha256 "0d98042978cd28ea16e9e89f4b4f2ff318c67e662a11a9b9bf130d810ee1eb3f" => :mojave
+    sha256 "5899dbfbdd65d6274b03eb0ed576d87a7bfc18a3d9a5b588fe30edddb554ce24" => :high_sierra
   end
 
   depends_on "lmdb"
 
+  uses_from_macos "cpio" => :build
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
 
-  conflicts_with "proj", :because => "both install a `libproj.a` library"
+  conflicts_with "proj", because: "both install a `libproj.a` library"
 
   def install
     cd "c++" do
